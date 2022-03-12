@@ -1,6 +1,6 @@
 # From CS360 Team: 
 
-The source code for the website can be found in the GitHub repository (PurdueFW-Music/smcWebsite). Maintenance and deployment of new builds can be carried out as described below.
+The source code for the website can be found in the GitHub repository (PFW-Music/smcWebsite). Maintenance and deployment of new builds can be carried out as described below.
 
 #	Maintenance
 •	Clone the smcWebsite repo
