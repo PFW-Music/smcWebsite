@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+}
+
+.main-nav-active{
+  color:rgb(8, 0, 0);
+}
+
+.main-nav:hover{
+  color:rgb(24, 5, 5) !important;
+}

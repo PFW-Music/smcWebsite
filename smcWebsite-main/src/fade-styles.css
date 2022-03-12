@@ -1,0 +1,54 @@
+.FadeStyles {
+    text-align: center;
+  }
+  
+  
+
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.1); }
+
+
+  a { color:black } /* Globally */
+
+  /* Each state */
+
+  a:visited { text-decoration: none; color:black; }
+  a:hover { text-decoration: none; color:black; }
+  a:focus { text-decoration: none; color:black; }
+  a:hover, a:active { text-decoration: none; color:black;}
+
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20vh);
+    visibility: hidden;
+    transition: opacity 1200ms ease-out, transform 600ms ease-out,
+      visibility 1200ms ease-out;
+    will-change: opacity, transform, visibility;
+  }
+  .fade-in-section.is-visible {
+    opacity: 0.9;
+    transform: none;
+    visibility: visible;
+  }
+  
+  /* Just for presentational purposes, please disregard in your own implementation */
+  
+  .box {
+    padding: 50px;
+    margin: 1% 35%;
+  }
+  
+  .box span {
+    background-color: rgba(255, 255, 255, 0.5);
+    display: inline-block;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  
+  html {
+    box-sizing: content-box;
+  }
+  * {
+    box-sizing: content-box;
+  }
+  
