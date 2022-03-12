@@ -299,7 +299,7 @@ function Home() {
     
 
     const SMChours = (
-      <Paper variant="outlined" sx={{ maxWidth: 700, width: "90%", my: 2, mx: 'auto', p: 2 }}>
+      <Paper variant="outlined" sx={{ maxWidth: 700, width: "90%", my: 2, mx: 'auto', p: 2, opacity: 0 }}>
       <Box sx={{ textAlign: "center", m: 1, fontSize: 22, lineHeight: 2}}>  
       SMC Hours & Availability
       </Box>
