@@ -41,11 +41,11 @@ function ISODateString(d) {
 
 function Add5Hours (time) {
   var newTime = new Date(time);
-  if (newTime.getHours() > 19) {    
+  if (newTime.getHours() > 18) { /**Changed from 19 to 18*/   
     newTime.setDate(newTime.getDate() + 1);
-    newTime.setHours(newTime.getHours() - 20);
+    newTime.setHours(newTime.getHours() - 19); /**Changed from 20 to 19*/
   } else {
-    newTime.setHours(newTime.getHours() + 4);
+    newTime.setHours(newTime.getHours() + 5); /**Changed from 4 to 5*/
   }
   newTime = newTime.toISOString();
   console.log("comparableTime:", newTime);
