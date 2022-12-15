@@ -192,15 +192,6 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
     }
   };
 
-  const handlePhone = (event, newValue) => {
-    if (typeof newValue === "string") {
-      setPhoneVal({
-        title: newValue,
-      });
-    } else {
-      setPhoneVal(newValue);
-    }
-  };
 
   const handleChange = (newValue) => {
     if (nameCheck(newValue, value.name, phoneVal)) {
@@ -273,7 +264,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   {error && (
                     <TextField {...params} error id="error" label="Error" helperText="This user has already been added" size="small" variant="standard" />
                   )}
-                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)" size="small" variant="standard" />}
+                  {!error && <TextField {...params} label="Search for name" helperText="Please type your name here :)" size="small" variant="standard" />}
                 </Box>
               </div>
             )}
@@ -284,7 +275,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                 <TextField
                   passFail
                   id="passwordFailure"
-                  label="Please enter correct password"
+                  label="Please use correct password"
                   helperText="User+Password combo failed."
                   onChange={(e) => setPhoneVal(e.target.value)}
                   value={phoneVal}
@@ -304,7 +295,8 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                 <TextField
                   required
                   id="phone-val"
-                  label="Last 4 of Ph#"
+                  label="Please type phone number."
+                  helperText = "Press Enter to submit."
                   onChange={(e) => setPhoneVal(e.target.value)}
                   value={phoneVal}
                   onKeyPress={(e) => {
