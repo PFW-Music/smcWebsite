@@ -128,10 +128,10 @@ export default function EventID({IDerror, setIDError, eventID, setEventID, goodI
     onClose={handleCloseCancelDialog}
     aria-describedby="alert-dialog-slide-description"
   >
-    <DialogTitle>{"Are you sure to cancel this booking?"}</DialogTitle>
+    <DialogTitle>{"Are you sure to cancel this event?"}</DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-slide-description">
-        Once a booking is cancelled, record will be deleted from the database. 
+        Once an event is cancelled, the action cannot be undone. 
         Click "Yes" to proceed the cancellation.
       </DialogContentText>
     </DialogContent>
