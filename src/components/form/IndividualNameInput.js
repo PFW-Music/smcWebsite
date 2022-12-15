@@ -20,9 +20,8 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 
-
-var Airtable = require('airtable');
-var base = new Airtable({apiKey: process.env.REACT_APP_API_KEY}).base('appYke0X4d4wy6GUx');
+var Airtable = require("airtable");
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
 
 // This will be used to store input data
 var userValues = [];
@@ -32,15 +31,8 @@ var emojis = [
   "😃",
   "😀",
   "😊",
-  "😉",
-  "😍",
-  "😘",
   "📯",
   "🪕",
-  "😙",
-  "😜",
-  "😝",
-  "😛",
   "🎵",
   "🎺",
   "🥁",
@@ -48,19 +40,12 @@ var emojis = [
   "🎷",
   "😂",
   "🎸",
-  "😪",
   "😋",
-  "😷",
   "😎",
-  "😴",
-  "😵",
-  "😲",
-  "😈"
 ];
 
 const userEmoji = [];
 const userNameList = [];
-
 
 function renderItem({ item, handleRemoveName }) {
   const emoji = userEmoji[userNameList.indexOf(item)];
@@ -68,12 +53,7 @@ function renderItem({ item, handleRemoveName }) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          title="Delete"
-          onClick={() => handleRemoveName(item)}
-        >
+        <IconButton edge="end" aria-label="delete" title="Delete" onClick={() => handleRemoveName(item)}>
           <DeleteIcon />
         </IconButton>
       }
@@ -83,77 +63,72 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-var gearList = [];    //store list of gear available to user
-var lendLevel = "";      //store determined lending level
+var gearList = []; //store list of gear available to user
+var lendLevel = ""; //store determined lending level
 
 ////////////////////// Filtering gears accessible using API data
-function filterGear(){
-  
-  
-  if (userValues.some(element => element.gearAccess === 'Gear Level 4')) {
-    lendLevel = "Lending Level 4"; 
-  }
-
-  else if (userValues.some(element => element.gearAccess === 'Gear Level 3')){
+function filterGear() {
+  if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
+    lendLevel = "Lending Level 4";
+  } else if (userValues.some((element) => element.gearAccess === "Gear Level 3")) {
     lendLevel = "Lending Level 3";
-  }
-  else if (userValues.some(element => element.gearAccess === 'Gear Level 2')){
+  } else if (userValues.some((element) => element.gearAccess === "Gear Level 2")) {
     lendLevel = "Lending Level 2";
-  }
-  else if (userValues.some(element => element.gearAccess === 'Gear Level 1')){
+  } else if (userValues.some((element) => element.gearAccess === "Gear Level 1")) {
     lendLevel = "Lending Level 1";
-  }
-  else{
-    
-    
+  } else {
     return gearList;
   }
 
-  //API call to appropriate view on Airtable. View called depends on "lendLevel" determined above. 
+  //API call to appropriate view on Airtable. View called depends on "lendLevel" determined above.
 
-    base('Gear').select({
-      view: lendLevel
-    }).eachPage(function page(records, fetchNextPage) {
-      // This function (`page`) will get called for each page of records.
-  
-      records.forEach(function(record) {
+  base("Gear")
+    .select({
+      view: lendLevel,
+    })
+    .eachPage(
+      function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
+
+        records.forEach(function (record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
-            name: record.get('Item'), 
-            id: record.id, 
-            eventStart: record.get('Start Time (from Events)'),
-            eventEnd: record.get('End Time (from Events)'),
-            eventStatus: record.get('Status (from Events)')
-          })
-      });
-  
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
-      fetchNextPage();
-  
-  }, function done(err) {
-      if (err) { console.error(err); return; }
-  });
+            name: record.get("Item"),
+            id: record.id,
+            eventStart: record.get("Start Time (from Events)"),
+            eventEnd: record.get("End Time (from Events)"),
+            eventStatus: record.get("Status (from Events)"),
+          });
+        });
+
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+      },
+      function done(err) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      }
+    );
 
   return gearList;
-  
 }
 
 const filter = createFilterOptions();
 
-function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) {
+function NameInput({ peopleAllInfo, userSelected, setUserSelected, setGearList }) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [value, setValue] = React.useState(null);
 
-  const [nameInDisplay, setNameInDisplay] = React.useState(
-    userNameList.slice(0, 3)
-  );
+  const [nameInDisplay, setNameInDisplay] = React.useState(userNameList.slice(0, 3));
 
   const Initilize = () => {
     if (!userSelected) userNameList = [];
-  }
+  };
 
   const handleAddName = () => {
     setNameInDisplay(userNameList);
@@ -184,7 +159,7 @@ function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) 
   const handleChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setValue({
-        title: newValue
+        title: newValue,
       });
     } else {
       setValue(newValue);
@@ -206,7 +181,7 @@ function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) 
 
         handleAddName();
       }
-  }
+    }
   };
 
   const nameInputDialog = (
@@ -238,29 +213,11 @@ function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) 
             renderInput={(params) => (
               <div>
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  <SearchRoundedIcon
-                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
-                  />
+                  <SearchRoundedIcon sx={{ color: "action.active", mr: 1, my: 3.5 }} />
                   {error && (
-                    <TextField
-                      {...params}
-                      error
-                      id="error"
-                      label="Error"
-                      helperText="This user has already been added"
-                      size="small"
-                      variant="standard"
-                    />
+                    <TextField {...params} error id="error" label="Error" helperText="This user has already been added" size="small" variant="standard" />
                   )}
-                  {!error && (
-                    <TextField
-                      {...params}
-                      label="Search for name"
-                      helperText="Please enter your name here :)"
-                      size="small"
-                      variant="standard"
-                    />
-                  )}
+                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)" size="small" variant="standard" />}
                 </Box>
               </div>
             )}
@@ -276,20 +233,20 @@ function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) 
   return (
     <div>
       {Initilize}
-      <Box sx={{textAlign: "left", m: 2}}>
-        <Button variant="contained" onClick={handleClickOpen}>
+      <Box sx={{ textAlign: "left", m: 2 }}>
+        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }} variant="contained" onClick={handleClickOpen}>
           +ADD
         </Button>
       </Box>
       {nameInputDialog}
       {userNameList.length !== 0 && (
         <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1 }}>
-          <Paper  />
+          <Paper />
           <List>
             <TransitionGroup>
               {nameInDisplay.map((item) => (
                 <Collapse key={item}>
-                  {(userNameList.indexOf(item) !== 0) && <Divider />}
+                  {userNameList.indexOf(item) !== 0 && <Divider />}
                   {renderItem({ item, handleRemoveName })}
                 </Collapse>
               ))}
@@ -302,4 +259,3 @@ function NameInput({peopleAllInfo, userSelected, setUserSelected, setGearList}) 
 }
 
 export default NameInput;
-

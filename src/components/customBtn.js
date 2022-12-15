@@ -17,7 +17,6 @@ const StyledButton = withStyles({
         fontWeight: "Condensed Heavy",
         fontSize: "130%",
         transform: "none",
-        boxShadow: "2px 2px 0 0 black",
         transition: "background 0.5s,border-color .2s,color 0.2s",
         "&:hover": {
             backgroundColor:  "#CFB991"

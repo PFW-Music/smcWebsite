@@ -1,41 +1,32 @@
-import React from 'react'
-import {useSpring, animated} from 'react-spring';
+import React from "react";
+import { useSpring, animated } from "react-spring";
 
 const noteStyle = {
-    background: '#CFB991',
-    color: '#3b3e43',
-    padding: '1.5rem'
-
-}
+  background: "#0A0A0A",
+  color: "#F5F5F5",
+  padding: "1.5rem",
+};
 
 function SlideMessageCollab() {
+  const slideStyle = useSpring({
+    from: {
+      opacity: 0,
+      marginLeft: -500,
+    },
+    to: {
+      opacity: 1,
+      marginLeft: 0,
+    },
+  });
 
-    const slideStyle = useSpring({
-        from: {
-            opacity: 0,
-            marginLeft:-500
-        },
-        to:{
-            opacity: 1,
-            marginLeft:0
-        }
-    });
-
-
-    return (
-    
+  return (
     <animated.div style={slideStyle}>
-        <div style={noteStyle}>
-            <h1>
-                Looking for space?
-            </h1>
-            <h3>
-                Take advantage of the edit suites and other collaboration spaces in the SMC building.
-            </h3>
-        </div>
+      <div style={noteStyle}>
+        <h1>Looking for space?</h1>
+        <h3>Take advantage of the edit suites and other collaboration spaces in the SMC building.</h3>
+      </div>
     </animated.div>
-           
-    )
+  );
 }
 
-export default SlideMessageCollab
+export default SlideMessageCollab;

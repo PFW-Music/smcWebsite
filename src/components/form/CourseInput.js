@@ -15,42 +15,43 @@ import Fade from "@mui/material/Fade";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-
 ////////////////////////////////////API Magic//////////////////////////////////////////////////////
-var courseList = []; 
+let courseList = [];
 
-var Airtable = require('airtable');
-var base = new Airtable({apiKey: process.env.REACT_APP_API_KEY}).base('appYke0X4d4wy6GUx');
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
 
+base("Classes")
+  .select({
+    view: "Grid view",
+  })
+  .eachPage(
+    function page(records, fetchNextPage) {
+      // This function (`page`) will get called for each page of records.
 
-base('Classes').select({
-    view: "Grid view"
-}).eachPage(function page(records, fetchNextPage) {
-    // This function (`page`) will get called for each page of records.
+      records.forEach(function (record) {
+        courseList.push({ key: record.id, name: record.get("Name") });
+      });
 
-    records.forEach(function(record) {
-        
-        courseList.push({key: record.id, name: record.get('Name')})
-    });
-
-    // To fetch the next page of records, call `fetchNextPage`.
-    // If there are more records, `page` will get called again.
-    // If there are no more records, `done` will get called.
-    fetchNextPage();
-
-}, function done(err) {
-    if (err) { console.error(err); return; }
-});
+      // To fetch the next page of records, call `fetchNextPage`.
+      // If there are more records, `page` will get called again.
+      // If there are no more records, `done` will get called.
+      fetchNextPage();
+    },
+    function done(err) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    }
+  );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // This will be used to store input data
-var userCourse;
+let userCourse;
 
-
-
-export default function CourseSelectionInput({setCourseSelected, addCourse, setAddCourse}) {
-
+export default function CourseSelectionInput({ setCourseSelected, addCourse, setAddCourse }) {
   const [course, setCourse] = React.useState([]);
 
   const handleChangeCourse = (event) => {
@@ -68,7 +69,7 @@ export default function CourseSelectionInput({setCourseSelected, addCourse, setA
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setCourse({
-              title: newValue
+              title: newValue,
             });
           } else {
             setCourse(newValue);
@@ -87,57 +88,54 @@ export default function CourseSelectionInput({setCourseSelected, addCourse, setA
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
-              
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
           </li>
         )}
-        renderInput={(params) => (
-          <TextField {...params} variant="outlined" label="Select course(s)" />
-        )}
+        renderInput={(params) => <TextField {...params} variant="outlined" label="Select course(s)" />}
       ></Autocomplete>
     </FormControl>
   );
 
   return (
     <Stack spacing={0}>
-      <Box sx={{ display: "flex", alignItems: "flex-start", flexWrap: "wrap", textAlign: "left",
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+          textAlign: "left",
           m: 2,
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400 
-        }}>
-    
-          <FormLabel component="legend">
-            Is this time slot for a course assignment?
-          </FormLabel>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={addCourse}
-                onChange={handleChangeCourse}
-                sx={{
-                  color: pink[800],
-                  "&.Mui-checked": {
-                    color: pink[600]
-                  }
-                }}
-              />
-            }
-            label="Course assignment"
-          />
-
+          width: 400,
+        }}
+      >
+        <FormLabel component="legend">Is this time slot for a course assignment?</FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={addCourse}
+              onChange={handleChangeCourse}
+              sx={{
+                color: pink[800],
+                "&.Mui-checked": {
+                  color: pink[600],
+                },
+              }}
+            />
+          }
+          label="Course assignment"
+        />
       </Box>
-      <Box sx={{ justifyContent: 'center'}}>
-       {addCourse && <Fade in={addCourse}>{courseInput}</Fade>}
-       </Box>
+      <Box sx={{ justifyContent: "center" }}>{addCourse && <Fade in={addCourse}>{courseInput}</Fade>}</Box>
     </Stack>
   );
 }

@@ -121,7 +121,6 @@ export default function GearCheckOut({setGearSelected, gearList, addGear, setAdd
       realEndTime.setHours(realEndTime.getHours() + 1);
       realEndTime = realEndTime.toISOString();
       
-      console.log("test2");
       for (var i = 0; !conflictFound && (i < gears.length); i++) {
         if (!gears[i].eventStart) continue;
         for (var j = 0; !conflictFound && (j < gears[i].eventStart.length); j++){
