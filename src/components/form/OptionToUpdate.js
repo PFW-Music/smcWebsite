@@ -29,19 +29,19 @@ export default function OptionToUpdate() {
   }));
 
   return (
-    <Box sx={{ display: "flex", alignItems: "flex-start"}} >
-    <FormControl sx={{ m: 2, textAlign: "left"}} variant="standard">
-      <FormLabel component="legend">
-            If you have an existing booking:
-      </FormLabel>
-      <FormControlLabel
-        control={
-          <GreenSwitch {...label} checked={checked} onChange={handleChange} />
-        }
-        label="I want to update my booking"
-      />
+    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+      <FormControl sx={{ m: 2, textAlign: "left" }} variant="standard">
+        <FormLabel component="legend">
+          If you have an existing booking:
+        </FormLabel>
+        <FormControlLabel
+          control={
+            <GreenSwitch {...label} checked={checked} onChange={handleChange} />
+          }
+          label="I want to update my booking"
+        />
       </FormControl>
-      </Box>
+    </Box>
 
   );
 }

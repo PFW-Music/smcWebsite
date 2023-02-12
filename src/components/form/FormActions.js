@@ -1,7 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -14,10 +13,18 @@ const ActionButton = styled(Button)({
   borderRadius: 4,
   boxShadow: "(0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
-  padding: "0 20px", //this is where the create/update/cancel buttons are
+  padding: "0 20px" //this is where the create/update/cancel buttons are
 });
 
-export default function FormActions({ setNewEvent, setUpdateEvent, setCancelEvent, setEventID, setIDError, setGoodID, setUserSelected }) {
+export default function FormActions({
+                                      setNewEvent,
+                                      setUpdateEvent,
+                                      setCancelEvent,
+                                      setEventID,
+                                      setIDError,
+                                      setGoodID,
+                                      setUserSelected
+                                    }) {
   const handleNewEvent = () => {
     setNewEvent(true);
     setUpdateEvent(false);

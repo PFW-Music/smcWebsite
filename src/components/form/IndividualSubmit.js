@@ -3,9 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import NameInput from "./NameInput";
-import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import { styled } from "@mui/styles";
 
 var eventID;
@@ -19,7 +16,7 @@ const SubmitButton = styled(Button)({
   boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
   height: 50,
-  padding: "0 30px",
+  padding: "0 30px"
 });
 
 //create global variables here
@@ -34,7 +31,7 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d",
+  color: "#191b1d"
 };
 
 function CreateEventRecord(users, startTimeSelected, endTimeSelected, gears) {
@@ -47,16 +44,16 @@ function CreateEventRecord(users, startTimeSelected, endTimeSelected, gears) {
           "Proposed End Time": endTimeSelected,
           Students: users,
           Status: "Booked ✅",
-          "Gear Selection": gears,
-        },
-      },
+          "Gear Selection": gears
+        }
+      }
     ],
-    function (err, records) {
+    function(err, records) {
       if (err) {
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         console.log("event table updated");
         return record.getId();
       });
@@ -71,16 +68,16 @@ function CreateGearUseLogRecord(users, gears, eventID) {
         fields: {
           Person: users,
           Gear: gears,
-          Event: eventID,
-        },
-      },
+          Event: eventID
+        }
+      }
     ],
-    function (err, records) {
+    function(err, records) {
       if (err) {
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         console.log("gear use log updated");
       });
     }
@@ -100,12 +97,12 @@ export default function Submit({ userSelected, startTimeSelected, endTimeSelecte
     var gears = [];
 
     if (userSelected) {
-      userSelected.forEach(function (obj) {
+      userSelected.forEach(function(obj) {
         users.push(obj.id);
       });
     }
     if (gearSelected) {
-      gearSelected.forEach(function (obj) {
+      gearSelected.forEach(function(obj) {
         gears.push(obj.id);
       });
     }
@@ -132,7 +129,8 @@ export default function Submit({ userSelected, startTimeSelected, endTimeSelecte
         SUBMIT
       </SubmitButton>
 
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"
+             aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submission Successful!

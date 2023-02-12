@@ -18,7 +18,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { TransitionGroup } from "react-transition-group";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import FormLabel from "@mui/material/FormLabel";
 
 var Airtable = require("airtable");
 var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
@@ -43,7 +42,7 @@ var emojis = [
   "😂",
   "🎸",
   "😋",
-  "😎",
+  "😎"
 ];
 
 const userEmoji = [];
@@ -88,20 +87,20 @@ function filterGear() {
 
   base("Gear")
     .select({
-      view: lendLevel,
+      view: lendLevel
     })
     .eachPage(
       function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
 
-        records.forEach(function (record) {
+        records.forEach(function(record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
             name: record.get("Item"),
             id: record.id,
             eventStart: record.get("Events Start"),
             eventEnd: record.get("Events End"),
-            eventStatus: record.get("Events Status"),
+            eventStatus: record.get("Events Status")
           });
         });
 
@@ -185,7 +184,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   const handleName = (event, newValue) => {
     if (typeof newValue === "string") {
       setValue({
-        title: newValue,
+        title: newValue
       });
     } else {
       setValue(newValue);
@@ -195,7 +194,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   const handlePhone = (event, newValue) => {
     if (typeof newValue === "string") {
       setPhoneVal({
-        title: newValue,
+        title: newValue
       });
     } else {
       setPhoneVal(newValue);
@@ -271,9 +270,11 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                   <SearchRoundedIcon sx={{ color: "action.active", mr: 1, my: 3.5 }} />
                   {error && (
-                    <TextField {...params} error id="error" label="Error" helperText="This user has already been added" size="small" variant="standard" />
+                    <TextField {...params} error id="error" label="Error" helperText="This user has already been added"
+                               size="small" variant="standard" />
                   )}
-                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)" size="small" variant="standard" />}
+                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)"
+                                        size="small" variant="standard" />}
                 </Box>
               </div>
             )}
@@ -323,7 +324,11 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
           </div>
         </Stack>
       </DialogContent>
+
+
       <DialogActions>
+        {/* TODO : add functionality to the ok button */}
+        <Button>Ok</Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
@@ -333,7 +338,8 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
     <div>
       {Initilize}
       <Box sx={{ textAlign: "left", m: 2 }}>
-        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }} variant="contained" onClick={handleClickOpen}>
+        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }}
+                variant="contained" onClick={handleClickOpen}>
           +ADD
         </Button>
       </Box>

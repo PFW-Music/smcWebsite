@@ -23,13 +23,13 @@ var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.
 
 base("Classes")
   .select({
-    view: "Grid view",
+    view: "Grid view"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         courseList.push({ key: record.id, name: record.get("Name") });
       });
 
@@ -69,7 +69,7 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setCourse({
-              title: newValue,
+              title: newValue
             });
           } else {
             setCourse(newValue);
@@ -91,8 +91,8 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -115,7 +115,7 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400,
+          width: 400
         }}
       >
         <FormLabel component="legend">Is this time slot for a course assignment?</FormLabel>
@@ -127,8 +127,8 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
           }

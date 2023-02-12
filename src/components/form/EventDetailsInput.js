@@ -57,11 +57,13 @@ function getStyles(type, eventType, theme) {
   };
 }
 
-export default function EventDetailsInput({facultyList, 
-                                           setSessionTitle, 
-                                           setEventTypeSelected, 
-                                           setFacultySelected, 
-                                           setUsageSelected}) {
+export default function EventDetailsInput({
+                                            facultyList,
+                                            setSessionTitle,
+                                            setEventTypeSelected,
+                                            setFacultySelected,
+                                            setUsageSelected
+                                          }) {
 
   const theme = useTheme();
   const [eventType, setEventType] = React.useState([]);
@@ -132,7 +134,7 @@ export default function EventDetailsInput({facultyList,
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
-              
+
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
@@ -213,7 +215,7 @@ export default function EventDetailsInput({facultyList,
         </div>
 
         <div>
-        {isProject &&<Fade in={isProject}>{FacultySelection}</Fade>}
+          {isProject && <Fade in={isProject}>{FacultySelection}</Fade>}
         </div>
 
         <div>

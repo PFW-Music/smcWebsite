@@ -1,25 +1,23 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { animated, useSpring } from "react-spring";
 import Grid from "@mui/material/Grid";
 
 const noteStyle = {
   background: "#0A0A0A",
   color: "#F5F5F5",
-  padding: "1.5rem",
+  padding: "1.5rem"
 };
 
 function SlideMessageContact() {
   const slideStyle = useSpring({
     from: {
       opacity: 0,
-      marginLeft: -500,
+      marginLeft: -500
     },
     to: {
       opacity: 1,
-      marginLeft: 0,
-    },
+      marginLeft: 0
+    }
   });
 
   return (

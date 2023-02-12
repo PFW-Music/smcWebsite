@@ -3,9 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import NameInput from "./NameInput";
-import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import { styled } from "@mui/styles";
 
 var Airtable = require("airtable");
@@ -18,7 +15,7 @@ const SubmitButton = styled(Button)({
   boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
   height: 51,
-  padding: "0 30px",
+  padding: "0 30px"
 });
 
 //create global variables here
@@ -33,7 +30,7 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d",
+  color: "#191b1d"
 };
 
 function CreateRecord(
@@ -65,16 +62,16 @@ function CreateRecord(
           Status: "Booked ✅",
           "Intent of Use": usageSelected,
           "Gear Selection": gears,
-          Location: locations,
-        },
-      },
+          Location: locations
+        }
+      }
     ],
-    function (err, records) {
+    function(err, records) {
       if (err) {
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         console.log(record.getId());
       });
     }
@@ -112,16 +109,16 @@ function UpdateRecord(
           Status: "Booked ✅",
           "Intent of Use": usageSelected,
           "Gear Selection": gears,
-          Location: locations,
-        },
-      },
+          Location: locations
+        }
+      }
     ],
-    function (err, records) {
+    function(err, records) {
       if (err) {
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         console.log("record updated");
       });
     }
@@ -129,43 +126,43 @@ function UpdateRecord(
 }
 
 export default function Submit({
-  userSelected,
-  setUserSelected,
-  sessionTitle,
-  setSessionTitle,
-  eventTypeSelected,
-  setEventTypeSelected,
-  facultySelected,
-  setFacultySelected,
-  usageSelected,
-  setUsageSelected,
-  roomTypeSelected,
-  setRoomTypeSelected,
-  roomSelected,
-  setRoomSelected,
-  startTimeSelected,
-  setStartTimeSelected,
-  endTimeSelected,
-  setEndTimeSelected,
-  courseSelected,
-  setCourseSelected,
-  gearSelected,
-  setGearSelected,
+                                 userSelected,
+                                 setUserSelected,
+                                 sessionTitle,
+                                 setSessionTitle,
+                                 eventTypeSelected,
+                                 setEventTypeSelected,
+                                 facultySelected,
+                                 setFacultySelected,
+                                 usageSelected,
+                                 setUsageSelected,
+                                 roomTypeSelected,
+                                 setRoomTypeSelected,
+                                 roomSelected,
+                                 setRoomSelected,
+                                 startTimeSelected,
+                                 setStartTimeSelected,
+                                 endTimeSelected,
+                                 setEndTimeSelected,
+                                 courseSelected,
+                                 setCourseSelected,
+                                 gearSelected,
+                                 setGearSelected,
 
-  eventID,
-  setEventID,
-  newEvent,
-  setNewEvent,
-  updateEvent,
-  setUpdateEvent,
-  CancelEvent,
-  setCancelEvent,
-  timeCorrect,
-  setUserCount,
-  setAddCourse,
-  setAddGear,
-  roomBookingRecord,
-}) {
+                                 eventID,
+                                 setEventID,
+                                 newEvent,
+                                 setNewEvent,
+                                 updateEvent,
+                                 setUpdateEvent,
+                                 CancelEvent,
+                                 setCancelEvent,
+                                 timeCorrect,
+                                 setUserCount,
+                                 setAddCourse,
+                                 setAddGear,
+                                 roomBookingRecord
+                               }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
 
@@ -183,27 +180,27 @@ export default function Submit({
     var locations = [];
 
     if (userSelected) {
-      userSelected.forEach(function (obj) {
+      userSelected.forEach(function(obj) {
         users.push(obj.id);
       });
     }
     if (facultySelected) {
-      facultySelected.forEach(function (obj) {
+      facultySelected.forEach(function(obj) {
         faculties.push(obj.id);
       });
     }
     if (courseSelected) {
-      courseSelected.forEach(function (obj) {
+      courseSelected.forEach(function(obj) {
         courses.push(obj.key);
       });
     }
     if (gearSelected) {
-      gearSelected.forEach(function (obj) {
+      gearSelected.forEach(function(obj) {
         gears.push(obj.id);
       });
     }
     if (roomBookingRecord) {
-      roomBookingRecord.forEach(function (obj) {
+      roomBookingRecord.forEach(function(obj) {
         locations.push(obj.id);
       });
     }
@@ -286,7 +283,8 @@ export default function Submit({
         SUBMIT
       </SubmitButton>
 
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"
+             aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submission Successful!

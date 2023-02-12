@@ -5,10 +5,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar'; 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 // This will be used to store input data
 var StartTime;
@@ -19,6 +17,7 @@ function ISODateString(d) {
   function pad(n) {
     return n < 10 ? "0" + n : n;
   }
+
   if (d === null) return null;
 
   console.log(d.getHours());
@@ -38,7 +37,7 @@ function ISODateString(d) {
   );
 }
 
-function Add5Hours (time) {
+function Add5Hours(time) {
   var newTime = new Date(time);
   if (newTime.getHours() > 18) {
     newTime.setDate(newTime.getDate() + 1);
@@ -55,19 +54,21 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" horizontal="center" {...props} />;
 });
 
-export default function DateTimeValidation({setTimeCorrect,
-                                            setStartTimeSelected, 
-                                            setEndTimeSelected}) {
+export default function DateTimeValidation({
+                                             setTimeCorrect,
+                                             setStartTimeSelected,
+                                             setEndTimeSelected
+                                           }) {
   const [startValue, setSartValue] = React.useState(null);
   const [endValue, setEndValue] = React.useState(null);
   const [invalidTime, setInvalidTime] = React.useState(false);
   const [invalidFormat, setInvalidFormat] = React.useState(false);
 
   const handleFakeClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
-  }
+  };
 
   const EndTimeCheck = () => {
 
@@ -84,15 +85,13 @@ export default function DateTimeValidation({setTimeCorrect,
     if (StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" || EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z") {
       setInvalidFormat(true);
       setTimeCorrect(false);
-    } 
-    else { 
-      setInvalidFormat(false);    
+    } else {
+      setInvalidFormat(false);
 
       if (StartTime > EndTime) {
         setInvalidTime(true);
         setTimeCorrect(false);
-      }
-      else {
+      } else {
         setInvalidTime(false);
         setTimeCorrect(true);
         setStartTimeSelected(StartTime);
@@ -101,18 +100,20 @@ export default function DateTimeValidation({setTimeCorrect,
         console.log("StartTime:", StartTime);
         console.log("EndTime:", EndTime);
       }
-  
+
     }
     return (
-        <div>
-        {invalidTime && 
-          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-          <Alert severity="error">Proposed end time should not exceed start time!</Alert>
+      <div>
+        {invalidTime &&
+          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+            <Alert severity="error">Proposed end time should not exceed start time!</Alert>
           </Snackbar>
         }
-        {invalidFormat && 
-          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-          <Alert severity="error">Time format invalid!</Alert>
+        {invalidFormat &&
+          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+            <Alert severity="error">Time format invalid!</Alert>
           </Snackbar>
         }
       </div>
@@ -131,10 +132,10 @@ export default function DateTimeValidation({setTimeCorrect,
               label="Event start time"
               value={startValue}
               onChange={(newValue) => {
-                setSartValue(newValue);    
+                setSartValue(newValue);
                 StartTime = ISODateString(newValue);
                 if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
-                    StartTime = Add5Hours(StartTime)
+                  StartTime = Add5Hours(StartTime);
                 console.log(StartTime);
                 setTimeCorrect(false);
               }}
@@ -155,7 +156,7 @@ export default function DateTimeValidation({setTimeCorrect,
                 setEndValue(newValue);
                 EndTime = ISODateString(newValue);
                 if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
-                    EndTime = Add5Hours(EndTime);
+                  EndTime = Add5Hours(EndTime);
                 console.log(EndTime);
                 setTimeCorrect(false);
               }}

@@ -43,20 +43,20 @@ var x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE",
+    view: "ALL PEOPLE"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         SMCpeople.push({ name: record.get("Person"), id: record.id });
         peopleAllInfo[x] = {
           id: record.id,
           name: record.get("Person"),
           roomAccess: record.get("Room Access"),
           gearAccess: record.get("Gear Access"),
-          phoneNum: record.get("Phone"),
+          phoneNum: record.get("Phone")
         };
 
         // console.log(peopleAllInfo[x])
@@ -91,13 +91,13 @@ base("SMC People")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Studio Booking Form)",
+    view: "Bookable Rooms 🔒 (Studio Booking Form)"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         RecordingStudioRoomsList.push({ key: record.id, name: record.get("Name") });
       });
 
@@ -118,13 +118,13 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)",
+    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         RehearsalRoomsList.push({ key: record.id, name: record.get("Name"), events: record.get("Events") });
       });
 
@@ -145,13 +145,13 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
+    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         ECRoomsList.push({ key: record.id, name: record.get("Name"), events: record.get("Events") });
         //console.log(record);
       });
@@ -245,7 +245,8 @@ function Home() {
           </Grid>
           <Grid item xs={11}>
             <FormLabel component="legend">
-              If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at the end of the form :)
+              If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at
+              the end of the form :)
             </FormLabel>
           </Grid>
         </Grid>
@@ -354,7 +355,8 @@ function Home() {
           </Grid>
           <Grid item xs={11}>
             <FormLabel component="legend">
-              Please enter the Event Record ID you recieved in the confirmation email before proceeding to the rest of the form.
+              Please enter the Event Record ID you recieved in the confirmation email before proceeding to the rest of
+              the form.
             </FormLabel>
           </Grid>
         </Grid>
@@ -387,7 +389,8 @@ function Home() {
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && <SlideCalendar />}
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{eventDetailsInput}</Grow>}
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{roomInput}</Grow>}
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && roomSelected.length !== 0 && <Grow in={userCount > 0}>{timeInput}</Grow>}
+      {userCount > 0 && (newEvent || (updateEvent && goodID)) && roomSelected.length !== 0 &&
+        <Grow in={userCount > 0}>{timeInput}</Grow>}
       <Grow in={newEvent || (updateEvent && goodID)}>{courseInput}</Grow>
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{gearInput}</Grow>}
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && (

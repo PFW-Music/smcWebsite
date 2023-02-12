@@ -9,7 +9,6 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useEffect } from "react"; //test
 
 //TimeInput.js is for general time input, IndividualTimeInput.js is for gear time input
 
@@ -22,6 +21,7 @@ function ISODateString(d) {
   function pad(n) {
     return n < 10 ? "0" + n : n;
   }
+
   if (d === null) return null;
 
   console.log(d.getHours());
@@ -33,22 +33,23 @@ function ISODateString(d) {
 
 {
   /**
-Daylight savings time changes are made in this section. The values in this comment were working on the given dates:
-March 13, 2022 - November 6, 2022: 
-line 63 newTime.getHours() > 19
-line 64 newTime.setDate(newTime.getDate() + 1);
-line 65 newTime.setHours(newTime.getHours() - 20);
-line 67 newTime.setHours(newTime.getHours() + 4)
+   Daylight savings time changes are made in this section. The values in this comment were working on the given dates:
+   March 13, 2022 - November 6, 2022:
+   line 63 newTime.getHours() > 19
+   line 64 newTime.setDate(newTime.getDate() + 1);
+   line 65 newTime.setHours(newTime.getHours() - 20);
+   line 67 newTime.setHours(newTime.getHours() + 4)
 
-Nov 7, 2022 - March 11, 2023: (the current)
-line 63 newTime.getHours() > 18
-line 64 newTime.setDate(newTime.getDate() + 1);
-line 65 newTime.setHours(newTime.getHours() - 19);
-line 67 newTime.setHours(newTime.getHours() + 5)
+   Nov 7, 2022 - March 11, 2023: (the current)
+   line 63 newTime.getHours() > 18
+   line 64 newTime.setDate(newTime.getDate() + 1);
+   line 65 newTime.setHours(newTime.getHours() - 19);
+   line 67 newTime.setHours(newTime.getHours() + 5)
 
-Sorry we couldn't work the switching issue into our solution, good luck.
-*/
+   Sorry we couldn't work the switching issue into our solution, good luck.
+   */
 }
+
 function Add5Hours(time) {
   var newTime = new Date(time);
 
@@ -67,7 +68,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" horizontal="center" {...props} />;
 });
 
-export default function DateTimeValidation({ setTimeCorrect, setStartTimeSelected, setEndTimeSelected, roomBookingRecord }) {
+export default function DateTimeValidation({
+                                             setTimeCorrect,
+                                             setStartTimeSelected,
+                                             setEndTimeSelected,
+                                             roomBookingRecord
+                                           }) {
   const [startValue, setSartValue] = React.useState(null);
   const [endValue, setEndValue] = React.useState(null);
   const [invalidTime, setInvalidTime] = React.useState(false);
@@ -218,28 +224,33 @@ export default function DateTimeValidation({ setTimeCorrect, setStartTimeSelecte
 
       <Box justifyContent="center" alignItems="center">
         <br />
-        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }} variant="contained" onClick={EndTimeCheck}>
+        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }}
+                variant="contained" onClick={EndTimeCheck}>
           check availability
         </Button>
       </Box>
       <div>
         {invalidTime && (
-          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
             <Alert severity="error">Proposed start time should not exceed end time!</Alert>
           </Snackbar>
         )}
         {invalidFormat && (
-          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
             <Alert severity="error">Time format invalid!</Alert>
           </Snackbar>
         )}
         {roomUnavailable && (
-          <Snackbar open={roomUnavailable} autoHideDuration={10} onClose={handleFakeClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar open={roomUnavailable} autoHideDuration={10} onClose={handleFakeClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
             <Alert severity="error">{unavailableRoom} is not available at inputted time!</Alert>
           </Snackbar>
         )}
         {successMsg && (
-          <Snackbar open={successMsg} autoHideDuration={2000} onClose={handleRealClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar open={successMsg} autoHideDuration={2000} onClose={handleRealClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
             <Alert severity="success">Room is available at inputted time</Alert>
           </Snackbar>
         )}

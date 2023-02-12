@@ -1,10 +1,9 @@
 import * as React from "react";
-import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./App.css";
-import CustomBtn from "./components/customBtn";
 import NavBar from "./components/navBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import home from "./pages/home";
 import schedules from "./pages/schedules";
@@ -14,26 +13,26 @@ import contact from "./pages/contact";
 const theme = createTheme({
   palette: {
     background: {
-      default: "#e8d6c0",
+      default: "#e8d6c0"
     },
     primary: {
-      main: "#2e1667",
+      main: "#2e1667"
     },
     secondary: {
-      main: "#c7d8ed",
-    },
+      main: "#c7d8ed"
+    }
   },
   typography: {
     fontFamily: ["Roboto"],
     h4: {
       fontWeight: 600,
       fontSize: 28,
-      lineHeight: "2rem",
+      lineHeight: "2rem"
     },
     h5: {
       fontWeight: 100,
-      lineHeight: "2rem",
-    },
+      lineHeight: "2rem"
+    }
   },
 
   overrides: {
@@ -42,11 +41,11 @@ const theme = createTheme({
         body: {
           backgroundImage: "url(https://www.pfw.edu/themes/fire/theme/assets/media/images/texture--gray.jpg)",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        },
-      },
-    },
-  },
+          backgroundSize: "cover"
+        }
+      }
+    }
+  }
 });
 
 function App() {

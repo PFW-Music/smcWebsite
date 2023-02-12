@@ -1,19 +1,19 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Drawer as MUIDrawer, List, ListItem, ListItemIcon, ListItemText, Paper } from "@material-ui/core";
-import logo from "../logo.png";
+import { Drawer as MUIDrawer, List, ListItem } from "@material-ui/core";
+import logo from "../assets/LogoSW.png";
 import CustomBtn from "./customBtn";
 import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles({
   drawer: {
-    width: "160px",
+    width: "160px"
   },
 
   paper: {
     background: "#242424",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 });
 
 const Drawer = () => {
