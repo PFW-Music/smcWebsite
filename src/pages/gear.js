@@ -13,12 +13,12 @@ import FormLabel from "@mui/material/FormLabel";
 ///////////////////////////////////////////  API CALLS  ///////////////////////////////////////////
 ///////////////////////////////////////////             ///////////////////////////////////////////
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 const peopleAllInfo = [];
 
-var x = 0;
+let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({

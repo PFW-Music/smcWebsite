@@ -35,7 +35,6 @@ function SlideCalendar() {
         <Box m="auto" sx={{ maxWidth: 900, width: "90%" }}>
           <iframe className="airtable-embed"
                   src="https://airtable.com/embed/shr7XfOauvLgRzajc?backgroundColor=red"
-                  frameBorder="0"
                   sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
                   loading="lazy"
                   width="100%"

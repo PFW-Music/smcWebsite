@@ -9,9 +9,9 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
 // This will be used to store input data
-var StartTime;
-var EndTime;
-var unavailableRoom;
+let StartTime;
+let EndTime;
+let unavailableRoom;
 
 function ISODateString(d) {
   function pad(n) {
@@ -38,7 +38,7 @@ function ISODateString(d) {
 }
 
 function Add5Hours(time) {
-  var newTime = new Date(time);
+  let newTime = new Date(time);
   if (newTime.getHours() > 18) {
     newTime.setDate(newTime.getDate() + 1);
     newTime.setHours(newTime.getHours() - 19);

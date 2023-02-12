@@ -13,9 +13,9 @@ import Button from "@mui/material/Button";
 //TimeInput.js is for general time input, IndividualTimeInput.js is for gear time input
 
 // This will be used to store input data
-var StartTime;
-var EndTime;
-var unavailableRoom;
+let StartTime;
+let EndTime;
+let unavailableRoom;
 
 function ISODateString(d) {
   function pad(n) {
@@ -51,7 +51,7 @@ function ISODateString(d) {
 }
 
 function Add5Hours(time) {
-  var newTime = new Date(time);
+  let newTime = new Date(time);
 
   if (newTime.getHours() > 18) {
     newTime.setDate(newTime.getDate() + 1);
@@ -127,16 +127,16 @@ export default function DateTimeValidation({
       //console.log("comparableStartTime:", StartTime);
       //console.log("comparableEndTime:", EndTime);
 
-      var conflictFound = false;
+      let conflictFound = false;
 
       if (typeof roomBookingRecord !== "undefined") {
-        var realEndTime = new Date(EndTime);
+        let realEndTime = new Date(EndTime);
         realEndTime.setHours(realEndTime.getHours());
         realEndTime = realEndTime.toISOString();
 
-        for (var i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
+        for (let i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
           if (typeof roomBookingRecord[i].eventStart == "undefined") continue;
-          for (var j = 0; !conflictFound && j < roomBookingRecord[i].eventStart.length; j++) {
+          for (let j = 0; !conflictFound && j < roomBookingRecord[i].eventStart.length; j++) {
             if (roomBookingRecord[i].eventStatus[j] !== "Booked ✅") continue;
 
             // User selected time is covering and existing session

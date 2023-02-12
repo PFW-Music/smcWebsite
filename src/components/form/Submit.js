@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { styled } from "@mui/styles";
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 const SubmitButton = styled(Button)({
   background: "linear-gradient(45deg, rgba(207,185,145) 99%, #000000 1%)", //"linear-gradient(45deg, #4568dc 30%, #b06ab3 90%)",
@@ -173,11 +173,11 @@ export default function Submit({
     setOpen(true);
 
     // getting the IDs lists for linking fields
-    var users = [];
-    var faculties = [];
-    var courses = [];
-    var gears = [];
-    var locations = [];
+    const users = [];
+    const faculties = [];
+    const courses = [];
+    const gears = [];
+    const locations = [];
 
     if (userSelected) {
       userSelected.forEach(function(obj) {

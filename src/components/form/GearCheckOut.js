@@ -1,3 +1,5 @@
+// noinspection DuplicatedCode
+
 import * as React from "react";
 import Box from "@mui/material/Box";
 import FormLabel from "@mui/material/FormLabel";
@@ -20,8 +22,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
 // This will be used to store input data
-var userGear;
-var unavailableGear;
+let userGear;
+let unavailableGear;
 
 const embedStyle = {
   background: "transparent",
@@ -32,7 +34,6 @@ const embedStyle = {
 const iFrameGear = (
   <iframe className="airtable-embed"
           src="https://airtable.com/embed/shrmH9r8B0Zd8LwcU?backgroundColor=red"
-          frameBorder="0"
           sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
           loading="lazy"
           width="100%"
@@ -113,23 +114,23 @@ export default function GearCheckOut({
   };
 
   const availabilityCheck = () => {
-    var gears = userGear;
-    var StartTime = startTimeSelected;
-    var EndTime = endTimeSelected;
+    const gears = userGear;
+    const StartTime = startTimeSelected;
+    const EndTime = endTimeSelected;
     console.log(gears);
     console.log(startTimeSelected);
     console.log(endTimeSelected);
 
-    var conflictFound = false;
+    let conflictFound = false;
 
     if (gears && StartTime && EndTime) {
-      var realEndTime = new Date(EndTime);
+      let realEndTime = new Date(EndTime);
       realEndTime.setHours(realEndTime.getHours() + 1);
       realEndTime = realEndTime.toISOString();
 
-      for (var i = 0; !conflictFound && (i < gears.length); i++) {
+      for (let i = 0; !conflictFound && (i < gears.length); i++) {
         if (!gears[i].eventStart) continue;
-        for (var j = 0; !conflictFound && (j < gears[i].eventStart.length); j++) {
+        for (let j = 0; !conflictFound && (j < gears[i].eventStart.length); j++) {
 
           if (gears[i].eventStatus[j] !== "Booked ✅") continue;
 
@@ -183,7 +184,6 @@ export default function GearCheckOut({
       if (newValue.length !== 0) availabilityCheck();
 
     }
-    ;
   };
 
 

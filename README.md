@@ -58,9 +58,9 @@ necessary as create-react-app was used during the initial stages which Netlify w
 • Build and deploy
 • Since the API Key is sensitive information it needs to be saved on Netlify as an environment variable. Steps on doing
 this:
-o go to Site settings > Build & deploy > Environment > Environment variables and add the following values.
-o Key field should contain: REACT_APP_API_KEY
-o Value field should contain the actual API Key of the base which can be found at airtable.com/api
+• go to Site settings > Build & deploy > Environment > Environment variables and add the following values.
+• Key field should contain: REACT_APP_API_KEY
+• Value field should contain the actual API Key of the base which can be found at airtable.com/api
 
 # Getting Started with Create React App
 

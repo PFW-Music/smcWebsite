@@ -16,8 +16,8 @@ import Checkbox from "@mui/material/Checkbox";
 import Fade from "@mui/material/Fade";
 
 ///////////////////   API Magic   ////////////////////////////////
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -66,8 +66,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // This will be used to store input data
-var userRoomType;
-var userRoomSelection;
+let userRoomType;
+let userRoomSelection;
 //const roomTypes = [];
 //var disabledRoomTypes;
 
@@ -80,10 +80,10 @@ function getStyles(type, eventType, theme) {
 }
 
 // Variables to used for API filtering
-var roomOptionsAllInfo = [];
-var roomSelectedAllInfo = [];
-var eventsList = [];
-var unavailableTimes = [];
+let roomOptionsAllInfo = [];
+let roomSelectedAllInfo = [];
+let eventsList = [];
+const unavailableTimes = [];
 
 export default function RoomSelectionInput({
                                              roomOptionStudio,
@@ -109,7 +109,7 @@ export default function RoomSelectionInput({
       target: { value }
     } = event;
     setRoomType(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
     userRoomType = value;
@@ -144,7 +144,7 @@ export default function RoomSelectionInput({
       target: { value }
     } = event;
     setRoom(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
     userRoomSelection = value;
@@ -153,12 +153,12 @@ export default function RoomSelectionInput({
     //console.log(roomOptionsAllInfo);
 
     //GENERATING ARRAY WITH ALL INFO ON ROOM SELECTED
-    var valueLength = value.length;
-    var roomOptionsLength = roomOptionsAllInfo.length;
+    const valueLength = value.length;
+    const roomOptionsLength = roomOptionsAllInfo.length;
     roomSelectedAllInfo = [];
 
-    for (var i = 0; i < valueLength; i++) {
-      for (var x = 0; x < roomOptionsLength; x++) {
+    for (let i = 0; i < valueLength; i++) {
+      for (let x = 0; x < roomOptionsLength; x++) {
         if (roomOptionsAllInfo[x].name === value[i]) roomSelectedAllInfo.push(roomOptionsAllInfo[x]);
       }
     }
@@ -167,10 +167,10 @@ export default function RoomSelectionInput({
     ///////////////////   API Magic   ////////////////////////////////
 
     //Crawling all rooms to find associated events whose recordIDs are stored in eventsList[]
-    var roomSelectedAllInfoLength = roomSelectedAllInfo.length;
+    const roomSelectedAllInfoLength = roomSelectedAllInfo.length;
     eventsList = [];
-    var eventsListLength = 0;
-    for (var j = 0; j < roomSelectedAllInfoLength; j++) {
+    let eventsListLength = 0;
+    for (let j = 0; j < roomSelectedAllInfoLength; j++) {
       base("Rooms").find(roomSelectedAllInfo[j].key, function(err, record) {
         if (err) {
           console.error(err);

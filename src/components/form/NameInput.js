@@ -19,15 +19,15 @@ import { TransitionGroup } from "react-transition-group";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 //NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
 
 // This will be used to store input data
-var userValues = [];
+let userValues = [];
 
-var emojis = [
+const emojis = [
   "🎹",
   "😃",
   "😀",
@@ -64,8 +64,8 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-var gearList = []; //store list of gear available to user
-var lendLevel = ""; //store determined lending level
+let gearList = []; //store list of gear available to user
+let lendLevel = ""; //store determined lending level
 
 ////////////////////// Filtering gears accessible using API data
 function filterGear() {
@@ -120,7 +120,7 @@ function filterGear() {
   return gearList;
 }
 
-var roomTypes;
+let roomTypes;
 
 ////////////////////// Filtering gears using API data
 function filterRoomType(disabled) {
@@ -149,7 +149,12 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   const [nameInDisplay, setNameInDisplay] = React.useState(userNameList.slice(0, 3));
 
   const Initilize = () => {
-    if (!userSelected) userNameList = [];
+    userValues = [];
+    gearList = [];
+    roomTypes = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧", "Edit & Collaboration Spaces 🎒"];
+    setGearList(filterGear());
+    setDisabledRoomTypes(filterRoomType(roomTypes));
+
   };
 
   const handleAddName = () => {
@@ -248,8 +253,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
             value={value}
             onChange={handleName}
             filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              return filtered;
+              return filter(options, params);
             }}
             selectOnFocus
             clearOnBlur={true}

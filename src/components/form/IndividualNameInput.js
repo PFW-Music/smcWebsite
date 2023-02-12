@@ -19,13 +19,13 @@ import { TransitionGroup } from "react-transition-group";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 // This will be used to store input data
-var userValues = [];
+let userValues = [];
 
-var emojis = [
+const emojis = [
   "🎹",
   "😃",
   "😀",
@@ -62,8 +62,8 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-var gearList = []; //store list of gear available to user
-var lendLevel = ""; //store determined lending level
+const gearList = []; //store list of gear available to user
+let lendLevel = ""; //store determined lending level
 
 ////////////////////// Filtering gears accessible using API data
 function filterGear() {
@@ -126,7 +126,11 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setGearList }
   const [nameInDisplay, setNameInDisplay] = React.useState(userNameList.slice(0, 3));
 
   const Initilize = () => {
-    if (!userSelected) userNameList = [];
+    userValues = userSelected;
+    userValues.forEach((user) => {
+      userNameList.push(user.name);
+    });
+    setNameInDisplay(userNameList.slice(0, 3));
   };
 
   const handleAddName = () => {
@@ -192,8 +196,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setGearList }
             value={value}
             onChange={handleChange}
             filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              return filtered;
+              return filter(options, params);
             }}
             selectOnFocus
             clearOnBlur={true}

@@ -31,10 +31,10 @@ const MenuProps = {
 };
 
 // This will be used to store input data
-var userEventTitle;
-var userEventType;
-var userEventUsage;
-var userFacultyInput;
+let userEventTitle;
+let userEventType;
+let userEventUsage;
+let userFacultyInput;
 
 const eventTypes = [
   "Summer Booking 🏖",
@@ -77,7 +77,7 @@ export default function EventDetailsInput({
       target: { value }
     } = event;
     setEventType(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a string field value.
       typeof value === "string" ? value.split(",") : value
     );
     userEventType = value;
@@ -92,7 +92,7 @@ export default function EventDetailsInput({
       target: { value }
     } = event;
     setEventUsage(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
     userEventUsage = value;

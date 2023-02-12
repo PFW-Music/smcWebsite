@@ -30,7 +30,7 @@ export default function Fades() {
 
       <FadeInSection>
         <div className="box" style={{ backgroundColor: "transparent" }}>
-          <h1>For Nonurgent Matters:</h1>
+          <h1>For Non urgent Matters:</h1>
         </div>
       </FadeInSection>
 
@@ -119,7 +119,7 @@ export default function Fades() {
         </div>
       </FadeInSection>
 
-      {//Slack emercgency DM
+      {//Slack emergency DM
       }
       <FadeInSection key={"#f8e3a1"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
