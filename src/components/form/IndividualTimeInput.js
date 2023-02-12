@@ -66,7 +66,6 @@ export default function DateTimeValidation({
 
   const handleFakeClose = (event, reason) => {
     if (reason === "clickaway") {
-      return;
     }
   };
 

@@ -96,7 +96,6 @@ export default function EventID({
         if (updateEvent) setSuccessMsg(true);
         if (CancelEvent) setOpenCancelDialog(true);
       }
-      return;
 
     });
   };

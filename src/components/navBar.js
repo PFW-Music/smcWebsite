@@ -132,7 +132,7 @@ function NavBar() {
             </Box>
           </Drawer>
 
-          <a class={classes.logo}
+          <a className={classes.logo}
              href="https://pfw-smc.notion.site/pfw-smc/PFW-Sweetwater-Music-Center-17d134f1dd704a56909044ddb24d61ed">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 479.52 99.94">
               <path

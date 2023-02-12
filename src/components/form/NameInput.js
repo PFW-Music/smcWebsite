@@ -112,7 +112,6 @@ function filterGear() {
       function done(err) {
         if (err) {
           console.error(err);
-          return;
         }
       }
     );
@@ -237,11 +236,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
 
   const nameCheck = (recordVal, name, number) => {
     const phonePass = recordVal.phoneNum.slice(-4);
-    if (recordVal.name === name && phonePass === number) {
-      return true;
-    } else {
-      return false;
-    }
+    return recordVal.name === name && phonePass === number;
   };
 
   const nameInputDialog = (

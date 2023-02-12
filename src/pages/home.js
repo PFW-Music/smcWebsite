@@ -80,7 +80,6 @@ base("SMC People")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );
@@ -109,7 +108,6 @@ base("Rooms")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );
@@ -136,7 +134,6 @@ base("Rooms")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );
@@ -164,7 +161,6 @@ base("Rooms")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );

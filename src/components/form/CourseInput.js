@@ -41,7 +41,6 @@ base("Classes")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );

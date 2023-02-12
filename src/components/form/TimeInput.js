@@ -84,7 +84,6 @@ export default function DateTimeValidation({
 
   const handleFakeClose = (event, reason) => {
     if (reason === "clickaway") {
-      return;
     }
   };
 
@@ -106,8 +105,6 @@ export default function DateTimeValidation({
 
     if (StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" || EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z") {
       setInvalidFormat(true);
-      setTimeCorrect(false);
-      return;
     } else {
       setInvalidFormat(false);
 

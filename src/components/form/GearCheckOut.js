@@ -102,7 +102,6 @@ export default function GearCheckOut({
 
   const handleFakeClose = (event, reason) => {
     if (reason === "clickaway") {
-      return;
     }
   };
 

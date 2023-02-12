@@ -170,7 +170,7 @@ export default function GearCheckOut({ setGearSelected, gearList, gear, setGear,
       if (newValue.length !== 0) availabilityCheck();
 
     }
-  }
+  };
 
 
   return (
