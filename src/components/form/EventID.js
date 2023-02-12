@@ -15,8 +15,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 var Airtable = require('airtable');
-var base = new Airtable({apiKey: process.env.REACT_APP_API_KEY}).base('appYke0X4d4wy6GUx');
-
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 function DeleteRecord(eventID) {
   base('Events').destroy(eventID, function(err, deletedRecords) {

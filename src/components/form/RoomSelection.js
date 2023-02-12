@@ -17,7 +17,7 @@ import Fade from "@mui/material/Fade";
 
 ///////////////////   API Magic   ////////////////////////////////
 var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

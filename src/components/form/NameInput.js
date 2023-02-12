@@ -21,7 +21,7 @@ import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 
 var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 //NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
 

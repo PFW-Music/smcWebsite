@@ -19,7 +19,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 let courseList = [];
 
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 base("Classes")
   .select({

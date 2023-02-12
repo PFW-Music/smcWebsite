@@ -9,7 +9,7 @@ import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import { styled } from "@mui/styles";
 
 var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
 const SubmitButton = styled(Button)({
   background: "linear-gradient(45deg, rgba(207,185,145) 99%, #000000 1%)", //"linear-gradient(45deg, #4568dc 30%, #b06ab3 90%)",
