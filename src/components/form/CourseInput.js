@@ -19,17 +19,19 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 let courseList = [];
 
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 base("Classes")
   .select({
-    view: "Grid view"
+    view: "Grid view",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
+      records.forEach(function (record) {
         courseList.push({ key: record.id, name: record.get("Name") });
       });
 
@@ -50,7 +52,11 @@ base("Classes")
 // This will be used to store input data
 let userCourse;
 
-export default function CourseSelectionInput({ setCourseSelected, addCourse, setAddCourse }) {
+export default function CourseSelectionInput({
+  setCourseSelected,
+  addCourse,
+  setAddCourse,
+}) {
   const [course, setCourse] = React.useState([]);
 
   const handleChangeCourse = (event) => {
@@ -68,7 +74,7 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setCourse({
-              title: newValue
+              title: newValue,
             });
           } else {
             setCourse(newValue);
@@ -90,14 +96,16 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
           </li>
         )}
-        renderInput={(params) => <TextField {...params} variant="outlined" label="Select course(s)" />}
+        renderInput={(params) => (
+          <TextField {...params} variant="outlined" label="Select course(s)" />
+        )}
       ></Autocomplete>
     </FormControl>
   );
@@ -114,10 +122,12 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400
+          width: 400,
         }}
       >
-        <FormLabel component="legend">Is this time slot for a course assignment?</FormLabel>
+        <FormLabel component="legend">
+          Is this time slot for a course assignment?
+        </FormLabel>
         <FormControlLabel
           control={
             <Checkbox
@@ -126,15 +136,17 @@ export default function CourseSelectionInput({ setCourseSelected, addCourse, set
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
           }
           label="Course assignment"
         />
       </Box>
-      <Box sx={{ justifyContent: "center" }}>{addCourse && <Fade in={addCourse}>{courseInput}</Fade>}</Box>
+      <Box sx={{ justifyContent: "center" }}>
+        {addCourse && <Fade in={addCourse}>{courseInput}</Fade>}
+      </Box>
     </Stack>
   );
 }

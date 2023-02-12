@@ -20,12 +20,12 @@ export default function OptionToUpdate() {
     "& .MuiSwitch-switchBase.Mui-checked": {
       color: pink[600],
       "&:hover": {
-        backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity)
-      }
+        backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
+      },
     },
     "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: pink[600]
-    }
+      backgroundColor: pink[600],
+    },
   }));
 
   return (
@@ -42,6 +42,5 @@ export default function OptionToUpdate() {
         />
       </FormControl>
     </Box>
-
   );
 }

@@ -13,39 +13,40 @@ import contact from "./pages/contact";
 const theme = createTheme({
   palette: {
     background: {
-      default: "#e8d6c0"
+      default: "#e8d6c0",
     },
     primary: {
-      main: "#2e1667"
+      main: "#2e1667",
     },
     secondary: {
-      main: "#c7d8ed"
-    }
+      main: "#c7d8ed",
+    },
   },
   typography: {
     fontFamily: ["Roboto"],
     h4: {
       fontWeight: 600,
       fontSize: 28,
-      lineHeight: "2rem"
+      lineHeight: "2rem",
     },
     h5: {
       fontWeight: 100,
-      lineHeight: "2rem"
-    }
+      lineHeight: "2rem",
+    },
   },
 
   overrides: {
     MuiCssBaseline: {
       "@global": {
         body: {
-          backgroundImage: "url(https://www.pfw.edu/themes/fire/theme/assets/media/images/texture--gray.jpg)",
+          backgroundImage:
+            "url(https://www.pfw.edu/themes/fire/theme/assets/media/images/texture--gray.jpg)",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "cover"
-        }
-      }
-    }
-  }
+          backgroundSize: "cover",
+        },
+      },
+    },
+  },
 });
 
 function App() {

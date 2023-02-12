@@ -5,19 +5,19 @@ import Grid from "@mui/material/Grid";
 const noteStyle = {
   background: "#0A0A0A",
   color: "#F5F5F5",
-  padding: "1.5rem"
+  padding: "1.5rem",
 };
 
 function SlideMessageContact() {
   const slideStyle = useSpring({
     from: {
       opacity: 0,
-      marginLeft: -500
+      marginLeft: -500,
     },
     to: {
       opacity: 1,
-      marginLeft: 0
-    }
+      marginLeft: 0,
+    },
   });
 
   return (
@@ -25,7 +25,9 @@ function SlideMessageContact() {
       <animated.div style={slideStyle}>
         <div style={noteStyle}>
           <h1>Contact Us</h1>
-          <h3>See below for information on getting in contact with John Buteyn...</h3>
+          <h3>
+            See below for information on getting in contact with John Buteyn...
+          </h3>
         </div>
       </animated.div>
     </Grid>

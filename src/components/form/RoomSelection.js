@@ -17,7 +17,9 @@ import Fade from "@mui/material/Fade";
 
 ///////////////////   API Magic   ////////////////////////////////
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -25,44 +27,44 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 300
+    minWidth: 300,
   },
   inputLabel: {
     color: "gray",
     "&.Mui-focused": {
-      color: pink[800]
-    }
+      color: pink[800],
+    },
   },
   inputFocused: {},
   select: {
     color: "black",
     "&:before": {
       // changes the bottom textbox border when not focused
-      borderColor: "gray"
+      borderColor: "gray",
     },
     "&:after": {
       // changes the bottom textbox border when clicked/focused.  thought it would be the same with input label
-      borderColor: pink[800]
-    }
+      borderColor: pink[800],
+    },
   },
   outlinedInput: {
     color: "gray",
     "&:after": {
-      borderColor: pink[800]
-    }
-  }
+      borderColor: pink[800],
+    },
+  },
 }));
 
 // This will be used to store input data
@@ -71,11 +73,18 @@ let userRoomSelection;
 //const roomTypes = [];
 //var disabledRoomTypes;
 
-const roomTypes = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧", "Edit & Collaboration Spaces 🎒"];
+const roomTypes = [
+  "Recording Studio 🎙️",
+  "Rehearsal Spaces 🎧",
+  "Edit & Collaboration Spaces 🎒",
+];
 
 function getStyles(type, eventType, theme) {
   return {
-    fontWeight: eventType.indexOf(type) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium
+    fontWeight:
+      eventType.indexOf(type) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
   };
 }
 
@@ -86,15 +95,15 @@ let eventsList = [];
 const unavailableTimes = [];
 
 export default function RoomSelectionInput({
-                                             roomOptionStudio,
-                                             roomOptionRehearsal,
-                                             roomOptionECspace,
-                                             disabledRoomTypes,
-                                             setRoomTypeSelected,
-                                             setRoomSelected,
-                                             roomBookingRecord,
-                                             setRoomBookingRecord
-                                           }) {
+  roomOptionStudio,
+  roomOptionRehearsal,
+  roomOptionECspace,
+  disabledRoomTypes,
+  setRoomTypeSelected,
+  setRoomSelected,
+  roomBookingRecord,
+  setRoomBookingRecord,
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const [roomType, setRoomType] = React.useState([]);
@@ -106,7 +115,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoomType = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setRoomType(
       // On autofill, we get a stringified value.
@@ -141,7 +150,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoom = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setRoom(
       // On autofill, we get a stringified value.
@@ -159,7 +168,8 @@ export default function RoomSelectionInput({
 
     for (let i = 0; i < valueLength; i++) {
       for (let x = 0; x < roomOptionsLength; x++) {
-        if (roomOptionsAllInfo[x].name === value[i]) roomSelectedAllInfo.push(roomOptionsAllInfo[x]);
+        if (roomOptionsAllInfo[x].name === value[i])
+          roomSelectedAllInfo.push(roomOptionsAllInfo[x]);
       }
     }
     console.log("filtered array", roomSelectedAllInfo);
@@ -171,7 +181,7 @@ export default function RoomSelectionInput({
     eventsList = [];
     let eventsListLength = 0;
     for (let j = 0; j < roomSelectedAllInfoLength; j++) {
-      base("Rooms").find(roomSelectedAllInfo[j].key, function(err, record) {
+      base("Rooms").find(roomSelectedAllInfo[j].key, function (err, record) {
         if (err) {
           console.error(err);
           return;
@@ -182,7 +192,7 @@ export default function RoomSelectionInput({
           id: record.id,
           eventStart: record.get("Events Start"),
           eventEnd: record.get("Events End"),
-          eventStatus: record.get("Events Status")
+          eventStatus: record.get("Events Status"),
         });
         eventsListLength++;
       });
@@ -226,7 +236,12 @@ export default function RoomSelectionInput({
   useEffect(() => {
     //console.log("roomBookingRecord:", roomBookingRecord);
     if (roomBookingRecord.length !== 0) {
-      console.log("one room records", roomBookingRecord[0].eventStart[0], roomBookingRecord[0].eventEnd[0], roomBookingRecord[0].eventStatus[0]);
+      console.log(
+        "one room records",
+        roomBookingRecord[0].eventStart[0],
+        roomBookingRecord[0].eventEnd[0],
+        roomBookingRecord[0].eventStatus[0]
+      );
       //var test = roomBookingRecord[0].events[0];
       //console.log("test",test)
     }
@@ -240,14 +255,21 @@ export default function RoomSelectionInput({
 
   const roomSelectionStudio = (
     <FormControl sx={{ m: 1, width: 400 }}>
-      <InputLabel className={classes.inputLabel}>Select studio room(s)</InputLabel>
+      <InputLabel className={classes.inputLabel}>
+        Select studio room(s)
+      </InputLabel>
       <Select
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
         onChange={handleChangeRoom}
         multiple
-        input={<OutlinedInput id="select-multiple-chip" label="Select studio room(s)" />}
+        input={
+          <OutlinedInput
+            id="select-multiple-chip"
+            label="Select studio room(s)"
+          />
+        }
         renderValue={(selected) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((value) => (
@@ -265,14 +287,18 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionStudio.map((option) => (
-          <MenuItem key={option.key} value={option.name} style={getStyles(option.name, room, theme)}>
+          <MenuItem
+            key={option.key}
+            value={option.name}
+            style={getStyles(option.name, room, theme)}
+          >
             <Checkbox
               checked={room.indexOf(option.name) > -1}
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
@@ -284,14 +310,21 @@ export default function RoomSelectionInput({
 
   const roomSelectionRehearsal = (
     <FormControl sx={{ m: 1, width: 400 }}>
-      <InputLabel id="demo-multiple-chip-label">Select rehearsal room(s)</InputLabel>
+      <InputLabel id="demo-multiple-chip-label">
+        Select rehearsal room(s)
+      </InputLabel>
       <Select
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
         onChange={handleChangeRoom}
         multiple
-        input={<OutlinedInput id="select-multiple-chip" label="Select rehearsal room(s)" />}
+        input={
+          <OutlinedInput
+            id="select-multiple-chip"
+            label="Select rehearsal room(s)"
+          />
+        }
         renderValue={(selected) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((value) => (
@@ -309,14 +342,18 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionRehearsal.map((option) => (
-          <MenuItem key={option.key} value={option.name} style={getStyles(option.name, room, theme)}>
+          <MenuItem
+            key={option.key}
+            value={option.name}
+            style={getStyles(option.name, room, theme)}
+          >
             <Checkbox
               checked={room.indexOf(option.name) > -1}
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
@@ -328,14 +365,21 @@ export default function RoomSelectionInput({
 
   const roomSelectionECspace = (
     <FormControl sx={{ m: 1, width: 400 }}>
-      <InputLabel id="demo-multiple-chip-label">Select Edit & Collaboration room(s)</InputLabel>
+      <InputLabel id="demo-multiple-chip-label">
+        Select Edit & Collaboration room(s)
+      </InputLabel>
       <Select
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
         onChange={handleChangeRoom}
         multiple
-        input={<OutlinedInput id="select-multiple-chip" label="Select Edit & Collaboration room(s)" />}
+        input={
+          <OutlinedInput
+            id="select-multiple-chip"
+            label="Select Edit & Collaboration room(s)"
+          />
+        }
         renderValue={(selected) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((value) => (
@@ -353,14 +397,18 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionECspace.map((option) => (
-          <MenuItem key={option.key} value={option.name} style={getStyles(option.name, room, theme)}>
+          <MenuItem
+            key={option.key}
+            value={option.name}
+            style={getStyles(option.name, room, theme)}
+          >
             <Checkbox
               checked={room.indexOf(option.name) > -1}
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
@@ -380,7 +428,12 @@ export default function RoomSelectionInput({
               className={classes.select}
               value={roomType}
               onChange={handleChangeRoomType}
-              input={<OutlinedInput className={classes.outlinedInput} label="Room Type" />}
+              input={
+                <OutlinedInput
+                  className={classes.outlinedInput}
+                  label="Room Type"
+                />
+              }
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
@@ -391,8 +444,12 @@ export default function RoomSelectionInput({
               MenuProps={MenuProps}
             >
               {roomTypes.map((type) => (
-                <MenuItem key={type} value={type} style={getStyles(type, roomType, theme)}
-                          disabled={disabledRoomTypes.indexOf(type) > -1}>
+                <MenuItem
+                  key={type}
+                  value={type}
+                  style={getStyles(type, roomType, theme)}
+                  disabled={disabledRoomTypes.indexOf(type) > -1}
+                >
                   {type}
                 </MenuItem>
               ))}
@@ -402,7 +459,9 @@ export default function RoomSelectionInput({
 
         <div>
           {isStudio && <Fade in={isStudio}>{roomSelectionStudio}</Fade>}
-          {isRehearsal && <Fade in={isRehearsal}>{roomSelectionRehearsal}</Fade>}
+          {isRehearsal && (
+            <Fade in={isRehearsal}>{roomSelectionRehearsal}</Fade>
+          )}
           {isECspace && <Fade in={isECspace}>{roomSelectionECspace}</Fade>}
         </div>
       </Stack>

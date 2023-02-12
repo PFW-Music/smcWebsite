@@ -19,20 +19,16 @@ const StyledButton = withStyles({
     transform: "none",
     transition: "background 0.5s,border-color .2s,color 0.2s",
     "&:hover": {
-      backgroundColor: "#CFB991"
-    }
+      backgroundColor: "#CFB991",
+    },
   },
   label: {
-    textTransform: "capitalize"
-  }
+    textTransform: "capitalize",
+  },
 })(Button);
 
 function CustomBtn(props) {
-  return (
-
-    <StyledButton variant="contained"> {props.txt} </StyledButton>
-
-  );
+  return <StyledButton variant="contained"> {props.txt} </StyledButton>;
 }
 
 //test

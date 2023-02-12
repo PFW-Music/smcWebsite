@@ -25,9 +25,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
 // This will be used to store input data
@@ -43,7 +43,7 @@ const eventTypes = [
   "Class 📚",
   "Meeting 🤝",
   "Rehearsal 💪",
-  "Audition 👨‍⚖️"
+  "Audition 👨‍⚖️",
 ];
 
 const eventUsages = ["Personal Use 👤", "Academic 🎓", "Sweetwater 🤝"];
@@ -53,18 +53,17 @@ function getStyles(type, eventType, theme) {
     fontWeight:
       eventType.indexOf(type) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium
+        : theme.typography.fontWeightMedium,
   };
 }
 
 export default function EventDetailsInput({
-                                            facultyList,
-                                            setSessionTitle,
-                                            setEventTypeSelected,
-                                            setFacultySelected,
-                                            setUsageSelected
-                                          }) {
-
+  facultyList,
+  setSessionTitle,
+  setEventTypeSelected,
+  setFacultySelected,
+  setUsageSelected,
+}) {
   const theme = useTheme();
   const [eventType, setEventType] = React.useState([]);
   const [eventUsage, setEventUsage] = React.useState([]);
@@ -74,7 +73,7 @@ export default function EventDetailsInput({
 
   const handleChangeType = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setEventType(
       // On autofill, we get a string field value.
@@ -89,7 +88,7 @@ export default function EventDetailsInput({
 
   const handleChangeUsage = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setEventUsage(
       // On autofill, we get a stringified value.
@@ -110,7 +109,7 @@ export default function EventDetailsInput({
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setFaculty({
-              title: newValue
+              title: newValue,
             });
           } else {
             setFaculty(newValue);
@@ -134,24 +133,26 @@ export default function EventDetailsInput({
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
-
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
           </li>
         )}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" label="Find your professor" />
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Find your professor"
+          />
         )}
       ></Autocomplete>
     </FormControl>
   );
-
 
   return (
     <div>
@@ -159,7 +160,7 @@ export default function EventDetailsInput({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: 400 }
+            "& > :not(style)": { m: 1, width: 400 },
           }}
           noValidate
           autoComplete="off"
@@ -178,9 +179,7 @@ export default function EventDetailsInput({
         </Box>
         <div>
           <FormControl sx={{ m: 1, width: 400 }}>
-            <InputLabel id="demo-multiple-chip-label">
-              Event Type
-            </InputLabel>
+            <InputLabel id="demo-multiple-chip-label">Event Type</InputLabel>
             <Select
               labelId="event-multiple-selection"
               id="event-multiple-chip"
@@ -214,15 +213,11 @@ export default function EventDetailsInput({
           </FormControl>
         </div>
 
-        <div>
-          {isProject && <Fade in={isProject}>{FacultySelection}</Fade>}
-        </div>
+        <div>{isProject && <Fade in={isProject}>{FacultySelection}</Fade>}</div>
 
         <div>
           <FormControl sx={{ m: 1, width: 400 }}>
-            <InputLabel id="demo-multiple-chip-label">
-              Intended Use
-            </InputLabel>
+            <InputLabel id="demo-multiple-chip-label">Intended Use</InputLabel>
             <Select
               labelId="event-multiple-selection"
               id="event-multiple-chip"
