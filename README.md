@@ -106,7 +106,7 @@ into your project, so you have full control over them. All the commands except `
 point to the copied scripts, so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you
-shouldn’t feel obligated to use this feature. However, we understand that this tool wouldn’t be useful if you couldn’t
+shouldn’t feel obligated to use this feature. However, we understand that this tool would’t be useful if you could’t
 customize it when you are ready for it.
 
 ## Learn More

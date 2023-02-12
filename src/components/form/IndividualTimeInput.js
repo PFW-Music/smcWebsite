@@ -59,7 +59,7 @@ export default function DateTimeValidation({
                                              setStartTimeSelected,
                                              setEndTimeSelected
                                            }) {
-  const [startValue, setSartValue] = React.useState(null);
+  const [startValue, setStartValue] = React.useState(null);
   const [endValue, setEndValue] = React.useState(null);
   const [invalidTime, setInvalidTime] = React.useState(false);
   const [invalidFormat, setInvalidFormat] = React.useState(false);
@@ -131,7 +131,7 @@ export default function DateTimeValidation({
               label="Event start time"
               value={startValue}
               onChange={(newValue) => {
-                setSartValue(newValue);
+                setStartValue(newValue);
                 StartTime = ISODateString(newValue);
                 if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
                   StartTime = Add5Hours(StartTime);
