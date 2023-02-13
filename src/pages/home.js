@@ -37,26 +37,28 @@ const ECRoomsIDs = [];
 //const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE"
+    view: "ALL PEOPLE",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
+      records.forEach(function (record) {
         SMCpeople.push({ name: record.get("Person"), id: record.id });
         peopleAllInfo[x] = {
           id: record.id,
           name: record.get("Person"),
           roomAccess: record.get("Room Access"),
           gearAccess: record.get("Gear Access"),
-          phoneNum: record.get("Phone")
+          phoneNum: record.get("Phone"),
         };
 
         // console.log(peopleAllInfo[x])
@@ -90,14 +92,17 @@ base("SMC People")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Studio Booking Form)"
+    view: "Bookable Rooms 🔒 (Studio Booking Form)",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
-        RecordingStudioRoomsList.push({ key: record.id, name: record.get("Name") });
+      records.forEach(function (record) {
+        RecordingStudioRoomsList.push({
+          key: record.id,
+          name: record.get("Name"),
+        });
       });
 
       // To fetch the next page of records, call `fetchNextPage`.
@@ -116,14 +121,18 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)"
+    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
-        RehearsalRoomsList.push({ key: record.id, name: record.get("Name"), events: record.get("Events") });
+      records.forEach(function (record) {
+        RehearsalRoomsList.push({
+          key: record.id,
+          name: record.get("Name"),
+          events: record.get("Events"),
+        });
       });
 
       // To fetch the next page of records, call `fetchNextPage`.
@@ -142,14 +151,18 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam"
+    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
-        ECRoomsList.push({ key: record.id, name: record.get("Name"), events: record.get("Events") });
+      records.forEach(function (record) {
+        ECRoomsList.push({
+          key: record.id,
+          name: record.get("Name"),
+          events: record.get("Events"),
+        });
         //console.log(record);
       });
 
@@ -199,6 +212,17 @@ function Home() {
   const [updateEvent, setUpdateEvent] = React.useState(false);
   const [CancelEvent, setCancelEvent] = React.useState(false);
 
+  const handleOkButton = () => {
+    const enterEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: 13,
+      charCode: 13,
+      which: 13,
+      keyCode: 13,
+    });
+    document.dispatchEvent(enterEvent);
+  };
+
   const nameInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
       <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
@@ -219,7 +243,9 @@ function Home() {
 
   const eventDetailsInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-      <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>Event Details</Box>
+      <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
+        Event Details
+      </Box>
       <EventDetailsInput
         facultyList={facultyList}
         setSessionTitle={setSessionTitle}
@@ -241,8 +267,9 @@ function Home() {
           </Grid>
           <Grid item xs={11}>
             <FormLabel component="legend">
-              If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at
-              the end of the form :)
+              If the Edit & Collaboration Spaces is selected, option to add
+              gear(s) to your booking will be available at the end of the form
+              :)
             </FormLabel>
           </Grid>
         </Grid>
@@ -271,7 +298,8 @@ function Home() {
           </Grid>
           <Grid item xs={11}>
             <FormLabel component="legend">
-              Based on your chosen Session Time, we wil notify you with the availability of the room(s) selected above.
+              Based on your chosen Session Time, we wil notify you with the
+              availability of the room(s) selected above.
             </FormLabel>
           </Grid>
         </Grid>
@@ -288,7 +316,11 @@ function Home() {
 
   const courseInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-      <CourseInput setCourseSelected={setCourseSelected} addCourse={addCourse} setAddCourse={setAddCourse} />
+      <CourseInput
+        setCourseSelected={setCourseSelected}
+        addCourse={addCourse}
+        setAddCourse={setAddCourse}
+      />
       <br />
     </Paper>
   );
@@ -308,9 +340,16 @@ function Home() {
   );
 
   const SMChours = (
-    <Paper variant="outlined" sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2, opacity: 0 }}>
-      <Box sx={{ textAlign: "center", m: 1, fontSize: 22, lineHeight: 2 }}>SMC Hours & Availability</Box>
-      <Box sx={{ mt: -5, ml: 6, textAlign: "left", fontSize: 17, lineHeight: 2 }}>
+    <Paper
+      variant="outlined"
+      sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2, opacity: 0 }}
+    >
+      <Box sx={{ textAlign: "center", m: 1, fontSize: 22, lineHeight: 2 }}>
+        SMC Hours & Availability
+      </Box>
+      <Box
+        sx={{ mt: -5, ml: 6, textAlign: "left", fontSize: 17, lineHeight: 2 }}
+      >
         <br />
         <Grid container>
           <Grid item xs={7}>
@@ -351,8 +390,8 @@ function Home() {
           </Grid>
           <Grid item xs={11}>
             <FormLabel component="legend">
-              Please enter the Event Record ID you recieved in the confirmation email before proceeding to the rest of
-              the form.
+              Please enter the Event Record ID you recieved in the confirmation
+              email before proceeding to the rest of the form.
             </FormLabel>
           </Grid>
         </Grid>
@@ -382,13 +421,24 @@ function Home() {
       {updateEvent && <Grow in={updateEvent}>{requestEventID}</Grow>}
       {CancelEvent && <Grow in={CancelEvent}>{requestEventID}</Grow>}
       <Grow in={newEvent || (updateEvent && goodID)}>{nameInput}</Grow>
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && <SlideCalendar />}
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{eventDetailsInput}</Grow>}
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{roomInput}</Grow>}
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && roomSelected.length !== 0 &&
-        <Grow in={userCount > 0}>{timeInput}</Grow>}
+      {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+        <SlideCalendar />
+      )}
+      {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+        <Grow in={userCount > 0}>{eventDetailsInput}</Grow>
+      )}
+      {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+        <Grow in={userCount > 0}>{roomInput}</Grow>
+      )}
+      {userCount > 0 &&
+        (newEvent || (updateEvent && goodID)) &&
+        roomSelected.length !== 0 && (
+          <Grow in={userCount > 0}>{timeInput}</Grow>
+        )}
       <Grow in={newEvent || (updateEvent && goodID)}>{courseInput}</Grow>
-      {userCount > 0 && (newEvent || (updateEvent && goodID)) && <Grow in={userCount > 0}>{gearInput}</Grow>}
+      {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+        <Grow in={userCount > 0}>{gearInput}</Grow>
+      )}
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
         <Submit
           userSelected={userSelected}

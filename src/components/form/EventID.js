@@ -44,7 +44,7 @@ function UpdateRecord(eventID) {
     records.forEach(function(record) {
       console.log("record updated");
     });
-  });
+  }).then(r => console.log(r));
 }
 
 const style = {
@@ -61,7 +61,7 @@ const style = {
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} children={} />;
 });
 
 const Alert = React.forwardRef(function Alert(props, ref) {

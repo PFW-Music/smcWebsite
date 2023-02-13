@@ -20,7 +20,9 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 //NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
 
@@ -42,7 +44,7 @@ const emojis = [
   "😂",
   "🎸",
   "😋",
-  "😎"
+  "😎",
 ];
 
 const userEmoji = [];
@@ -54,7 +56,12 @@ function renderItem({ item, handleRemoveName }) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" title="Delete" onClick={() => handleRemoveName(item)}>
+        <IconButton
+          edge="end"
+          aria-label="delete"
+          title="Delete"
+          onClick={() => handleRemoveName(item)}
+        >
           <DeleteIcon />
         </IconButton>
       }
@@ -71,11 +78,17 @@ let lendLevel = ""; //store determined lending level
 function filterGear() {
   if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
     lendLevel = "Lending Level 4";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 3")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 3")
+  ) {
     lendLevel = "Lending Level 3";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 2")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 2")
+  ) {
     lendLevel = "Lending Level 2";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 1")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 1")
+  ) {
     lendLevel = "Lending Level 1";
   }
   //CASE: User has no lendLevel (staff) RETURN: Empty gearList for selection options
@@ -87,20 +100,20 @@ function filterGear() {
 
   base("Gear")
     .select({
-      view: lendLevel
+      view: lendLevel,
     })
     .eachPage(
       function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
 
-        records.forEach(function(record) {
+        records.forEach(function (record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
             name: record.get("Item"),
             id: record.id,
             eventStart: record.get("Events Start"),
             eventEnd: record.get("Events End"),
-            eventStatus: record.get("Events Status")
+            eventStatus: record.get("Events Status"),
           });
         });
 
@@ -125,35 +138,55 @@ let roomTypes;
 function filterRoomType(disabled) {
   if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
     disabled = [];
-  } else if (userValues.some((element) => element.roomAccess === "Room Access 2")) {
+  } else if (
+    userValues.some((element) => element.roomAccess === "Room Access 2")
+  ) {
     disabled = ["Recording Studio 🎙️"];
-  } else if (userValues.some((element) => element.roomAccess === "Room Access 1")) {
+  } else if (
+    userValues.some((element) => element.roomAccess === "Room Access 1")
+  ) {
     disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
   } else {
     // roomTypes[] remains empty as the user has no access levels
-    disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧", "Edit & Collaboration Spaces 🎒"];
+    disabled = [
+      "Recording Studio 🎙️",
+      "Rehearsal Spaces 🎧",
+      "Edit & Collaboration Spaces 🎒",
+    ];
   }
   return disabled;
 }
 
 const filter = createFilterOptions();
 
-function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount, setDisabledRoomTypes, setGearList }) {
+function NameInput({
+  peopleAllInfo,
+  userSelected,
+  setUserSelected,
+  setUserCount,
+  setDisabledRoomTypes,
+  setGearList,
+}) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [passFail, setPassFail] = React.useState(false);
   const [value, setValue] = React.useState(null);
   const [phoneVal, setPhoneVal] = React.useState(null);
 
-  const [nameInDisplay, setNameInDisplay] = React.useState(userNameList.slice(0, 3));
+  const [nameInDisplay, setNameInDisplay] = React.useState(
+    userNameList.slice(0, 3)
+  );
 
   const Initilize = () => {
     userValues = [];
     gearList = [];
-    roomTypes = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧", "Edit & Collaboration Spaces 🎒"];
+    roomTypes = [
+      "Recording Studio 🎙️",
+      "Rehearsal Spaces 🎧",
+      "Edit & Collaboration Spaces 🎒",
+    ];
     setGearList(filterGear());
     setDisabledRoomTypes(filterRoomType(roomTypes));
-
   };
 
   const handleAddName = () => {
@@ -188,7 +221,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   const handleName = (event, newValue) => {
     if (typeof newValue === "string") {
       setValue({
-        title: newValue
+        title: newValue,
       });
     } else {
       setValue(newValue);
@@ -198,7 +231,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   const handlePhone = (event, newValue) => {
     if (typeof newValue === "string") {
       setPhoneVal({
-        title: newValue
+        title: newValue,
       });
     } else {
       setPhoneVal(newValue);
@@ -267,13 +300,29 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
             renderInput={(params) => (
               <div>
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  <SearchRoundedIcon sx={{ color: "action.active", mr: 1, my: 3.5 }} />
+                  <SearchRoundedIcon
+                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
+                  />
                   {error && (
-                    <TextField {...params} error id="error" label="Error" helperText="This user has already been added"
-                               size="small" variant="standard" />
+                    <TextField
+                      {...params}
+                      error
+                      id="error"
+                      label="Error"
+                      helperText="This user has already been added"
+                      size="small"
+                      variant="standard"
+                    />
                   )}
-                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)"
-                                        size="small" variant="standard" />}
+                  {!error && (
+                    <TextField
+                      {...params}
+                      label="Search for name"
+                      helperText="Please enter your name here :)"
+                      size="small"
+                      variant="standard"
+                    />
+                  )}
                 </Box>
               </div>
             )}
@@ -297,7 +346,11 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   variant="standard"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  style={{ width: "50%", "margin-left": "auto", "margin-right": 30 }}
+                  style={{
+                    width: "50%",
+                    "margin-left": "auto",
+                    "margin-right": 30,
+                  }}
                 />
               )}
               {!passFail && (
@@ -316,14 +369,17 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   size="small"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  style={{ width: "50%", "margin-left": "auto", "margin-right": 30 }}
+                  style={{
+                    width: "50%",
+                    "margin-left": "auto",
+                    "margin-right": 30,
+                  }}
                 />
               )}
             </Box>
           </div>
         </Stack>
       </DialogContent>
-
 
       <DialogActions>
         {/* TODO : add functionality to the ok button */}
@@ -337,8 +393,14 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
     <div>
       {Initilize}
       <Box sx={{ textAlign: "left", m: 2 }}>
-        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }}
-                variant="contained" onClick={handleClickOpen}>
+        <Button
+          sx={{
+            backgroundColor: "rgba(207,185,145)",
+            "&:hover": { backgroundColor: "#7a6d55" },
+          }}
+          variant="contained"
+          onClick={handleClickOpen}
+        >
           +ADD
         </Button>
       </Box>
