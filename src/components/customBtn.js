@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button } from "@material-tailwind/react";
 import { withStyles } from "@material-ui/core/styles";
 
 const StyledButton = withStyles({

@@ -15,10 +15,12 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 function DeleteRecord(eventID) {
-  base("Events").destroy(eventID, function(err, deletedRecords) {
+  base("Events").destroy(eventID, function (err, deletedRecords) {
     if (err) {
       console.error(err);
       return;
@@ -28,23 +30,27 @@ function DeleteRecord(eventID) {
 }
 
 function UpdateRecord(eventID) {
-
-  base("Events").update([
-    {
-      "id": eventID,
-      "fields": {
-        "Status": "Canceled ⛔️"
+  base("Events")
+    .update(
+      [
+        {
+          id: eventID,
+          fields: {
+            Status: "Canceled ⛔️",
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        records.forEach(function (record) {
+          console.log("record updated");
+        });
       }
-    }
-  ], function(err, records) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    records.forEach(function(record) {
-      console.log("record updated");
-    });
-  }).then(r => console.log(r));
+    )
+    .then((r) => console.log(r));
 }
 
 const style = {
@@ -57,35 +63,41 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d"
+  color: "#191b1d",
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} children={} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" horizontal="center" {...props} />;
+  return (
+    <MuiAlert
+      elevation={6}
+      ref={ref}
+      variant="filled"
+      horizontal="center"
+      {...props}
+    />
+  );
 });
 
 export default function EventID({
-                                  IDerror,
-                                  setIDError,
-                                  eventID,
-                                  setEventID,
-                                  goodID,
-                                  setGoodID,
-                                  updateEvent,
-                                  CancelEvent
-                                }) {
-
+  IDerror,
+  setIDError,
+  eventID,
+  setEventID,
+  goodID,
+  setGoodID,
+  updateEvent,
+  CancelEvent,
+}) {
   const [successMsg, setSuccessMsg] = React.useState(false);
   const [openCancelDialog, setOpenCancelDialog] = React.useState(false);
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
 
   const handleCheckID = () => {
-
-    base("Events").find(eventID, function(err, record) {
+    base("Events").find(eventID, function (err, record) {
       if (err) {
         console.error(err);
         setIDError(true);
@@ -96,7 +108,6 @@ export default function EventID({
         if (updateEvent) setSuccessMsg(true);
         if (CancelEvent) setOpenCancelDialog(true);
       }
-
     });
   };
 
@@ -117,7 +128,7 @@ export default function EventID({
 
   const handleSubmitCancellation = () => {
     UpdateRecord(eventID);
-    //DeleteRecord(eventID); 
+    //DeleteRecord(eventID);
     setOpenCancelDialog(false);
     setOpenCancelSuccess(true);
 
@@ -138,8 +149,8 @@ export default function EventID({
       <DialogTitle>{"Are you sure to cancel this event?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Once an event is cancelled, the action cannot be undone.
-          Click "Yes" to proceed the cancellation.
+          Once an event is cancelled, the action cannot be undone. Click "Yes"
+          to proceed the cancellation.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -164,7 +175,6 @@ export default function EventID({
           Please check your inbox for the confirmation.
         </Typography>
       </Box>
-
     </Modal>
   );
 
@@ -175,7 +185,7 @@ export default function EventID({
           <Box
             component="form"
             sx={{
-              "& > :not(style)": { width: 300 }
+              "& > :not(style)": { width: 300 },
             }}
             noValidate
             autoComplete="off"
@@ -212,16 +222,26 @@ export default function EventID({
             alignItems="center"
             sx={{ textAlign: "left" }}
           >
-            <Button variant="contained" disabled={!eventID} onClick={handleCheckID}>
+            <Button
+              variant="contained"
+              disabled={!eventID}
+              onClick={handleCheckID}
+            >
               confirm
             </Button>
-            {successMsg &&
-              <Snackbar open={successMsg} autoHideDuration={2000} onClose={handleCloseMessage}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-                <Alert severity="success">Your booking record was found! Please re-fill up this form to update us about
-                  your booking :)</Alert>
+            {successMsg && (
+              <Snackbar
+                open={successMsg}
+                autoHideDuration={2000}
+                onClose={handleCloseMessage}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              >
+                <Alert severity="success">
+                  Your booking record was found! Please re-fill up this form to
+                  update us about your booking :)
+                </Alert>
               </Snackbar>
-            }
+            )}
             {confirmCancelDialog}
             {succesCancellation}
           </Box>
