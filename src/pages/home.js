@@ -11,6 +11,8 @@ import FormActions from "../components/form/FormActions";
 import EventID from "../components/form/EventID";
 import Submit from "../components/form/Submit";
 
+import { Navbar } from "../components";
+
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
 import Box from "@mui/material/Box";
@@ -413,6 +415,7 @@ function Home() {
 
   return (
     <div>
+      
       <SlideMessage />
       {/**<SlideCalendar/> */}
 

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./App.css";
-import NavBar from "./components/navBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Navbar } from "./containers";
 
 import home from "./pages/home";
 import schedules from "./pages/schedules";
@@ -55,7 +55,7 @@ function App() {
       <div className="App">
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <NavBar />
+          <Navbar />
 
           <Switch>
             <Route path="/" exact component={home} />
