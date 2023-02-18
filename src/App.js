@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./App.css";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navbar } from "./containers";
 
@@ -53,6 +54,8 @@ function App() {
     <Router>
       <div className="App">
         <ThemeProvider theme={theme}>
+          <CssBaseline />
+
           <div className="navbar">  <Navbar /></div>
          
 
