@@ -9,3 +9,9 @@
 .main-nav:hover {
     color: rgb(24, 5, 5) !important;
 }
+
+.navbarlinks {
+    background-color: #181A1B;
+    font-family: 'Manrope', sans-serif;
+    display: flex;
+}
