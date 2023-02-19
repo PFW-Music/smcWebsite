@@ -56,8 +56,9 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
 
-          <div className="navbar">  <Navbar /></div>
-         
+          <div className="navbar">
+            <Navbar />
+          </div>
 
           <Switch>
             <Route path="/" exact component={home} />

@@ -92,7 +92,6 @@ function getStyles(type, eventType, theme) {
 let roomOptionsAllInfo = [];
 let roomSelectedAllInfo = [];
 let eventsList = [];
-const unavailableTimes = [];
 
 export default function RoomSelectionInput({
   roomOptionStudio,

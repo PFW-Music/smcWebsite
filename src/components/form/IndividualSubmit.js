@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { styled } from "@mui/styles";
 
-let eventID;
 const Airtable = require("airtable");
 const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
   process.env.REACT_APP_AIRTABLE_BASE_ID
@@ -63,29 +62,6 @@ function CreateEventRecord(users, startTimeSelected, endTimeSelected, gears) {
   );
 }
 
-function CreateGearUseLogRecord(users, gears, eventID) {
-  base("Gear Use Log").create(
-    [
-      {
-        fields: {
-          Person: users,
-          Gear: gears,
-          Event: eventID,
-        },
-      },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function (record) {
-        console.log("gear use log updated");
-      });
-    }
-  );
-}
-
 export default function Submit({
   userSelected,
   startTimeSelected,
@@ -94,8 +70,6 @@ export default function Submit({
   timeCorrect,
 }) {
   const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => setOpen(true);
 
   const handleSubmit = () => {
     setOpen(true);

@@ -27,7 +27,7 @@ const Drawer = () => {
       <List>
         <ListItem>
           <a href="https://pfw-smc.notion.site/pfw-smc/PFW-Sweetwater-Music-Center-17d134f1dd704a56909044ddb24d61ed">
-            <img src={logo} />
+            <img src={logo} alt={"PFW logo"} />
           </a>
         </ListItem>
 

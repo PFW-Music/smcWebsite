@@ -11,7 +11,6 @@ import Snackbar from "@mui/material/Snackbar";
 // This will be used to store input data
 let StartTime;
 let EndTime;
-let unavailableRoom;
 
 function ISODateString(d) {
   function pad(n) {
@@ -51,14 +50,22 @@ function Add5Hours(time) {
 }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" horizontal="center" {...props} />;
+  return (
+    <MuiAlert
+      elevation={6}
+      ref={ref}
+      variant="filled"
+      horizontal="center"
+      {...props}
+    />
+  );
 });
 
 export default function DateTimeValidation({
-                                             setTimeCorrect,
-                                             setStartTimeSelected,
-                                             setEndTimeSelected
-                                           }) {
+  setTimeCorrect,
+  setStartTimeSelected,
+  setEndTimeSelected,
+}) {
   const [startValue, setStartValue] = React.useState(null);
   const [endValue, setEndValue] = React.useState(null);
   const [invalidTime, setInvalidTime] = React.useState(false);
@@ -70,7 +77,6 @@ export default function DateTimeValidation({
   };
 
   const EndTimeCheck = () => {
-
     //console.log("StartTime:", StartTime);
     //console.log("EndTime:", EndTime);
     /*
@@ -81,7 +87,10 @@ export default function DateTimeValidation({
     }
 */
 
-    if (StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" || EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z") {
+    if (
+      StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" ||
+      EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z"
+    ) {
       setInvalidFormat(true);
       setTimeCorrect(false);
     } else {
@@ -99,22 +108,31 @@ export default function DateTimeValidation({
         console.log("StartTime:", StartTime);
         console.log("EndTime:", EndTime);
       }
-
     }
     return (
       <div>
-        {invalidTime &&
-          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-            <Alert severity="error">Proposed end time should not exceed start time!</Alert>
+        {invalidTime && (
+          <Snackbar
+            open={invalidTime}
+            autoHideDuration={10}
+            onClose={handleFakeClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <Alert severity="error">
+              Proposed end time should not exceed start time!
+            </Alert>
           </Snackbar>
-        }
-        {invalidFormat &&
-          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        )}
+        {invalidFormat && (
+          <Snackbar
+            open={invalidFormat}
+            autoHideDuration={10}
+            onClose={handleFakeClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
             <Alert severity="error">Time format invalid!</Alert>
           </Snackbar>
-        }
+        )}
       </div>
     );
   };
@@ -170,8 +188,6 @@ export default function DateTimeValidation({
         </div>
       </Stack>
       <EndTimeCheck />
-
     </LocalizationProvider>
-
   );
 }

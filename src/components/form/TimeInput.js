@@ -27,7 +27,17 @@ function ISODateString(d) {
   console.log(d.getHours());
 
   return (
-    d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getDate()) + "T" + pad(d.getHours()) + ":" + pad(d.getUTCMinutes()) + ":" + "00.000Z"
+    d.getUTCFullYear() +
+    "-" +
+    pad(d.getUTCMonth() + 1) +
+    "-" +
+    pad(d.getDate()) +
+    "T" +
+    pad(d.getHours()) +
+    ":" +
+    pad(d.getUTCMinutes()) +
+    ":" +
+    "00.000Z"
   );
 }
 
@@ -65,22 +75,29 @@ function Add5Hours(time) {
 }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" horizontal="center" {...props} />;
+  return (
+    <MuiAlert
+      elevation={6}
+      ref={ref}
+      variant="filled"
+      horizontal="center"
+      {...props}
+    />
+  );
 });
 
 export default function DateTimeValidation({
-                                             setTimeCorrect,
-                                             setStartTimeSelected,
-                                             setEndTimeSelected,
-                                             roomBookingRecord
-                                           }) {
+  setTimeCorrect,
+  setStartTimeSelected,
+  setEndTimeSelected,
+  roomBookingRecord,
+}) {
   const [startValue, setSartValue] = React.useState(null);
   const [endValue, setEndValue] = React.useState(null);
   const [invalidTime, setInvalidTime] = React.useState(false);
   const [invalidFormat, setInvalidFormat] = React.useState(false);
   const [roomUnavailable, setRoomUnavailable] = React.useState(false);
   const [successMsg, setSuccessMsg] = React.useState(false);
-  const [bookedStart, setBookedStart] = React.useState([]);
 
   const handleFakeClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -103,7 +120,10 @@ export default function DateTimeValidation({
       setInvalidFormat(false);
     }
 
-    if (StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" || EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z") {
+    if (
+      StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" ||
+      EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z"
+    ) {
       setInvalidFormat(true);
     } else {
       setInvalidFormat(false);
@@ -133,23 +153,36 @@ export default function DateTimeValidation({
 
         for (let i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
           if (typeof roomBookingRecord[i].eventStart == "undefined") continue;
-          for (let j = 0; !conflictFound && j < roomBookingRecord[i].eventStart.length; j++) {
+          for (
+            let j = 0;
+            !conflictFound && j < roomBookingRecord[i].eventStart.length;
+            j++
+          ) {
             if (roomBookingRecord[i].eventStatus[j] !== "Booked ✅") continue;
 
             // User selected time is covering and existing session
-            if (StartTime <= roomBookingRecord[i].eventStart[j] && realEndTime >= roomBookingRecord[i].eventEnd[j]) {
+            if (
+              StartTime <= roomBookingRecord[i].eventStart[j] &&
+              realEndTime >= roomBookingRecord[i].eventEnd[j]
+            ) {
               conflictFound = true;
               unavailableRoom = roomBookingRecord[i].name;
               break;
             }
             // User selected start time is during an existing session
-            else if (StartTime >= roomBookingRecord[i].eventStart[j] && StartTime <= roomBookingRecord[i].eventEnd[j]) {
+            else if (
+              StartTime >= roomBookingRecord[i].eventStart[j] &&
+              StartTime <= roomBookingRecord[i].eventEnd[j]
+            ) {
               conflictFound = true;
               unavailableRoom = roomBookingRecord[i].name;
               break;
             }
             // User selected end time is during an existing session
-            else if (realEndTime > roomBookingRecord[i].eventStart[j] && realEndTime < roomBookingRecord[i].eventEnd[j]) {
+            else if (
+              realEndTime > roomBookingRecord[i].eventStart[j] &&
+              realEndTime < roomBookingRecord[i].eventEnd[j]
+            ) {
               conflictFound = true;
               unavailableRoom = roomBookingRecord[i].name;
               break;
@@ -184,7 +217,8 @@ export default function DateTimeValidation({
               onChange={(newValue) => {
                 setSartValue(newValue);
                 StartTime = ISODateString(newValue);
-                if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z") StartTime = Add5Hours(StartTime);
+                if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
+                  StartTime = Add5Hours(StartTime);
                 console.log(StartTime);
                 setTimeCorrect(false);
               }}
@@ -204,7 +238,8 @@ export default function DateTimeValidation({
               onChange={(newValue) => {
                 setEndValue(newValue);
                 EndTime = ISODateString(newValue);
-                if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z") EndTime = Add5Hours(EndTime);
+                if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
+                  EndTime = Add5Hours(EndTime);
                 console.log(EndTime);
                 setTimeCorrect(false);
               }}
@@ -221,33 +256,59 @@ export default function DateTimeValidation({
 
       <Box justifyContent="center" alignItems="center">
         <br />
-        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }}
-                variant="contained" onClick={EndTimeCheck}>
+        <Button
+          sx={{
+            backgroundColor: "rgba(207,185,145)",
+            "&:hover": { backgroundColor: "#7a6d55" },
+          }}
+          variant="contained"
+          onClick={EndTimeCheck}
+        >
           check availability
         </Button>
       </Box>
       <div>
         {invalidTime && (
-          <Snackbar open={invalidTime} autoHideDuration={10} onClose={handleFakeClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-            <Alert severity="error">Proposed start time should not exceed end time!</Alert>
+          <Snackbar
+            open={invalidTime}
+            autoHideDuration={10}
+            onClose={handleFakeClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <Alert severity="error">
+              Proposed start time should not exceed end time!
+            </Alert>
           </Snackbar>
         )}
         {invalidFormat && (
-          <Snackbar open={invalidFormat} autoHideDuration={10} onClose={handleFakeClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar
+            open={invalidFormat}
+            autoHideDuration={10}
+            onClose={handleFakeClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
             <Alert severity="error">Time format invalid!</Alert>
           </Snackbar>
         )}
         {roomUnavailable && (
-          <Snackbar open={roomUnavailable} autoHideDuration={10} onClose={handleFakeClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-            <Alert severity="error">{unavailableRoom} is not available at inputted time!</Alert>
+          <Snackbar
+            open={roomUnavailable}
+            autoHideDuration={10}
+            onClose={handleFakeClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <Alert severity="error">
+              {unavailableRoom} is not available at inputted time!
+            </Alert>
           </Snackbar>
         )}
         {successMsg && (
-          <Snackbar open={successMsg} autoHideDuration={2000} onClose={handleRealClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Snackbar
+            open={successMsg}
+            autoHideDuration={2000}
+            onClose={handleRealClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
             <Alert severity="success">Room is available at inputted time</Alert>
           </Snackbar>
         )}

@@ -19,16 +19,6 @@ const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
   process.env.REACT_APP_AIRTABLE_BASE_ID
 );
 
-function DeleteRecord(eventID) {
-  base("Events").destroy(eventID, function (err, deletedRecords) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log("Deleted", deletedRecords.length, "records");
-  });
-}
-
 function UpdateRecord(eventID) {
   base("Events")
     .update(
@@ -45,7 +35,7 @@ function UpdateRecord(eventID) {
           console.error(err);
           return;
         }
-        records.forEach(function (record) {
+        records.forEach(function () {
           console.log("record updated");
         });
       }
@@ -67,7 +57,7 @@ const style = {
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} children={"Hi"} />;
 });
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -87,7 +77,6 @@ export default function EventID({
   setIDError,
   eventID,
   setEventID,
-  goodID,
   setGoodID,
   updateEvent,
   CancelEvent,
@@ -97,7 +86,7 @@ export default function EventID({
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
 
   const handleCheckID = () => {
-    base("Events").find(eventID, function (err, record) {
+    base("Events").find(eventID, function (err) {
       if (err) {
         console.error(err);
         setIDError(true);

@@ -3,12 +3,12 @@ import "./navbar.css";
 import { Navbarlogo, Navbarlinks } from "../../components";
 
 const Navbar = () => {
-	return (
-		<div>
-			<Navbarlogo />
-			<Navbarlinks />
-		</div>
-	);
+  return (
+    <div>
+      <Navbarlogo />
+      <Navbarlinks />
+    </div>
+  );
 };
 
 export default Navbar;

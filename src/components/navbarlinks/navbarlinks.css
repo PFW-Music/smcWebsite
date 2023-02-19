@@ -1,10 +1,10 @@
-.navbarlinks{
+.navbarlinks {
     background-color: #181A1B;
     font-family: 'Manrope', sans-serif;
     display: flex;
 }
 
-.navbarlinks_container{
+.navbarlinks_container {
     display: flex;
     align-items: center;
     justify-content: center;

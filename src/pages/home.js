@@ -10,9 +10,6 @@ import CourseInput from "../components/form/CourseInput";
 import FormActions from "../components/form/FormActions";
 import EventID from "../components/form/EventID";
 import Submit from "../components/form/Submit";
-
-import { Navbar } from "../components";
-
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
 import Box from "@mui/material/Box";
@@ -25,13 +22,10 @@ const SMCpeople = [];
 const facultyList = [];
 
 const RecordingStudioRoomsList = [];
-const RecordingStudioRoomsIDs = [];
 
 const RehearsalRoomsList = [];
-const RehearsalRoomsIDs = [];
 
 const ECRoomsList = [];
-const ECRoomsIDs = [];
 
 ///////////////////////////////////////////             ///////////////////////////////////////////
 ///////////////////////////////////////////  API CALLS  ///////////////////////////////////////////
@@ -213,17 +207,6 @@ function Home() {
   const [newEvent, setNewEvent] = React.useState(false);
   const [updateEvent, setUpdateEvent] = React.useState(false);
   const [CancelEvent, setCancelEvent] = React.useState(false);
-
-  const handleOkButton = () => {
-    const enterEvent = new KeyboardEvent("keydown", {
-      key: "Enter",
-      code: 13,
-      charCode: 13,
-      which: 13,
-      keyCode: 13,
-    });
-    document.dispatchEvent(enterEvent);
-  };
 
   const nameInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
@@ -415,7 +398,6 @@ function Home() {
 
   return (
     <div>
-      
       <SlideMessage />
       {/**<SlideCalendar/> */}
 

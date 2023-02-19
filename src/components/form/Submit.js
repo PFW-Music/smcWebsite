@@ -120,7 +120,7 @@ function UpdateRecord(
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
+      records.forEach(function () {
         console.log("record updated");
       });
     }
@@ -157,7 +157,6 @@ export default function Submit({
   setNewEvent,
   updateEvent,
   setUpdateEvent,
-  CancelEvent,
   setCancelEvent,
   timeCorrect,
   setUserCount,
@@ -166,10 +165,6 @@ export default function Submit({
   roomBookingRecord,
 }) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-
-  const [error, setError] = React.useState(false);
-  const [value, setValue] = React.useState(null);
 
   const handleSubmit = () => {
     setOpen(true);

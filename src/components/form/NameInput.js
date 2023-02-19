@@ -161,7 +161,6 @@ const filter = createFilterOptions();
 
 function NameInput({
   peopleAllInfo,
-  userSelected,
   setUserSelected,
   setUserCount,
   setDisabledRoomTypes,
@@ -225,16 +224,6 @@ function NameInput({
       });
     } else {
       setValue(newValue);
-    }
-  };
-
-  const handlePhone = (event, newValue) => {
-    if (typeof newValue === "string") {
-      setPhoneVal({
-        title: newValue,
-      });
-    } else {
-      setPhoneVal(newValue);
     }
   };
 
