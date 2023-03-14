@@ -130,7 +130,6 @@ export default function EventID({
   const confirmCancelDialog = (
     <Dialog
       open={openCancelDialog}
-      TransitionComponent={Transition}
       keepMounted
       onClose={handleCloseCancelDialog}
       aria-describedby="alert-dialog-slide-description"
