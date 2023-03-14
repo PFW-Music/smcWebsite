@@ -1,14 +1,15 @@
-import * as React from "react";
-import TextField from "@mui/material/TextField";
+import React, { useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateTimePicker from "@mui/lab/DateTimePicker";
 import Stack from "@mui/material/Stack";
-import FormControl from "@mui/material/FormControl";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 //TimeInput.js is for general time input, IndividualTimeInput.js is for gear time input
 
@@ -63,11 +64,20 @@ function ISODateString(d) {
 function Add5Hours(time) {
   let newTime = new Date(time);
 
-  if (newTime.getHours() > 18) {
+  // Check if we are in daylight savings time
+  const today = new Date();
+  const dstStart = new Date(today.getFullYear(), 2, 14);
+  const dstEnd = new Date(today.getFullYear(), 10, 7);
+  const dst =
+    today > dstStart && today < dstEnd
+      ? new Date().getTimezoneOffset() / 60 + 1
+      : 0;
+
+  if (newTime.getHours() > 18 + dst) {
     newTime.setDate(newTime.getDate() + 1);
-    newTime.setHours(newTime.getHours() - 19);
+    newTime.setHours(newTime.getHours() - 19 - dst);
   } else {
-    newTime.setHours(newTime.getHours() + 5);
+    newTime.setHours(newTime.getHours() + 5 + dst);
   }
 
   newTime = newTime.toISOString();
@@ -92,12 +102,28 @@ export default function DateTimeValidation({
   setEndTimeSelected,
   roomBookingRecord,
 }) {
-  const [startValue, setSartValue] = React.useState(null);
-  const [endValue, setEndValue] = React.useState(null);
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
   const [invalidTime, setInvalidTime] = React.useState(false);
   const [invalidFormat, setInvalidFormat] = React.useState(false);
   const [roomUnavailable, setRoomUnavailable] = React.useState(false);
   const [successMsg, setSuccessMsg] = React.useState(false);
+
+  const handleStartDateChange = (date) => {
+    setTimeCorrect(false);
+    setStartDate(date);
+    const formattedStartDate = date.toISOString();
+    console.log(formattedStartDate);
+    StartTime = formattedStartDate;
+  };
+
+  const handleEndDateChange = (date) => {
+    setTimeCorrect(false);
+    setEndDate(date);
+    const formattedEndDate = date.toISOString();
+    console.log(formattedEndDate);
+    EndTime = formattedEndDate;
+  };
 
   const handleFakeClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -206,51 +232,97 @@ export default function DateTimeValidation({
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={1}>
-        <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
-            <DateTimePicker
-              clearable
-              placeholder="Enter time"
-              renderInput={(params) => <TextField {...params} />}
-              label="Event start time"
-              value={startValue}
-              onChange={(newValue) => {
-                setSartValue(newValue);
-                StartTime = ISODateString(newValue);
-                if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
-                  StartTime = Add5Hours(StartTime);
-                console.log(StartTime);
-                setTimeCorrect(false);
-              }}
-              minDate={new Date()}
-              minTime={new Date(0, 0, 0, 8)}
-              maxTime={new Date(0, 0, 0, 23, 59)}
-            />
-          </FormControl>
-        </div>
+        {/*<div>*/}
+        {/*  <FormControl sx={{ m: 1, width: 400 }}>*/}
+        {/*    <div style={{ display: "flex" }}>*/}
+        {/*      <DateTimePicker*/}
+        {/*        clearable*/}
+        {/*        placeholder="Enter time"*/}
+        {/*        renderInput={(params) => <TextField {...params} />}*/}
+        {/*        label="Event start time"*/}
+        {/*        value={startValue}*/}
+        {/*        onChange={(newValue) => {*/}
+        {/*          setSartValue(newValue);*/}
+        {/*          StartTime = ISODateString(newValue);*/}
+        {/*          if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")*/}
+        {/*            StartTime = Add5Hours(StartTime);*/}
+        {/*          console.log(StartTime);*/}
+        {/*          setTimeCorrect(false);*/}
+        {/*        }}*/}
+        {/*        minDate={new Date()}*/}
+        {/*        minTime={new Date(0, 0, 0, 8)}*/}
+        {/*        maxTime={new Date(0, 0, 0, 23, 59)}*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </FormControl>*/}
+        {/*</div>*/}
 
-        <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
-            <DateTimePicker
-              renderInput={(params) => <TextField {...params} />}
-              label="Proposed end time"
-              value={endValue}
-              onChange={(newValue) => {
-                setEndValue(newValue);
-                EndTime = ISODateString(newValue);
-                if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")
-                  EndTime = Add5Hours(EndTime);
-                console.log(EndTime);
-                setTimeCorrect(false);
-              }}
-              minTimeMessage
-              maxTimeMessage
-              minDate={new Date()}
-              minTime={new Date(0, 0, 0, 8)}
-              maxTime={new Date(0, 0, 0, 23, 59)}
-              clearable={true}
-            />
-          </FormControl>
+        {/*<div>*/}
+        {/*  <FormControl sx={{ m: 1, width: 400 }}>*/}
+        {/*    <DateTimePicker*/}
+        {/*      renderInput={(params) => <TextField {...params} />}*/}
+        {/*      label="Proposed end time"*/}
+        {/*      value={endValue}*/}
+        {/*      onChange={(newValue) => {*/}
+        {/*        setEndValue(newValue);*/}
+        {/*        EndTime = ISODateString(newValue);*/}
+        {/*        if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")*/}
+        {/*          EndTime = Add5Hours(EndTime);*/}
+        {/*        console.log(EndTime);*/}
+        {/*        setTimeCorrect(false);*/}
+        {/*      }}*/}
+        {/*      minTimeMessage*/}
+        {/*      maxTimeMessage*/}
+        {/*      minDate={new Date()}*/}
+        {/*      minTime={new Date(0, 0, 0, 8)}*/}
+        {/*      maxTime={new Date(0, 0, 0, 23, 59)}*/}
+        {/*      clearable={true}*/}
+        {/*    />*/}
+        {/*  </FormControl>*/}
+        {/*</div>*/}
+
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h4>Select Start Date</h4>
+          <DatePicker
+            showIcon
+            // isClearable
+            // filterDate={(d) => {
+            //   return new Date() > d;
+            // }}
+            placeholderText="Select Start Date"
+            showTimeSelect
+            dateFormat="MMMM d, yyyy h:mmaa"
+            selected={startDate}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            onChange={handleStartDateChange}
+          />
+
+          <h4>Select End Date</h4>
+          <DatePicker
+            showIcon
+            //isClearable
+            // filterDate={(d) => {
+            //   return new Date() > d;
+            // }}
+            placeholderText="Select End Date"
+            showTimeSelect
+            dateFormat="MMMM d, yyyy h:mmaa"
+            selected={endDate}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            onChange={handleEndDateChange}
+          />
         </div>
       </Stack>
 

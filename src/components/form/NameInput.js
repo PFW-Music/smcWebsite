@@ -261,6 +261,9 @@ function NameInput({
     return recordVal.name === name && phonePass === number;
   };
 
+  const handleOk = () => {
+    handleChange(value);
+  };
   const nameInputDialog = (
     <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
       <DialogTitle>Find your name</DialogTitle>
@@ -372,7 +375,7 @@ function NameInput({
 
       <DialogActions>
         {/* TODO : add functionality to the ok button */}
-        <Button>Ok</Button>
+        <Button onClick={handleOk}>Ok</Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
