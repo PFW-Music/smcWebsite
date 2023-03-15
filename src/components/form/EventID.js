@@ -180,6 +180,7 @@ export default function EventID({
           >
             {IDerror && (
               <TextField
+                variant="standard"
                 error
                 label="Error"
                 helperText="ID does not exist in the system :("
@@ -188,19 +189,18 @@ export default function EventID({
                 onChange={(event) => {
                   setEventID(event.target.value);
                   console.log(event.target.value);
-                }}
-              />
+                }} />
             )}
             {!IDerror && (
               <TextField
+                variant="standard"
                 label="Event Record ID"
                 value={eventID}
                 size="small"
                 onChange={(event) => {
                   setEventID(event.target.value);
                   console.log(event.target.value);
-                }}
-              />
+                }} />
             )}
           </Box>
         </Grid>

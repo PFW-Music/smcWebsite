@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Drawer as MUIDrawer, List, ListItem } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { Drawer as MUIDrawer, List, ListItem } from "@mui/material";
 import logo from "../assets/LogoSW.png";
 import CustomBtn from "./customBtn";
 import { NavLink } from "react-router-dom";

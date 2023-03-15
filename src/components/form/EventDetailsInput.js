@@ -166,6 +166,7 @@ export default function EventDetailsInput({
           autoComplete="off"
         >
           <TextField
+            variant="standard"
             id="outlined-name"
             label="Session Title"
             value={title}
@@ -174,13 +175,13 @@ export default function EventDetailsInput({
               userEventTitle = event.target.value;
               setSessionTitle(event.target.value);
               console.log(userEventTitle);
-            }}
-          />
+            }} />
         </Box>
         <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
+          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
             <InputLabel id="demo-multiple-chip-label">Event Type</InputLabel>
             <Select
+              variant="standard"
               labelId="event-multiple-selection"
               id="event-multiple-chip"
               value={eventType}
@@ -198,8 +199,7 @@ export default function EventDetailsInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}
-            >
+              MenuProps={MenuProps}>
               {eventTypes.map((type) => (
                 <MenuItem
                   key={type}
@@ -216,9 +216,10 @@ export default function EventDetailsInput({
         <div>{isProject && <Fade in={isProject}>{FacultySelection}</Fade>}</div>
 
         <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
+          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
             <InputLabel id="demo-multiple-chip-label">Intended Use</InputLabel>
             <Select
+              variant="standard"
               labelId="event-multiple-selection"
               id="event-multiple-chip"
               value={eventUsage}
@@ -236,8 +237,7 @@ export default function EventDetailsInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}
-            >
+              MenuProps={MenuProps}>
               {eventUsages.map((usage) => (
                 <MenuItem
                   key={usage}

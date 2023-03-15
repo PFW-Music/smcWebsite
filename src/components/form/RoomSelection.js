@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react"; //test
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@mui/styles';
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -253,11 +253,12 @@ export default function RoomSelectionInput({
   };
 
   const roomSelectionStudio = (
-    <FormControl sx={{ m: 1, width: 400 }}>
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel className={classes.inputLabel}>
         Select studio room(s)
       </InputLabel>
       <Select
+        variant="standard"
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
@@ -283,8 +284,7 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}
-      >
+        MenuProps={MenuProps}>
         {roomOptionStudio.map((option) => (
           <MenuItem
             key={option.key}
@@ -308,11 +308,12 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionRehearsal = (
-    <FormControl sx={{ m: 1, width: 400 }}>
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel id="demo-multiple-chip-label">
         Select rehearsal room(s)
       </InputLabel>
       <Select
+        variant="standard"
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
@@ -338,8 +339,7 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}
-      >
+        MenuProps={MenuProps}>
         {roomOptionRehearsal.map((option) => (
           <MenuItem
             key={option.key}
@@ -363,11 +363,12 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionECspace = (
-    <FormControl sx={{ m: 1, width: 400 }}>
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel id="demo-multiple-chip-label">
         Select Edit & Collaboration room(s)
       </InputLabel>
       <Select
+        variant="standard"
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
@@ -393,8 +394,7 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}
-      >
+        MenuProps={MenuProps}>
         {roomOptionECspace.map((option) => (
           <MenuItem
             key={option.key}
@@ -421,9 +421,10 @@ export default function RoomSelectionInput({
     <div>
       <Stack spacing={1}>
         <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
+          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
             <InputLabel className={classes.inputLabel}>Room Type</InputLabel>
             <Select
+              variant="standard"
               className={classes.select}
               value={roomType}
               onChange={handleChangeRoomType}
@@ -440,8 +441,7 @@ export default function RoomSelectionInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}
-            >
+              MenuProps={MenuProps}>
               {roomTypes.map((type) => (
                 <MenuItem
                   key={type}

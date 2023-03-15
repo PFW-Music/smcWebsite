@@ -1,7 +1,7 @@
 import * as React from "react";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
 import "./App.css";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navbar } from "./containers";
 
@@ -10,7 +10,7 @@ import schedules from "./pages/schedules";
 import gear from "./pages/gear";
 import contact from "./pages/contact";
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
     background: {
       default: "#e8d6c0",
@@ -47,26 +47,28 @@ const theme = createTheme({
       },
     },
   },
-});
+}));
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
 
-          <div className="navbar">
-            <Navbar />
-          </div>
+            <div className="navbar">
+              <Navbar />
+            </div>
 
-          <Switch>
-            <Route path="/" exact component={home} />
-            <Route path="/schedules" exact component={schedules} />
-            <Route path="/gear" exact component={gear} />
-            <Route path="/contact" exact component={contact} />
-          </Switch>
-        </ThemeProvider>
+            <Switch>
+              <Route path="/" exact component={home} />
+              <Route path="/schedules" exact component={schedules} />
+              <Route path="/gear" exact component={gear} />
+              <Route path="/contact" exact component={contact} />
+            </Switch>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </div>
     </Router>
   );

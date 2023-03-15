@@ -59,7 +59,7 @@ function renderItem({ item, handleRemoveName }) {
           aria-label="delete"
           title="Delete"
           onClick={() => handleRemoveName(item)}
-        >
+          size="large">
           <DeleteIcon />
         </IconButton>
       }
