@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -61,7 +62,8 @@ function renderItem({ item, handleRemoveName }) {
           aria-label="delete"
           title="Delete"
           onClick={() => handleRemoveName(item)}
-          size="large">
+          size="large"
+        >
           <DeleteIcon />
         </IconButton>
       }
@@ -175,6 +177,10 @@ function NameInput({
   const [nameInDisplay, setNameInDisplay] = React.useState(
     userNameList.slice(0, 3)
   );
+
+  useEffect(() => {
+    Initilize();
+  }, []);
 
   const Initilize = () => {
     userValues = [];
@@ -383,7 +389,6 @@ function NameInput({
 
   return (
     <div>
-      {Initilize}
       <Box sx={{ textAlign: "left", m: 2 }}>
         <Button
           sx={{
