@@ -1,5 +1,9 @@
 import * as React from "react";
-import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import "./App.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -10,7 +14,7 @@ import schedules from "./pages/schedules";
 import gear from "./pages/gear";
 import contact from "./pages/contact";
 
-const theme = createTheme(adaptV4Theme({
+const theme = createTheme({
   palette: {
     background: {
       default: "#e8d6c0",
@@ -47,7 +51,7 @@ const theme = createTheme(adaptV4Theme({
       },
     },
   },
-}));
+});
 
 function App() {
   return (

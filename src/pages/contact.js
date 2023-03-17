@@ -6,12 +6,25 @@ import "../fade-styles.css";
 function FadeInSection(props) {
   const [isVisible, setVisible] = React.useState(false);
   const domRef = React.useRef();
+
   React.useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => setVisible(entry.isIntersecting));
-    });
-    observer.observe(domRef.current);
+    let observer = null;
+
+    if (domRef.current) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => setVisible(entry.isIntersecting));
+      });
+
+      observer.observe(domRef.current);
+    }
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+    };
   }, []);
+
   return (
     <div
       className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
@@ -59,7 +72,7 @@ export default function Fades() {
         //     Link to Slack DM
       }
 
-      <FadeInSection key={"#f8e3a1"}>
+      <FadeInSection key={"#f8e3a2"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
           <div className="grow">
             <a
@@ -80,7 +93,7 @@ export default function Fades() {
       {
         //     Email
       }
-      <FadeInSection key={"#f8e3a1"}>
+      <FadeInSection key={"#f8e3a3"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
           <div className="grow">
             <a href="mailto:jbuteyn@pfw.edu" style={{ textDecoration: "none" }}>
@@ -104,7 +117,7 @@ export default function Fades() {
       {
         //     Call
       }
-      <FadeInSection key={"#f8e3a1"}>
+      <FadeInSection key={"#f8e3a4"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
           <div className="grow">
             <a href="tel:17315405539" style={{ textDecoration: "none" }}>
@@ -123,7 +136,7 @@ export default function Fades() {
       {
         //Slack emergency DM
       }
-      <FadeInSection key={"#f8e3a1"}>
+      <FadeInSection key={"#f8e3a15"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
           <div className="grow">
             <a
@@ -144,7 +157,7 @@ export default function Fades() {
       {
         //     Text
       }
-      <FadeInSection key={"#f8e3a1"}>
+      <FadeInSection key={"#f8e3a6"}>
         <div className="box" style={{ backgroundColor: "#f8e3a1" }}>
           <div className="grow">
             <a

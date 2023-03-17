@@ -59,7 +59,8 @@ function renderItem({ item, handleRemoveName }) {
           aria-label="delete"
           title="Delete"
           onClick={() => handleRemoveName(item)}
-          size="large">
+          size="large"
+        >
           <DeleteIcon />
         </IconButton>
       }
@@ -136,6 +137,9 @@ function NameInput({
   setUserSelected,
   setGearList,
 }) {
+  React.useEffect(() => {
+    Initilize();
+  }, []);
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [value, setValue] = React.useState(null);
@@ -273,7 +277,7 @@ function NameInput({
 
   return (
     <div>
-      {Initilize}
+      {/* Remove {Initilize} from here */}
       <Box sx={{ textAlign: "left", m: 2 }}>
         <Button
           sx={{

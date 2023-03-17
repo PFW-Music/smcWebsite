@@ -171,7 +171,7 @@ function NameInput({
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [passFail, setPassFail] = React.useState(false);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState("");
   const [phoneVal, setPhoneVal] = React.useState(null);
 
   const [nameInDisplay, setNameInDisplay] = React.useState(
@@ -234,6 +234,10 @@ function NameInput({
   };
 
   const handleChange = (newValue) => {
+    if (!value) {
+      // Handle the case when value is null or undefined
+      return;
+    }
     if (nameCheck(newValue, value.name, phoneVal)) {
       if (newValue != null) {
         if (userNameList.indexOf(newValue.name) > -1) {
@@ -310,6 +314,7 @@ function NameInput({
                       helperText="This user has already been added"
                       size="small"
                       variant="standard"
+                      value={params.inputProps.value || ""}
                     />
                   )}
                   {!error && (
@@ -319,6 +324,7 @@ function NameInput({
                       helperText="Please enter your name here :)"
                       size="small"
                       variant="standard"
+                      value={params.inputProps.value || ""}
                     />
                   )}
                 </Box>
@@ -334,7 +340,7 @@ function NameInput({
                   label="Please enter correct password"
                   helperText="User+Password combo failed."
                   onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal}
+                  value={phoneVal || ""}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       handleChange(value);
@@ -346,8 +352,8 @@ function NameInput({
                   InputLabelProps={{ required: false }}
                   style={{
                     width: "50%",
-                    "margin-left": "auto",
-                    "margin-right": 30,
+                    marginLeft: "auto",
+                    marginRight: 30,
                   }}
                 />
               )}
@@ -357,7 +363,7 @@ function NameInput({
                   id="phone-val"
                   label="Last 4 of Ph#"
                   onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal}
+                  value={phoneVal || ""}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       handleChange(value);
@@ -369,8 +375,8 @@ function NameInput({
                   InputLabelProps={{ required: false }}
                   style={{
                     width: "50%",
-                    "margin-left": "auto",
-                    "margin-right": 30,
+                    marginLeft: "auto",
+                    marginRight: 30,
                   }}
                 />
               )}
