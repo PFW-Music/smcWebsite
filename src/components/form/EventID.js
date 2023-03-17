@@ -20,27 +20,26 @@ const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
 );
 
 function UpdateRecord(eventID) {
-  base("Events")
-    .update(
-      [
-        {
-          id: eventID,
-          fields: {
-            Status: "Canceled ⛔️",
-          },
+  base("Events").update(
+    [
+      {
+        id: eventID,
+        fields: {
+          Status: "Canceled ⛔️",
         },
-      ],
-      function (err, records) {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        records.forEach(function () {
-          console.log("record updated");
-        });
+      },
+    ],
+    function (err, records) {
+      if (err) {
+        console.error(err);
+        return;
       }
-    )
-    .then((r) => console.log(r));
+      records.forEach(function () {
+        console.log("record updated");
+      });
+      console.log(records); // Log the updated records outside the loop
+    }
+  );
 }
 
 const style = {
