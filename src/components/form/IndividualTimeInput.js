@@ -113,7 +113,7 @@ export default function DateTimeValidation({
     setTimeCorrect(false);
     setStartDate(date);
     const formattedStartDate = date.toISOString();
-    console.log(formattedStartDate);
+    // console.log(formattedStartDate);
     StartTime = formattedStartDate;
   };
 
@@ -121,7 +121,7 @@ export default function DateTimeValidation({
     setTimeCorrect(false);
     setEndDate(date);
     const formattedEndDate = date.toISOString();
-    console.log(formattedEndDate);
+    // console.log(formattedEndDate);
     EndTime = formattedEndDate;
   };
 

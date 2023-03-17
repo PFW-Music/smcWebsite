@@ -174,7 +174,7 @@ export default function EventDetailsInput({
               setTitle(event.target.value);
               userEventTitle = event.target.value;
               setSessionTitle(event.target.value);
-              console.log(userEventTitle);
+              // console.log(userEventTitle);
             }}
           />
         </Box>
