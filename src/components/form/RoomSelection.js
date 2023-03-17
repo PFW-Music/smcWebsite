@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react"; //test
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -284,7 +284,8 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {roomOptionStudio.map((option) => (
           <MenuItem
             key={option.key}
@@ -339,7 +340,8 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {roomOptionRehearsal.map((option) => (
           <MenuItem
             key={option.key}
@@ -394,7 +396,8 @@ export default function RoomSelectionInput({
             ))}
           </Box>
         )}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {roomOptionECspace.map((option) => (
           <MenuItem
             key={option.key}
@@ -441,7 +444,8 @@ export default function RoomSelectionInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}>
+              MenuProps={MenuProps}
+            >
               {roomTypes.map((type) => (
                 <MenuItem
                   key={type}

@@ -56,9 +56,9 @@ const style = {
   color: "#191b1d",
 };
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} children={"Hi"} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} children={"Hi"} />;
+// });
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
@@ -189,7 +189,8 @@ export default function EventID({
                 onChange={(event) => {
                   setEventID(event.target.value);
                   console.log(event.target.value);
-                }} />
+                }}
+              />
             )}
             {!IDerror && (
               <TextField
@@ -200,7 +201,8 @@ export default function EventID({
                 onChange={(event) => {
                   setEventID(event.target.value);
                   console.log(event.target.value);
-                }} />
+                }}
+              />
             )}
           </Box>
         </Grid>

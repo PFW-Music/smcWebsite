@@ -175,7 +175,8 @@ export default function EventDetailsInput({
               userEventTitle = event.target.value;
               setSessionTitle(event.target.value);
               console.log(userEventTitle);
-            }} />
+            }}
+          />
         </Box>
         <div>
           <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
@@ -199,7 +200,8 @@ export default function EventDetailsInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}>
+              MenuProps={MenuProps}
+            >
               {eventTypes.map((type) => (
                 <MenuItem
                   key={type}
@@ -237,7 +239,8 @@ export default function EventDetailsInput({
                   ))}
                 </Box>
               )}
-              MenuProps={MenuProps}>
+              MenuProps={MenuProps}
+            >
               {eventUsages.map((usage) => (
                 <MenuItem
                   key={usage}

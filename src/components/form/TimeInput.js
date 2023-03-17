@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Stack from "@mui/material/Stack";
@@ -18,29 +18,29 @@ let StartTime;
 let EndTime;
 let unavailableRoom;
 
-function ISODateString(d) {
-  function pad(n) {
-    return n < 10 ? "0" + n : n;
-  }
-
-  if (d === null) return null;
-
-  console.log(d.getHours());
-
-  return (
-    d.getUTCFullYear() +
-    "-" +
-    pad(d.getUTCMonth() + 1) +
-    "-" +
-    pad(d.getDate()) +
-    "T" +
-    pad(d.getHours()) +
-    ":" +
-    pad(d.getUTCMinutes()) +
-    ":" +
-    "00.000Z"
-  );
-}
+// function ISODateString(d) {
+//   function pad(n) {
+//     return n < 10 ? "0" + n : n;
+//   }
+//
+//   if (d === null) return null;
+//
+//   console.log(d.getHours());
+//
+//   return (
+//     d.getUTCFullYear() +
+//     "-" +
+//     pad(d.getUTCMonth() + 1) +
+//     "-" +
+//     pad(d.getDate()) +
+//     "T" +
+//     pad(d.getHours()) +
+//     ":" +
+//     pad(d.getUTCMinutes()) +
+//     ":" +
+//     "00.000Z"
+//   );
+// }
 
 {
   /**
@@ -61,28 +61,28 @@ function ISODateString(d) {
    */
 }
 
-function Add5Hours(time) {
-  let newTime = new Date(time);
-
-  // Check if we are in daylight savings time
-  const today = new Date();
-  const dstStart = new Date(today.getFullYear(), 2, 14);
-  const dstEnd = new Date(today.getFullYear(), 10, 7);
-  const dst =
-    today > dstStart && today < dstEnd
-      ? new Date().getTimezoneOffset() / 60 + 1
-      : 0;
-
-  if (newTime.getHours() > 18 + dst) {
-    newTime.setDate(newTime.getDate() + 1);
-    newTime.setHours(newTime.getHours() - 19 - dst);
-  } else {
-    newTime.setHours(newTime.getHours() + 5 + dst);
-  }
-
-  newTime = newTime.toISOString();
-  return newTime;
-}
+// function Add5Hours(time) {
+//   let newTime = new Date(time);
+//
+//   // Check if we are in daylight savings time
+//   const today = new Date();
+//   const dstStart = new Date(today.getFullYear(), 2, 14);
+//   const dstEnd = new Date(today.getFullYear(), 10, 7);
+//   const dst =
+//     today > dstStart && today < dstEnd
+//       ? new Date().getTimezoneOffset() / 60 + 1
+//       : 0;
+//
+//   if (newTime.getHours() > 18 + dst) {
+//     newTime.setDate(newTime.getDate() + 1);
+//     newTime.setHours(newTime.getHours() - 19 - dst);
+//   } else {
+//     newTime.setHours(newTime.getHours() + 5 + dst);
+//   }
+//
+//   newTime = newTime.toISOString();
+//   return newTime;
+// }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (

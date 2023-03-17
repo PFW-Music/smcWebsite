@@ -35,9 +35,14 @@ const style = {
   color: "#191b1d",
 };
 
-function CreateEventRecord(users, startTimeSelected, endTimeSelected, gears) {
-  base("Events").create(
-    [
+async function CreateEventRecord(
+  users,
+  startTimeSelected,
+  endTimeSelected,
+  gears
+) {
+  try {
+    const records = await base("Events").create([
       {
         fields: {
           "Event Name": "Individual Gear Check Out",
@@ -48,20 +53,16 @@ function CreateEventRecord(users, startTimeSelected, endTimeSelected, gears) {
           "Gear Selection": gears,
         },
       },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function (record) {
-        console.log("event table updated");
-        return record.getId();
-      });
-    }
-  );
-}
+    ]);
 
+    records.forEach(function (record) {
+      console.log("event table updated");
+      return record.getId();
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
 export default function Submit({
   userSelected,
   startTimeSelected,
@@ -71,7 +72,7 @@ export default function Submit({
 }) {
   const [open, setOpen] = React.useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setOpen(true);
 
     // getting the IDs lists for linking fields
@@ -90,10 +91,9 @@ export default function Submit({
     }
 
     // create record
-    CreateEventRecord(users, startTimeSelected, endTimeSelected, gears);
+    await CreateEventRecord(users, startTimeSelected, endTimeSelected, gears);
     console.log("checking error");
   };
-
   const handleClose = () => {
     // slose the confirmation page
     setOpen(false);

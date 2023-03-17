@@ -35,7 +35,7 @@ const style = {
   color: "#191b1d",
 };
 
-function CreateRecord(
+async function CreateRecord(
   users,
   sessionTitle,
   eventTypeSelected,
@@ -49,11 +49,11 @@ function CreateRecord(
   gears,
   locations
 ) {
-  base("Events").create(
-    [
+  try {
+    const records = await base("Events").create([
       {
         fields: {
-          "Event Name": sessionTitle, //Need to be changed for a new record to be created
+          "Event Name": sessionTitle,
           "Start Time": startTimeSelected,
           "Proposed End Time": endTimeSelected,
           "🚪 Room(s)": roomSelected,
@@ -67,20 +67,17 @@ function CreateRecord(
           Location: locations,
         },
       },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function (record) {
-        console.log(record.getId());
-      });
-    }
-  );
+    ]);
+
+    records.forEach(function (record) {
+      console.log(record.getId());
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-function UpdateRecord(
+async function UpdateRecord(
   eventID,
   users,
   sessionTitle,
@@ -95,8 +92,8 @@ function UpdateRecord(
   gears,
   locations
 ) {
-  base("Events").update(
-    [
+  try {
+    const records = await base("Events").update([
       {
         id: eventID,
         fields: {
@@ -114,17 +111,14 @@ function UpdateRecord(
           Location: locations,
         },
       },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function () {
-        console.log("record updated");
-      });
-    }
-  );
+    ]);
+
+    records.forEach(function () {
+      console.log("record updated");
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default function Submit({
@@ -166,7 +160,7 @@ export default function Submit({
 }) {
   const [open, setOpen] = React.useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setOpen(true);
 
     // getting the IDs lists for linking fields
@@ -205,7 +199,7 @@ export default function Submit({
     console.log(courses);
     // perform form action
     if (newEvent) {
-      CreateRecord(
+      await CreateRecord(
         users,
         sessionTitle,
         eventTypeSelected,
@@ -220,7 +214,7 @@ export default function Submit({
         locations
       );
     } else if (updateEvent) {
-      UpdateRecord(
+      await UpdateRecord(
         eventID,
         users,
         sessionTitle,
@@ -238,7 +232,6 @@ export default function Submit({
     }
     console.log("checking error");
   };
-
   const handleClose = () => {
     // Clears all form fields
     // event record data
