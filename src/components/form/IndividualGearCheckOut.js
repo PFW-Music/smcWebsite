@@ -23,7 +23,7 @@ let unavailableGear;
 
 const embedStyle = {
   background: "transparent",
-  border: "",
+  border: ""
 };
 
 const iFrameGear = (
@@ -57,13 +57,13 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function GearCheckOut({
-  setGearSelected,
-  gearList,
-  gear,
-  setGear,
-  startTimeSelected,
-  endTimeSelected,
-}) {
+                                       setGearSelected,
+                                       gearList,
+                                       gear,
+                                       setGear,
+                                       startTimeSelected,
+                                       endTimeSelected
+                                     }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
@@ -171,7 +171,7 @@ export default function GearCheckOut({
   const handleOnChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setGear({
-        title: newValue,
+        title: newValue
       });
     } else {
       setGear(newValue);
@@ -193,7 +193,7 @@ export default function GearCheckOut({
           display: "flex",
           alignItems: "flex-start",
           flexWrap: "wrap",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         <FormControl sx={{ m: 1, width: 400 }} variant="standard">
@@ -228,8 +228,8 @@ export default function GearCheckOut({
                   sx={{
                     color: pink[800],
                     "&.Mui-checked": {
-                      color: pink[600],
-                    },
+                      color: pink[600]
+                    }
                   }}
                 />
                 {option.name}
@@ -250,7 +250,7 @@ export default function GearCheckOut({
                       ) : null}
                       {params.InputProps.endAdornment}
                     </React.Fragment>
-                  ),
+                  )
                 }}
               />
             )}

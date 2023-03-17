@@ -13,18 +13,18 @@ const ActionButton = styled(Button)({
   borderRadius: 4,
   boxShadow: "(0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
-  padding: "0 20px", //this is where the creation/update/cancel buttons are
+  padding: "0 20px" //this is where the creation/update/cancel buttons are
 });
 
 export default function FormActions({
-  setNewEvent,
-  setUpdateEvent,
-  setCancelEvent,
-  setEventID,
-  setIDError,
-  setGoodID,
-  setUserSelected,
-}) {
+                                      setNewEvent,
+                                      setUpdateEvent,
+                                      setCancelEvent,
+                                      setEventID,
+                                      setIDError,
+                                      setGoodID,
+                                      setUserSelected
+                                    }) {
   const handleNewEvent = () => {
     setNewEvent(true);
     setUpdateEvent(false);
@@ -68,7 +68,7 @@ export default function FormActions({
           <ActionButton
             sx={{
               backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" },
+              "&:hover": { backgroundColor: "#7a6d55" }
             }}
             variant="contained"
             startIcon={<AddCircleIcon />}
@@ -82,7 +82,7 @@ export default function FormActions({
           <ActionButton
             sx={{
               backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" },
+              "&:hover": { backgroundColor: "#7a6d55" }
             }}
             variant="contained"
             startIcon={<EditIcon />}
@@ -96,7 +96,7 @@ export default function FormActions({
           <ActionButton
             sx={{
               backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" },
+              "&:hover": { backgroundColor: "#7a6d55" }
             }}
             variant="contained"
             startIcon={<DeleteIcon />}

@@ -18,10 +18,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 ////////////////////////////////////API Magic//////////////////////////////////////////////////////
 let courseList = [];
 
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
+// const Airtable = require("airtable");
+// const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+//   process.env.REACT_APP_AIRTABLE_BASE_ID
+// );
 
 // base("Classes")
 //   .select({
@@ -53,10 +53,10 @@ const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
 let userCourse;
 
 export default function CourseSelectionInput({
-  setCourseSelected,
-  addCourse,
-  setAddCourse,
-}) {
+                                               setCourseSelected,
+                                               addCourse,
+                                               setAddCourse
+                                             }) {
   const [course, setCourse] = React.useState([]);
 
   const handleChangeCourse = (event) => {
@@ -74,7 +74,7 @@ export default function CourseSelectionInput({
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setCourse({
-              title: newValue,
+              title: newValue
             });
           } else {
             setCourse(newValue);
@@ -96,8 +96,8 @@ export default function CourseSelectionInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -122,7 +122,7 @@ export default function CourseSelectionInput({
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400,
+          width: 400
         }}
       >
         <FormLabel component="legend">
@@ -136,8 +136,8 @@ export default function CourseSelectionInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
           }

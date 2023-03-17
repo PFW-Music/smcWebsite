@@ -17,7 +17,7 @@ const SubmitButton = styled(Button)({
   boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
   height: 50,
-  padding: "0 30px",
+  padding: "0 30px"
 });
 
 //create global variables here
@@ -32,7 +32,7 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d",
+  color: "#191b1d"
 };
 
 async function CreateEventRecord(
@@ -50,12 +50,12 @@ async function CreateEventRecord(
           "Proposed End Time": endTimeSelected,
           Students: users,
           Status: "Booked ✅",
-          "Gear Selection": gears,
-        },
-      },
+          "Gear Selection": gears
+        }
+      }
     ]);
 
-    records.forEach(function (record) {
+    records.forEach(function(record) {
       console.log("event table updated");
       return record.getId();
     });
@@ -63,13 +63,14 @@ async function CreateEventRecord(
     console.error(err);
   }
 }
+
 export default function Submit({
-  userSelected,
-  startTimeSelected,
-  endTimeSelected,
-  gearSelected,
-  timeCorrect,
-}) {
+                                 userSelected,
+                                 startTimeSelected,
+                                 endTimeSelected,
+                                 gearSelected,
+                                 timeCorrect
+                               }) {
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -80,12 +81,12 @@ export default function Submit({
     const gears = [];
 
     if (userSelected) {
-      userSelected.forEach(function (obj) {
+      userSelected.forEach(function(obj) {
         users.push(obj.id);
       });
     }
     if (gearSelected) {
-      gearSelected.forEach(function (obj) {
+      gearSelected.forEach(function(obj) {
         gears.push(obj.id);
       });
     }
@@ -105,7 +106,7 @@ export default function Submit({
       <SubmitButton
         sx={{
           backgroundColor: "rgba(207,185,145)",
-          "&:hover": { backgroundColor: "#7a6d55" },
+          "&:hover": { backgroundColor: "#7a6d55" }
         }}
         variant="contained"
         disabled={

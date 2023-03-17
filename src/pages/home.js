@@ -41,20 +41,20 @@ let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE",
+    view: "ALL PEOPLE"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         SMCpeople.push({ name: record.get("Person"), id: record.id });
         peopleAllInfo[x] = {
           id: record.id,
           name: record.get("Person"),
           roomAccess: record.get("Room Access"),
           gearAccess: record.get("Gear Access"),
-          phoneNum: record.get("Phone"),
+          phoneNum: record.get("Phone")
         };
 
         // console.log(peopleAllInfo[x])
@@ -88,16 +88,16 @@ base("SMC People")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Studio Booking Form)",
+    view: "Bookable Rooms 🔒 (Studio Booking Form)"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         RecordingStudioRoomsList.push({
           key: record.id,
-          name: record.get("Name"),
+          name: record.get("Name")
         });
       });
 
@@ -117,17 +117,17 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)",
+    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         RehearsalRoomsList.push({
           key: record.id,
           name: record.get("Name"),
-          events: record.get("Events"),
+          events: record.get("Events")
         });
       });
 
@@ -147,17 +147,17 @@ base("Rooms")
 
 base("Rooms")
   .select({
-    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
+    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         ECRoomsList.push({
           key: record.id,
           name: record.get("Name"),
-          events: record.get("Events"),
+          events: record.get("Events")
         });
         //console.log(record);
       });

@@ -18,29 +18,6 @@ let StartTime;
 let EndTime;
 let unavailableRoom;
 
-// function ISODateString(d) {
-//   function pad(n) {
-//     return n < 10 ? "0" + n : n;
-//   }
-//
-//   if (d === null) return null;
-//
-//   console.log(d.getHours());
-//
-//   return (
-//     d.getUTCFullYear() +
-//     "-" +
-//     pad(d.getUTCMonth() + 1) +
-//     "-" +
-//     pad(d.getDate()) +
-//     "T" +
-//     pad(d.getHours()) +
-//     ":" +
-//     pad(d.getUTCMinutes()) +
-//     ":" +
-//     "00.000Z"
-//   );
-// }
 
 {
   /**
@@ -61,28 +38,6 @@ let unavailableRoom;
    */
 }
 
-// function Add5Hours(time) {
-//   let newTime = new Date(time);
-//
-//   // Check if we are in daylight savings time
-//   const today = new Date();
-//   const dstStart = new Date(today.getFullYear(), 2, 14);
-//   const dstEnd = new Date(today.getFullYear(), 10, 7);
-//   const dst =
-//     today > dstStart && today < dstEnd
-//       ? new Date().getTimezoneOffset() / 60 + 1
-//       : 0;
-//
-//   if (newTime.getHours() > 18 + dst) {
-//     newTime.setDate(newTime.getDate() + 1);
-//     newTime.setHours(newTime.getHours() - 19 - dst);
-//   } else {
-//     newTime.setHours(newTime.getHours() + 5 + dst);
-//   }
-//
-//   newTime = newTime.toISOString();
-//   return newTime;
-// }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
@@ -97,11 +52,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function DateTimeValidation({
-  setTimeCorrect,
-  setStartTimeSelected,
-  setEndTimeSelected,
-  roomBookingRecord,
-}) {
+                                             setTimeCorrect,
+                                             setStartTimeSelected,
+                                             setEndTimeSelected,
+                                             roomBookingRecord
+                                           }) {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const [invalidTime, setInvalidTime] = React.useState(false);
@@ -112,17 +67,15 @@ export default function DateTimeValidation({
   const handleStartDateChange = (date) => {
     setTimeCorrect(false);
     setStartDate(date);
-    const formattedStartDate = date.toISOString();
     // console.log(formattedStartDate);
-    StartTime = formattedStartDate;
+    StartTime = date.toISOString();
   };
 
   const handleEndDateChange = (date) => {
     setTimeCorrect(false);
     setEndDate(date);
-    const formattedEndDate = date.toISOString();
     // console.log(formattedEndDate);
-    EndTime = formattedEndDate;
+    EndTime = date.toISOString();
   };
 
   const handleFakeClose = (event, reason) => {
@@ -165,10 +118,6 @@ export default function DateTimeValidation({
         setEndTimeSelected(EndTime);
       }
 
-      //StartTime = Add5Hours(StartTime);
-      //EndTime = Add5Hours(EndTime);
-      //console.log("comparableStartTime:", StartTime);
-      //console.log("comparableEndTime:", EndTime);
 
       let conflictFound = false;
 
@@ -232,70 +181,19 @@ export default function DateTimeValidation({
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={1}>
-        {/*<div>*/}
-        {/*  <FormControl sx={{ m: 1, width: 400 }}>*/}
-        {/*    <div style={{ display: "flex" }}>*/}
-        {/*      <DateTimePicker*/}
-        {/*        clearable*/}
-        {/*        placeholder="Enter time"*/}
-        {/*        renderInput={(params) => <TextField {...params} />}*/}
-        {/*        label="Event start time"*/}
-        {/*        value={startValue}*/}
-        {/*        onChange={(newValue) => {*/}
-        {/*          setSartValue(newValue);*/}
-        {/*          StartTime = ISODateString(newValue);*/}
-        {/*          if (StartTime && StartTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")*/}
-        {/*            StartTime = Add5Hours(StartTime);*/}
-        {/*          console.log(StartTime);*/}
-        {/*          setTimeCorrect(false);*/}
-        {/*        }}*/}
-        {/*        minDate={new Date()}*/}
-        {/*        minTime={new Date(0, 0, 0, 8)}*/}
-        {/*        maxTime={new Date(0, 0, 0, 23, 59)}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*  </FormControl>*/}
-        {/*</div>*/}
 
-        {/*<div>*/}
-        {/*  <FormControl sx={{ m: 1, width: 400 }}>*/}
-        {/*    <DateTimePicker*/}
-        {/*      renderInput={(params) => <TextField {...params} />}*/}
-        {/*      label="Proposed end time"*/}
-        {/*      value={endValue}*/}
-        {/*      onChange={(newValue) => {*/}
-        {/*        setEndValue(newValue);*/}
-        {/*        EndTime = ISODateString(newValue);*/}
-        {/*        if (EndTime && EndTime !== "NaN-NaN-NaNTNaN:NaN:00.000Z")*/}
-        {/*          EndTime = Add5Hours(EndTime);*/}
-        {/*        console.log(EndTime);*/}
-        {/*        setTimeCorrect(false);*/}
-        {/*      }}*/}
-        {/*      minTimeMessage*/}
-        {/*      maxTimeMessage*/}
-        {/*      minDate={new Date()}*/}
-        {/*      minTime={new Date(0, 0, 0, 8)}*/}
-        {/*      maxTime={new Date(0, 0, 0, 23, 59)}*/}
-        {/*      clearable={true}*/}
-        {/*    />*/}
-        {/*  </FormControl>*/}
-        {/*</div>*/}
 
         <div
           style={{
             display: "flex",
             width: "100%",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           <h4>Select Start Date</h4>
           <DatePicker
             showIcon
-            // isClearable
-            // filterDate={(d) => {
-            //   return new Date() > d;
-            // }}
             placeholderText="Select Start Date"
             showTimeSelect
             dateFormat="MMMM d, yyyy h:mmaa"
@@ -309,10 +207,6 @@ export default function DateTimeValidation({
           <h4>Select End Date</h4>
           <DatePicker
             showIcon
-            //isClearable
-            // filterDate={(d) => {
-            //   return new Date() > d;
-            // }}
             placeholderText="Select End Date"
             showTimeSelect
             dateFormat="MMMM d, yyyy h:mmaa"
@@ -331,7 +225,7 @@ export default function DateTimeValidation({
         <Button
           sx={{
             backgroundColor: "rgba(207,185,145)",
-            "&:hover": { backgroundColor: "#7a6d55" },
+            "&:hover": { backgroundColor: "#7a6d55" }
           }}
           variant="contained"
           onClick={EndTimeCheck}

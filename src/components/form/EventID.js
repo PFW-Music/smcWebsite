@@ -10,7 +10,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
@@ -19,27 +18,20 @@ const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
   process.env.REACT_APP_AIRTABLE_BASE_ID
 );
 
-function UpdateRecord(eventID) {
-  base("Events").update(
-    [
+async function UpdateRecord(eventID) {
+  try {
+    const records = await base("Events").update([
       {
         id: eventID,
         fields: {
-          Status: "Canceled ⛔️",
-        },
-      },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
+          Status: "Canceled ⛔️"
+        }
       }
-      records.forEach(function () {
-        console.log("record updated");
-      });
-      console.log(records); // Log the updated records outside the loop
-    }
-  );
+    ]);
+    console.log(records); // Log the updated records
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 const style = {
@@ -52,7 +44,7 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d",
+  color: "#191b1d"
 };
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
@@ -72,31 +64,30 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function EventID({
-  IDerror,
-  setIDError,
-  eventID,
-  setEventID,
-  setGoodID,
-  updateEvent,
-  CancelEvent,
-}) {
+                                  IDerror,
+                                  setIDError,
+                                  eventID,
+                                  setEventID,
+                                  setGoodID,
+                                  updateEvent,
+                                  CancelEvent
+                                }) {
   const [successMsg, setSuccessMsg] = React.useState(false);
   const [openCancelDialog, setOpenCancelDialog] = React.useState(false);
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
 
-  const handleCheckID = () => {
-    base("Events").find(eventID, function (err) {
-      if (err) {
-        console.error(err);
-        setIDError(true);
-        setGoodID(false);
-      } else {
-        setIDError(false);
-        setGoodID(true);
-        if (updateEvent) setSuccessMsg(true);
-        if (CancelEvent) setOpenCancelDialog(true);
-      }
-    });
+  const handleCheckID = async () => {
+    try {
+      await base("Events").find(eventID);
+      setIDError(false);
+      setGoodID(true);
+      if (updateEvent) setSuccessMsg(true);
+      if (CancelEvent) setOpenCancelDialog(true);
+    } catch (err) {
+      console.error(err);
+      setIDError(true);
+      setGoodID(false);
+    }
   };
 
   const handleCloseMessage = (event, reason) => {
@@ -110,20 +101,19 @@ export default function EventID({
     setOpenCancelDialog(false);
   };
 
-  const handleCloseCancelSubmission = () => {
-    setOpenCancelSuccess(false);
-  };
+  const handleSubmitCancellation = async () => {
+    try {
+      await UpdateRecord(eventID);
+      setOpenCancelDialog(false);
+      setOpenCancelSuccess(true);
 
-  const handleSubmitCancellation = () => {
-    UpdateRecord(eventID);
-    //DeleteRecord(eventID);
-    setOpenCancelDialog(false);
-    setOpenCancelSuccess(true);
-
-    // initialize ID status
-    setEventID("");
-    setIDError(false);
-    setGoodID(false);
+      // initialize ID status
+      setEventID("");
+      setIDError(false);
+      setGoodID(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const confirmCancelDialog = (
@@ -172,7 +162,7 @@ export default function EventID({
           <Box
             component="form"
             sx={{
-              "& > :not(style)": { width: 300 },
+              "& > :not(style)": { width: 300 }
             }}
             noValidate
             autoComplete="off"

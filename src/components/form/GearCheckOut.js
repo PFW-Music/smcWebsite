@@ -26,7 +26,7 @@ let unavailableGear;
 
 const embedStyle = {
   background: "transparent",
-  border: "",
+  border: ""
 };
 
 const iFrameGear = (
@@ -60,13 +60,13 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function GearCheckOut({
-  setGearSelected,
-  gearList,
-  addGear,
-  setAddGear,
-  startTimeSelected,
-  endTimeSelected,
-}) {
+                                       setGearSelected,
+                                       gearList,
+                                       addGear,
+                                       setAddGear,
+                                       startTimeSelected,
+                                       endTimeSelected
+                                     }) {
   const [gear, setGear] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
@@ -179,7 +179,7 @@ export default function GearCheckOut({
   const handleOnChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setGear({
-        title: newValue,
+        title: newValue
       });
     } else {
       setGear(newValue);
@@ -227,8 +227,8 @@ export default function GearCheckOut({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -249,7 +249,7 @@ export default function GearCheckOut({
                   ) : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
-              ),
+              )
             }}
           />
         )}
@@ -270,7 +270,7 @@ export default function GearCheckOut({
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400,
+          width: 400
         }}
       >
         <FormLabel component="legend">
@@ -284,8 +284,8 @@ export default function GearCheckOut({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
           }
@@ -299,7 +299,7 @@ export default function GearCheckOut({
             display: "flex",
             alignItems: "flex-start",
             flexWrap: "wrap",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <Fade in={addGear}>{gearInput}</Fade>

@@ -42,7 +42,7 @@ const emojis = [
   "😂",
   "🎸",
   "😋",
-  "😎",
+  "😎"
 ];
 
 const userEmoji = [];
@@ -97,20 +97,20 @@ function filterGear() {
 
   base("Gear")
     .select({
-      view: lendLevel,
+      view: lendLevel
     })
     .eachPage(
       function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
 
-        records.forEach(function (record) {
+        records.forEach(function(record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
             name: record.get("Item"),
             id: record.id,
             eventStart: record.get("Start Time (from Events)"),
             eventEnd: record.get("End Time (from Events)"),
-            eventStatus: record.get("Status (from Events)"),
+            eventStatus: record.get("Status (from Events)")
           });
         });
 
@@ -132,11 +132,11 @@ function filterGear() {
 const filter = createFilterOptions();
 
 function NameInput({
-  peopleAllInfo,
-  userSelected,
-  setUserSelected,
-  setGearList,
-}) {
+                     peopleAllInfo,
+                     userSelected,
+                     setUserSelected,
+                     setGearList
+                   }) {
   React.useEffect(() => {
     Initilize();
   }, []);
@@ -185,7 +185,7 @@ function NameInput({
   const handleChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setValue({
-        title: newValue,
+        title: newValue
       });
     } else {
       setValue(newValue);
@@ -282,7 +282,7 @@ function NameInput({
         <Button
           sx={{
             backgroundColor: "rgba(207,185,145)",
-            "&:hover": { backgroundColor: "#7a6d55" },
+            "&:hover": { backgroundColor: "#7a6d55" }
           }}
           variant="contained"
           onClick={handleClickOpen}

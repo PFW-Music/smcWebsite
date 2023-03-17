@@ -45,7 +45,7 @@ const emojis = [
   "😂",
   "🎸",
   "😋",
-  "😎",
+  "😎"
 ];
 
 const userEmoji = [];
@@ -102,20 +102,20 @@ function filterGear() {
 
   base("Gear")
     .select({
-      view: lendLevel,
+      view: lendLevel
     })
     .eachPage(
       function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
 
-        records.forEach(function (record) {
+        records.forEach(function(record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
             name: record.get("Item"),
             id: record.id,
             eventStart: record.get("Events Start"),
             eventEnd: record.get("Events End"),
-            eventStatus: record.get("Events Status"),
+            eventStatus: record.get("Events Status")
           });
         });
 
@@ -153,7 +153,7 @@ function filterRoomType(disabled) {
     disabled = [
       "Recording Studio 🎙️",
       "Rehearsal Spaces 🎧",
-      "Edit & Collaboration Spaces 🎒",
+      "Edit & Collaboration Spaces 🎒"
     ];
   }
   return disabled;
@@ -162,12 +162,12 @@ function filterRoomType(disabled) {
 const filter = createFilterOptions();
 
 function NameInput({
-  peopleAllInfo,
-  setUserSelected,
-  setUserCount,
-  setDisabledRoomTypes,
-  setGearList,
-}) {
+                     peopleAllInfo,
+                     setUserSelected,
+                     setUserCount,
+                     setDisabledRoomTypes,
+                     setGearList
+                   }) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [passFail, setPassFail] = React.useState(false);
@@ -188,7 +188,7 @@ function NameInput({
     roomTypes = [
       "Recording Studio 🎙️",
       "Rehearsal Spaces 🎧",
-      "Edit & Collaboration Spaces 🎒",
+      "Edit & Collaboration Spaces 🎒"
     ];
     setGearList(filterGear());
     setDisabledRoomTypes(filterRoomType(roomTypes));
@@ -224,9 +224,13 @@ function NameInput({
   };
 
   const handleName = (event, newValue) => {
+    if (newValue == null) {
+      setValue(null);
+      return;
+    }
     if (typeof newValue === "string") {
       setValue({
-        title: newValue,
+        title: newValue
       });
     } else {
       setValue(newValue);
@@ -353,7 +357,7 @@ function NameInput({
                   style={{
                     width: "50%",
                     marginLeft: "auto",
-                    marginRight: 30,
+                    marginRight: 30
                   }}
                 />
               )}
@@ -376,7 +380,7 @@ function NameInput({
                   style={{
                     width: "50%",
                     marginLeft: "auto",
-                    marginRight: 30,
+                    marginRight: 30
                   }}
                 />
               )}
@@ -399,7 +403,7 @@ function NameInput({
         <Button
           sx={{
             backgroundColor: "rgba(207,185,145)",
-            "&:hover": { backgroundColor: "#7a6d55" },
+            "&:hover": { backgroundColor: "#7a6d55" }
           }}
           variant="contained"
           onClick={handleClickOpen}

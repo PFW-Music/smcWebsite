@@ -27,44 +27,44 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 300,
+    minWidth: 300
   },
   inputLabel: {
     color: "gray",
     "&.Mui-focused": {
-      color: pink[800],
-    },
+      color: pink[800]
+    }
   },
   inputFocused: {},
   select: {
     color: "black",
     "&:before": {
       // changes the bottom textbox border when not focused
-      borderColor: "gray",
+      borderColor: "gray"
     },
     "&:after": {
       // changes the bottom textbox border when clicked/focused.  thought it would be the same with input label
-      borderColor: pink[800],
-    },
+      borderColor: pink[800]
+    }
   },
   outlinedInput: {
     color: "gray",
     "&:after": {
-      borderColor: pink[800],
-    },
-  },
+      borderColor: pink[800]
+    }
+  }
 }));
 
 // This will be used to store input data
@@ -76,7 +76,7 @@ let userRoomSelection;
 const roomTypes = [
   "Recording Studio 🎙️",
   "Rehearsal Spaces 🎧",
-  "Edit & Collaboration Spaces 🎒",
+  "Edit & Collaboration Spaces 🎒"
 ];
 
 function getStyles(type, eventType, theme) {
@@ -84,7 +84,7 @@ function getStyles(type, eventType, theme) {
     fontWeight:
       eventType.indexOf(type) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+        : theme.typography.fontWeightMedium
   };
 }
 
@@ -94,18 +94,18 @@ let roomSelectedAllInfo = [];
 let eventsList = [];
 
 export default function RoomSelectionInput({
-  roomOptionStudio,
-  roomOptionRehearsal,
-  roomOptionECspace,
-  disabledRoomTypes,
-  setRoomTypeSelected,
-  setRoomSelected,
-  roomBookingRecord,
-  setRoomBookingRecord,
-}) {
+                                             roomOptionStudio,
+                                             roomOptionRehearsal,
+                                             roomOptionECspace,
+                                             disabledRoomTypes,
+                                             setRoomTypeSelected,
+                                             setRoomSelected,
+                                             roomBookingRecord,
+                                             setRoomBookingRecord
+                                           }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [roomType, setRoomType] = React.useState([]);
+  const [roomType, setRoomType] = React.useState('');
   const [room, setRoom] = React.useState([]);
 
   const [isStudio, setIsStudio] = React.useState(false);
@@ -114,7 +114,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoomType = (event) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setRoomType(
       // On autofill, we get a stringified value.
@@ -149,7 +149,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoom = (event) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setRoom(
       // On autofill, we get a stringified value.
@@ -180,7 +180,7 @@ export default function RoomSelectionInput({
     eventsList = [];
     let eventsListLength = 0;
     for (let j = 0; j < roomSelectedAllInfoLength; j++) {
-      base("Rooms").find(roomSelectedAllInfo[j].key, function (err, record) {
+      base("Rooms").find(roomSelectedAllInfo[j].key, function(err, record) {
         if (err) {
           console.error(err);
           return;
@@ -191,7 +191,7 @@ export default function RoomSelectionInput({
           id: record.id,
           eventStart: record.get("Events Start"),
           eventEnd: record.get("Events End"),
-          eventStatus: record.get("Events Status"),
+          eventStatus: record.get("Events Status")
         });
         eventsListLength++;
       });
@@ -297,8 +297,8 @@ export default function RoomSelectionInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -353,8 +353,8 @@ export default function RoomSelectionInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -409,8 +409,8 @@ export default function RoomSelectionInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}

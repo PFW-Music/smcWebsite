@@ -25,9 +25,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
 
 // This will be used to store input data
@@ -43,7 +43,7 @@ const eventTypes = [
   "Class 📚",
   "Meeting 🤝",
   "Rehearsal 💪",
-  "Audition 👨‍⚖️",
+  "Audition 👨‍⚖️"
 ];
 
 const eventUsages = ["Personal Use 👤", "Academic 🎓", "Sweetwater 🤝"];
@@ -53,27 +53,27 @@ function getStyles(type, eventType, theme) {
     fontWeight:
       eventType.indexOf(type) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+        : theme.typography.fontWeightMedium
   };
 }
 
 export default function EventDetailsInput({
-  facultyList,
-  setSessionTitle,
-  setEventTypeSelected,
-  setFacultySelected,
-  setUsageSelected,
-}) {
+                                            facultyList,
+                                            setSessionTitle,
+                                            setEventTypeSelected,
+                                            setFacultySelected,
+                                            setUsageSelected
+                                          }) {
   const theme = useTheme();
-  const [eventType, setEventType] = React.useState([]);
-  const [eventUsage, setEventUsage] = React.useState([]);
+  const [eventType, setEventType] = React.useState("");
+  const [eventUsage, setEventUsage] = React.useState("");
   const [title, setTitle] = React.useState([]);
   const [isProject, setIsProject] = React.useState(false);
   const [faculty, setFaculty] = React.useState([]);
 
   const handleChangeType = (event) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setEventType(
       // On autofill, we get a string field value.
@@ -88,7 +88,7 @@ export default function EventDetailsInput({
 
   const handleChangeUsage = (event) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setEventUsage(
       // On autofill, we get a stringified value.
@@ -109,7 +109,7 @@ export default function EventDetailsInput({
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setFaculty({
-              title: newValue,
+              title: newValue
             });
           } else {
             setFaculty(newValue);
@@ -136,8 +136,8 @@ export default function EventDetailsInput({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600],
-                },
+                  color: pink[600]
+                }
               }}
             />
             {option.name}
@@ -160,7 +160,7 @@ export default function EventDetailsInput({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: 400 },
+            "& > :not(style)": { m: 1, width: 400 }
           }}
           noValidate
           autoComplete="off"

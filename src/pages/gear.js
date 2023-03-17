@@ -24,17 +24,17 @@ let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE",
+    view: "ALL PEOPLE"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function(record) {
         peopleAllInfo[x] = {
           id: record.id,
           name: record.get("Person"),
-          gearAccess: record.get("Gear Access"),
+          gearAccess: record.get("Gear Access")
         };
         x = x + 1;
 
