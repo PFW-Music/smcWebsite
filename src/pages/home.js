@@ -84,95 +84,42 @@ base("SMC People")
 
 /////////////////////////////////////////// Pulling Records from Rooms  ///////////////////////////////////////////
 
-//Recording Studio:
+function getRooms(viewName, roomList) {
+  base("Rooms")
+    .select({
+      view: viewName,
+    })
+    .eachPage(
+      function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
 
-base("Rooms")
-  .select({
-    view: "Bookable Rooms 🔒 (Studio Booking Form)"
-  })
-  .eachPage(
-    function page(records, fetchNextPage) {
-      // This function (`page`) will get called for each page of records.
-
-      records.forEach(function(record) {
-        RecordingStudioRoomsList.push({
-          key: record.id,
-          name: record.get("Name")
+        records.forEach(function (record) {
+          roomList.push({
+            key: record.id,
+            name: record.get("Name"),
+            events: record.get("Events"),
+          });
         });
-      });
 
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
-      fetchNextPage();
-    },
-    function done(err) {
-      if (err) {
-        console.error(err);
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+      },
+      function done(err) {
+        if (err) {
+          console.error(err);
+        }
       }
-    }
-  );
+    );
+}
 
-//Rehearsal Rooms:
-
-base("Rooms")
-  .select({
-    view: "Bookable Rooms 🔒 (Rehearsal Booking Form)"
-  })
-  .eachPage(
-    function page(records, fetchNextPage) {
-      // This function (`page`) will get called for each page of records.
-
-      records.forEach(function(record) {
-        RehearsalRoomsList.push({
-          key: record.id,
-          name: record.get("Name"),
-          events: record.get("Events")
-        });
-      });
-
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
-      fetchNextPage();
-    },
-    function done(err) {
-      if (err) {
-        console.error(err);
-      }
-    }
-  );
-
-//Edit and Collab:
-
-base("Rooms")
-  .select({
-    view: "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam"
-  })
-  .eachPage(
-    function page(records, fetchNextPage) {
-      // This function (`page`) will get called for each page of records.
-
-      records.forEach(function(record) {
-        ECRoomsList.push({
-          key: record.id,
-          name: record.get("Name"),
-          events: record.get("Events")
-        });
-        //console.log(record);
-      });
-
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
-      fetchNextPage();
-    },
-    function done(err) {
-      if (err) {
-        console.error(err);
-      }
-    }
-  );
+getRooms("Bookable Rooms 🔒 (Studio Booking Form)", RecordingStudioRoomsList);
+getRooms("Bookable Rooms 🔒 (Rehearsal Booking Form)", RehearsalRoomsList);
+getRooms(
+  "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
+  ECRoomsList
+);
 
 function Home() {
   // main input data
