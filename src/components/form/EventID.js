@@ -96,6 +96,10 @@ export default function EventID({
     }
     setSuccessMsg(false);
   };
+  const handleCloseCancelSubmission = () => {
+    setOpenCancelSuccess(false);
+  };
+
 
   const handleCloseCancelDialog = () => {
     setOpenCancelDialog(false);
