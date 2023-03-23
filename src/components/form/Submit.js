@@ -17,7 +17,7 @@ const SubmitButton = styled(Button)({
   boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   color: "white",
   height: 51,
-  padding: "0 30px"
+  padding: "0 30px",
 });
 
 //create global variables here
@@ -32,7 +32,7 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d"
+  color: "#191b1d",
 };
 
 async function CreateRecord(
@@ -56,7 +56,7 @@ async function CreateRecord(
           "Event Name": sessionTitle,
           "Start Time": startTimeSelected,
           "Proposed End Time": endTimeSelected,
-          "Room(s)": roomSelected,
+          "🚪 Room(s)": roomSelected,
           Class: courses,
           "Event Type": eventTypeSelected,
           Faculty: faculties,
@@ -64,12 +64,12 @@ async function CreateRecord(
           Status: "Booked ✅",
           "Intent of Use": usageSelected,
           "Gear Selection": gears,
-          Location: locations
-        }
-      }
+          Location: locations,
+        },
+      },
     ]);
 
-    records.forEach(function(record) {
+    records.forEach(function (record) {
       console.log(record.getId());
     });
   } catch (err) {
@@ -100,7 +100,7 @@ async function UpdateRecord(
           "Event Name": sessionTitle,
           "Start Time": startTimeSelected,
           "Proposed End Time": endTimeSelected,
-          "Room(s)": roomSelected,
+          "🚪 Room(s)": roomSelected,
           Class: courses,
           "Event Type": eventTypeSelected,
           Students: users,
@@ -108,12 +108,12 @@ async function UpdateRecord(
           Status: "Booked ✅",
           "Intent of Use": usageSelected,
           "Gear Selection": gears,
-          Location: locations
-        }
-      }
+          Location: locations,
+        },
+      },
     ]);
 
-    records.forEach(function() {
+    records.forEach(function () {
       console.log("record updated");
     });
   } catch (err) {
@@ -122,42 +122,42 @@ async function UpdateRecord(
 }
 
 export default function Submit({
-                                 userSelected,
-                                 setUserSelected,
-                                 sessionTitle,
-                                 setSessionTitle,
-                                 eventTypeSelected,
-                                 setEventTypeSelected,
-                                 facultySelected,
-                                 setFacultySelected,
-                                 usageSelected,
-                                 setUsageSelected,
-                                 roomTypeSelected,
-                                 setRoomTypeSelected,
-                                 roomSelected,
-                                 setRoomSelected,
-                                 startTimeSelected,
-                                 setStartTimeSelected,
-                                 endTimeSelected,
-                                 setEndTimeSelected,
-                                 courseSelected,
-                                 setCourseSelected,
-                                 gearSelected,
-                                 setGearSelected,
+  userSelected,
+  setUserSelected,
+  sessionTitle,
+  setSessionTitle,
+  eventTypeSelected,
+  setEventTypeSelected,
+  facultySelected,
+  setFacultySelected,
+  usageSelected,
+  setUsageSelected,
+  roomTypeSelected,
+  setRoomTypeSelected,
+  roomSelected,
+  setRoomSelected,
+  startTimeSelected,
+  setStartTimeSelected,
+  endTimeSelected,
+  setEndTimeSelected,
+  courseSelected,
+  setCourseSelected,
+  gearSelected,
+  setGearSelected,
 
-                                 eventID,
-                                 setEventID,
-                                 newEvent,
-                                 setNewEvent,
-                                 updateEvent,
-                                 setUpdateEvent,
-                                 setCancelEvent,
-                                 timeCorrect,
-                                 setUserCount,
-                                 setAddCourse,
-                                 setAddGear,
-                                 roomBookingRecord
-                               }) {
+  eventID,
+  setEventID,
+  newEvent,
+  setNewEvent,
+  updateEvent,
+  setUpdateEvent,
+  setCancelEvent,
+  timeCorrect,
+  setUserCount,
+  setAddCourse,
+  setAddGear,
+  roomBookingRecord,
+}) {
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -171,27 +171,27 @@ export default function Submit({
     const locations = [];
 
     if (userSelected) {
-      userSelected.forEach(function(obj) {
+      userSelected.forEach(function (obj) {
         users.push(obj.id);
       });
     }
     if (facultySelected) {
-      facultySelected.forEach(function(obj) {
+      facultySelected.forEach(function (obj) {
         faculties.push(obj.id);
       });
     }
     if (courseSelected) {
-      courseSelected.forEach(function(obj) {
+      courseSelected.forEach(function (obj) {
         courses.push(obj.key);
       });
     }
     if (gearSelected) {
-      gearSelected.forEach(function(obj) {
+      gearSelected.forEach(function (obj) {
         gears.push(obj.id);
       });
     }
     if (roomBookingRecord) {
-      roomBookingRecord.forEach(function(obj) {
+      roomBookingRecord.forEach(function (obj) {
         locations.push(obj.id);
       });
     }

@@ -72,14 +72,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function EventID({
-                                  IDerror,
-                                  setIDError,
-                                  eventID,
-                                  setEventID,
-                                  setGoodID,
-                                  updateEvent,
-                                  CancelEvent,
-                                }) {
+  IDerror,
+  setIDError,
+  eventID,
+  setEventID,
+  setGoodID,
+  updateEvent,
+  CancelEvent,
+}) {
   const [successMsg, setSuccessMsg] = React.useState(false);
   const [openCancelDialog, setOpenCancelDialog] = React.useState(false);
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
