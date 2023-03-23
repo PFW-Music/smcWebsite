@@ -17,35 +17,52 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 ////////////////////////////////////API Magic//////////////////////////////////////////////////////
 let courseList = [];
+let className = "";
+let classDay = "";
+let classTime = "";
 
-// const Airtable = require("airtable");
-// const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-//   process.env.REACT_APP_AIRTABLE_BASE_ID
-// );
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
-// base("Classes")
-//   .select({
-//     view: "All Classes", // Replace "Grid view" with the correct view name from your Airtable base
-//   })
-//   .eachPage(
-//     function page(records, fetchNextPage) {
-//       // This function (`page`) will get called for each page of records.
-//
-//       records.forEach(function (record) {
-//         courseList.push({ key: record.id, name: record.get("Name") });
-//       });
-//
-//       // To fetch the next page of records, call `fetchNextPage`.
-//       // If there are more records, `page` will get called again.
-//       // If there are no more records, `done` will get called.
-//       fetchNextPage();
-//     },
-//     function done(err) {
-//       if (err) {
-//         console.error(err);
-//       }
-//     }
-//   );
+base("Classes")
+  .select({
+    view: "ALL CLASSES", // Replace "Grid view" with the correct view name from your Airtable base
+  })
+  .eachPage(
+    function page(records, fetchNextPage) {
+      // This function (`page`) will get called for each page of records.
+
+      records.forEach(function (record) {
+        className = record.get("Name");
+        classDay = record.get("Week Day(s)");
+        classTime = record.get("Meeting Time");
+
+        if (typeof className !== "undefined") {
+          if (typeof classDay !== "undefined") {
+            className += ", " + String(classDay).substring(0, 3);
+          }
+          if (typeof classTime !== "undefined") {
+            className += ", " + String(classTime);
+          }
+          courseList.push({ key: record.id, name: className });
+        }
+      });
+
+      // To fetch the next page of records, call `fetchNextPage`.
+      // If there are more records, `page` will get called again.
+      // If there are no more records, `done` will get called.
+      fetchNextPage();
+    },
+    function done(err) {
+      if (err) {
+        console.error(err);
+      }
+    }
+  );
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
