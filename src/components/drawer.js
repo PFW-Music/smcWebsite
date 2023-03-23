@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Drawer as MUIDrawer, List, ListItem, ListItemIcon, ListItemText, Paper } from "@material-ui/core";
-import logo from "../logo.png";
+import { makeStyles } from "@mui/styles";
+import { Drawer as MUIDrawer, List, ListItem } from "@mui/material";
+import logo from "../assets/LogoSW.png";
 import CustomBtn from "./customBtn";
 import { NavLink } from "react-router-dom";
 
@@ -19,11 +19,15 @@ const useStyles = makeStyles({
 const Drawer = () => {
   const classes = useStyles();
   return (
-    <MUIDrawer variant="permanent" className={classes.drawer} classes={{ paper: classes.paper }}>
+    <MUIDrawer
+      variant="permanent"
+      className={classes.drawer}
+      classes={{ paper: classes.paper }}
+    >
       <List>
         <ListItem>
           <a href="https://pfw-smc.notion.site/pfw-smc/PFW-Sweetwater-Music-Center-17d134f1dd704a56909044ddb24d61ed">
-            <img src={logo} />
+            <img src={logo} alt={"PFW logo"} />
           </a>
         </ListItem>
 
@@ -32,7 +36,12 @@ const Drawer = () => {
           <br></br>
           <br></br>
           <br></br>
-          <NavLink exact to="/" className="main-nav" activeClassName="main-nav-active">
+          <NavLink
+            exact
+            to="/"
+            className="main-nav"
+            activeClassName="main-nav-active"
+          >
             <CustomBtn txt="View Calendar" />
           </NavLink>
         </ListItem>
@@ -42,7 +51,11 @@ const Drawer = () => {
           <br></br>
           <br></br>
           <br></br>
-          <NavLink to="/Recording" className="main-nav" activeClassName="main-nav-active">
+          <NavLink
+            to="/Recording"
+            className="main-nav"
+            activeClassName="main-nav-active"
+          >
             <CustomBtn txt="Book Recording Studio" />
           </NavLink>
         </ListItem>
@@ -52,7 +65,11 @@ const Drawer = () => {
           <br></br>
           <br></br>
           <br></br>
-          <NavLink to="/Rehearsal" className="main-nav" activeClassName="main-nav-active">
+          <NavLink
+            to="/Rehearsal"
+            className="main-nav"
+            activeClassName="main-nav-active"
+          >
             <CustomBtn txt="Book Rehearsal Spaces" />
           </NavLink>
         </ListItem>
@@ -62,7 +79,11 @@ const Drawer = () => {
           <br></br>
           <br></br>
           <br></br>
-          <NavLink to="/EditAndCollab" className="main-nav" activeClassName="main-nav-active">
+          <NavLink
+            to="/EditAndCollab"
+            className="main-nav"
+            activeClassName="main-nav-active"
+          >
             <CustomBtn txt="Book Edit and Collab Spaces" />
           </NavLink>
         </ListItem>

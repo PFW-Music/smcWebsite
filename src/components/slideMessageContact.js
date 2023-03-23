@@ -1,7 +1,5 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { animated, useSpring } from "react-spring";
 import Grid from "@mui/material/Grid";
 
 const noteStyle = {
@@ -27,7 +25,9 @@ function SlideMessageContact() {
       <animated.div style={slideStyle}>
         <div style={noteStyle}>
           <h1>Contact Us</h1>
-          <h3>See below for information on getting in contact with John Buteyn...</h3>
+          <h3>
+            See below for information on getting in contact with John Buteyn...
+          </h3>
         </div>
       </animated.div>
     </Grid>

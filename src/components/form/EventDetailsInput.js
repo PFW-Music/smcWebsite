@@ -31,10 +31,10 @@ const MenuProps = {
 };
 
 // This will be used to store input data
-var userEventTitle;
-var userEventType;
-var userEventUsage;
-var userFacultyInput;
+let userEventTitle;
+let userEventType;
+let userEventUsage;
+let userFacultyInput;
 
 const eventTypes = [
   "Summer Booking 🏖",
@@ -57,15 +57,16 @@ function getStyles(type, eventType, theme) {
   };
 }
 
-export default function EventDetailsInput({facultyList, 
-                                           setSessionTitle, 
-                                           setEventTypeSelected, 
-                                           setFacultySelected, 
-                                           setUsageSelected}) {
-
+export default function EventDetailsInput({
+                                            facultyList,
+                                            setSessionTitle,
+                                            setEventTypeSelected,
+                                            setFacultySelected,
+                                            setUsageSelected
+                                          }) {
   const theme = useTheme();
-  const [eventType, setEventType] = React.useState([]);
-  const [eventUsage, setEventUsage] = React.useState([]);
+  const [eventType, setEventType] = React.useState("");
+  const [eventUsage, setEventUsage] = React.useState("");
   const [title, setTitle] = React.useState([]);
   const [isProject, setIsProject] = React.useState(false);
   const [faculty, setFaculty] = React.useState([]);
@@ -75,7 +76,7 @@ export default function EventDetailsInput({facultyList,
       target: { value }
     } = event;
     setEventType(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a string field value.
       typeof value === "string" ? value.split(",") : value
     );
     userEventType = value;
@@ -90,7 +91,7 @@ export default function EventDetailsInput({facultyList,
       target: { value }
     } = event;
     setEventUsage(
-      // On autofill we get a the stringified value.
+      // On autofill, we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
     userEventUsage = value;
@@ -132,7 +133,6 @@ export default function EventDetailsInput({facultyList,
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
-              
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
@@ -144,12 +144,15 @@ export default function EventDetailsInput({facultyList,
           </li>
         )}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" label="Find your professor" />
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Find your professor"
+          />
         )}
       ></Autocomplete>
     </FormControl>
   );
-
 
   return (
     <div>
@@ -163,6 +166,7 @@ export default function EventDetailsInput({facultyList,
           autoComplete="off"
         >
           <TextField
+            variant="standard"
             id="outlined-name"
             label="Session Title"
             value={title}
@@ -170,16 +174,15 @@ export default function EventDetailsInput({facultyList,
               setTitle(event.target.value);
               userEventTitle = event.target.value;
               setSessionTitle(event.target.value);
-              console.log(userEventTitle);
+              // console.log(userEventTitle);
             }}
           />
         </Box>
         <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
-            <InputLabel id="demo-multiple-chip-label">
-              Event Type
-            </InputLabel>
+          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
+            <InputLabel id="demo-multiple-chip-label">Event Type</InputLabel>
             <Select
+              variant="standard"
               labelId="event-multiple-selection"
               id="event-multiple-chip"
               value={eventType}
@@ -212,16 +215,13 @@ export default function EventDetailsInput({facultyList,
           </FormControl>
         </div>
 
-        <div>
-        {isProject &&<Fade in={isProject}>{FacultySelection}</Fade>}
-        </div>
+        <div>{isProject && <Fade in={isProject}>{FacultySelection}</Fade>}</div>
 
         <div>
-          <FormControl sx={{ m: 1, width: 400 }}>
-            <InputLabel id="demo-multiple-chip-label">
-              Intended Use
-            </InputLabel>
+          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
+            <InputLabel id="demo-multiple-chip-label">Intended Use</InputLabel>
             <Select
+              variant="standard"
               labelId="event-multiple-selection"
               id="event-multiple-chip"
               value={eventUsage}

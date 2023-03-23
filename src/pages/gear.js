@@ -5,7 +5,6 @@ import IndividualGearCheckOut from "../components/form/IndividualGearCheckOut";
 import IndividualSubmit from "../components/form/IndividualSubmit";
 
 import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Grow from "@mui/material/Grow";
 import FormLabel from "@mui/material/FormLabel";
@@ -14,27 +13,33 @@ import FormLabel from "@mui/material/FormLabel";
 ///////////////////////////////////////////  API CALLS  ///////////////////////////////////////////
 ///////////////////////////////////////////             ///////////////////////////////////////////
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 const peopleAllInfo = [];
 
-var x = 0;
+let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE",
+    view: "ALL PEOPLE"
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
-        peopleAllInfo[x] = { id: record.id, name: record.get("Person"), gearAccess: record.get("Gear Access") };
+      records.forEach(function(record) {
+        peopleAllInfo[x] = {
+          id: record.id,
+          name: record.get("Person"),
+          gearAccess: record.get("Gear Access")
+        };
         x = x + 1;
 
-        console.log(x, "Retrieved", record.get("Person"), record);
-        console.log(x, "Retrieved", record.get("Person"), record.get("Room Access"), record.get("Gear Access"));
+        // console.log(x, "Retrieved", record.get("Person"), record);
+        // console.log(x, "Retrieved", record.get("Person"), record.get("Room Access"), record.get("Gear Access"));
       });
 
       // To fetch the next page of records, call `fetchNextPage`.
@@ -45,7 +50,6 @@ base("SMC People")
     function done(err) {
       if (err) {
         console.error(err);
-        return;
       }
     }
   );
@@ -65,9 +69,17 @@ function Gear() {
       <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
         Who's booking?
         <br />
-        <FormLabel component="legend">Add users to see a list of gear available to your access level in the Select Gear menu.</FormLabel>
+        <FormLabel component="legend">
+          Add users to see a list of gear available to your access level in the
+          Select Gear menu.
+        </FormLabel>
       </Box>
-      <IndividualNameInput peopleAllInfo={peopleAllInfo} setUserSelected={setUserSelected} userSelected={userSelected} setGearList={setGearList} />
+      <IndividualNameInput
+        peopleAllInfo={peopleAllInfo}
+        setUserSelected={setUserSelected}
+        userSelected={userSelected}
+        setGearList={setGearList}
+      />
     </Paper>
   );
 
@@ -75,9 +87,16 @@ function Gear() {
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
       <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
         Session Time
-        <FormLabel component="legend">Based on your chosen Session Time, we wil notify you with the availability of the room(s) selected above.</FormLabel>
+        <FormLabel component="legend">
+          Based on your chosen Session Time, we wil notify you with the
+          availability of the room(s) selected above.
+        </FormLabel>
       </Box>
-      <IndividualTimeInput setStartTimeSelected={setStartTimeSelected} setEndTimeSelected={setEndTimeSelected} setTimeCorrect={setTimeCorrect} />
+      <IndividualTimeInput
+        setStartTimeSelected={setStartTimeSelected}
+        setEndTimeSelected={setEndTimeSelected}
+        setTimeCorrect={setTimeCorrect}
+      />
       <br />
     </Paper>
   );

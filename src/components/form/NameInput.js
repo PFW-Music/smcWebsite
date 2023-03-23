@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -18,17 +19,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { TransitionGroup } from "react-transition-group";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import FormLabel from "@mui/material/FormLabel";
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 //NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
 
 // This will be used to store input data
-var userValues = [];
+let userValues = [];
 
-var emojis = [
+const emojis = [
   "🎹",
   "😃",
   "😀",
@@ -43,7 +45,7 @@ var emojis = [
   "😂",
   "🎸",
   "😋",
-  "😎",
+  "😎"
 ];
 
 const userEmoji = [];
@@ -55,7 +57,13 @@ function renderItem({ item, handleRemoveName }) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" title="Delete" onClick={() => handleRemoveName(item)}>
+        <IconButton
+          edge="end"
+          aria-label="delete"
+          title="Delete"
+          onClick={() => handleRemoveName(item)}
+          size="large"
+        >
           <DeleteIcon />
         </IconButton>
       }
@@ -65,18 +73,24 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-var gearList = []; //store list of gear available to user
-var lendLevel = ""; //store determined lending level
+let gearList = []; //store list of gear available to user
+let lendLevel = ""; //store determined lending level
 
 ////////////////////// Filtering gears accessible using API data
 function filterGear() {
   if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
     lendLevel = "Lending Level 4";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 3")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 3")
+  ) {
     lendLevel = "Lending Level 3";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 2")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 2")
+  ) {
     lendLevel = "Lending Level 2";
-  } else if (userValues.some((element) => element.gearAccess === "Gear Level 1")) {
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 1")
+  ) {
     lendLevel = "Lending Level 1";
   }
   //CASE: User has no lendLevel (staff) RETURN: Empty gearList for selection options
@@ -88,20 +102,20 @@ function filterGear() {
 
   base("Gear")
     .select({
-      view: lendLevel,
+      view: lendLevel
     })
     .eachPage(
       function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
 
-        records.forEach(function (record) {
+        records.forEach(function(record) {
           //console.log('Retrieved', record.get('Item'), record);
           gearList.push({
             name: record.get("Item"),
             id: record.id,
             eventStart: record.get("Events Start"),
             eventEnd: record.get("Events End"),
-            eventStatus: record.get("Events Status"),
+            eventStatus: record.get("Events Status")
           });
         });
 
@@ -113,7 +127,6 @@ function filterGear() {
       function done(err) {
         if (err) {
           console.error(err);
-          return;
         }
       }
     );
@@ -121,36 +134,64 @@ function filterGear() {
   return gearList;
 }
 
-var roomTypes;
+let roomTypes;
 
 ////////////////////// Filtering gears using API data
 function filterRoomType(disabled) {
   if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
     disabled = [];
-  } else if (userValues.some((element) => element.roomAccess === "Room Access 2")) {
+  } else if (
+    userValues.some((element) => element.roomAccess === "Room Access 2")
+  ) {
     disabled = ["Recording Studio 🎙️"];
-  } else if (userValues.some((element) => element.roomAccess === "Room Access 1")) {
+  } else if (
+    userValues.some((element) => element.roomAccess === "Room Access 1")
+  ) {
     disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
   } else {
     // roomTypes[] remains empty as the user has no access levels
-    disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧", "Edit & Collaboration Spaces 🎒"];
+    disabled = [
+      "Recording Studio 🎙️",
+      "Rehearsal Spaces 🎧",
+      "Edit & Collaboration Spaces 🎒"
+    ];
   }
   return disabled;
 }
 
 const filter = createFilterOptions();
 
-function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount, setDisabledRoomTypes, setGearList }) {
+function NameInput({
+                     peopleAllInfo,
+                     setUserSelected,
+                     setUserCount,
+                     setDisabledRoomTypes,
+                     setGearList
+                   }) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [passFail, setPassFail] = React.useState(false);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState("");
   const [phoneVal, setPhoneVal] = React.useState(null);
 
-  const [nameInDisplay, setNameInDisplay] = React.useState(userNameList.slice(0, 3));
+  const [nameInDisplay, setNameInDisplay] = React.useState(
+    userNameList.slice(0, 3)
+  );
+
+  useEffect(() => {
+    Initilize();
+  }, []);
 
   const Initilize = () => {
-    if (!userSelected) userNameList = [];
+    userValues = [];
+    gearList = [];
+    roomTypes = [
+      "Recording Studio 🎙️",
+      "Rehearsal Spaces 🎧",
+      "Edit & Collaboration Spaces 🎒"
+    ];
+    setGearList(filterGear());
+    setDisabledRoomTypes(filterRoomType(roomTypes));
   };
 
   const handleAddName = () => {
@@ -183,26 +224,24 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
   };
 
   const handleName = (event, newValue) => {
+    if (newValue == null) {
+      setValue(null);
+      return;
+    }
     if (typeof newValue === "string") {
       setValue({
-        title: newValue,
+        title: newValue
       });
     } else {
       setValue(newValue);
     }
   };
 
-  const handlePhone = (event, newValue) => {
-    if (typeof newValue === "string") {
-      setPhoneVal({
-        title: newValue,
-      });
-    } else {
-      setPhoneVal(newValue);
-    }
-  };
-
   const handleChange = (newValue) => {
+    if (!value) {
+      // Handle the case when value is null or undefined
+      return;
+    }
     if (nameCheck(newValue, value.name, phoneVal)) {
       if (newValue != null) {
         if (userNameList.indexOf(newValue.name) > -1) {
@@ -233,13 +272,12 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
 
   const nameCheck = (recordVal, name, number) => {
     const phonePass = recordVal.phoneNum.slice(-4);
-    if (recordVal.name === name && phonePass === number) {
-      return true;
-    } else {
-      return false;
-    }
+    return recordVal.name === name && phonePass === number;
   };
 
+  const handleOk = () => {
+    handleChange(value);
+  };
   const nameInputDialog = (
     <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
       <DialogTitle>Find your name</DialogTitle>
@@ -249,8 +287,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
             value={value}
             onChange={handleName}
             filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              return filtered;
+              return filter(options, params);
             }}
             selectOnFocus
             clearOnBlur={true}
@@ -269,11 +306,31 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
             renderInput={(params) => (
               <div>
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  <SearchRoundedIcon sx={{ color: "action.active", mr: 1, my: 3.5 }} />
+                  <SearchRoundedIcon
+                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
+                  />
                   {error && (
-                    <TextField {...params} error id="error" label="Error" helperText="This user has already been added" size="small" variant="standard" />
+                    <TextField
+                      {...params}
+                      error
+                      id="error"
+                      label="Error"
+                      helperText="This user has already been added"
+                      size="small"
+                      variant="standard"
+                      value={params.inputProps.value || ""}
+                    />
                   )}
-                  {!error && <TextField {...params} label="Search for name" helperText="Please enter your name here :)" size="small" variant="standard" />}
+                  {!error && (
+                    <TextField
+                      {...params}
+                      label="Search for name"
+                      helperText="Please enter your name here :)"
+                      size="small"
+                      variant="standard"
+                      value={params.inputProps.value || ""}
+                    />
+                  )}
                 </Box>
               </div>
             )}
@@ -287,7 +344,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   label="Please enter correct password"
                   helperText="User+Password combo failed."
                   onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal}
+                  value={phoneVal || ""}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       handleChange(value);
@@ -297,7 +354,11 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   variant="standard"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  style={{ width: "50%", "margin-left": "auto", "margin-right": 30 }}
+                  style={{
+                    width: "50%",
+                    marginLeft: "auto",
+                    marginRight: 30
+                  }}
                 />
               )}
               {!passFail && (
@@ -306,7 +367,7 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   id="phone-val"
                   label="Last 4 of Ph#"
                   onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal}
+                  value={phoneVal || ""}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       handleChange(value);
@@ -316,14 +377,21 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
                   size="small"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  style={{ width: "50%", "margin-left": "auto", "margin-right": 30 }}
+                  style={{
+                    width: "50%",
+                    marginLeft: "auto",
+                    marginRight: 30
+                  }}
                 />
               )}
             </Box>
           </div>
         </Stack>
       </DialogContent>
+
       <DialogActions>
+        {/* TODO : add functionality to the ok button */}
+        <Button onClick={handleOk}>Ok</Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
@@ -331,9 +399,15 @@ function NameInput({ peopleAllInfo, userSelected, setUserSelected, setUserCount,
 
   return (
     <div>
-      {Initilize}
       <Box sx={{ textAlign: "left", m: 2 }}>
-        <Button sx={{ backgroundColor: "rgba(207,185,145)", "&:hover": { backgroundColor: "#7a6d55" } }} variant="contained" onClick={handleClickOpen}>
+        <Button
+          sx={{
+            backgroundColor: "rgba(207,185,145)",
+            "&:hover": { backgroundColor: "#7a6d55" }
+          }}
+          variant="contained"
+          onClick={handleClickOpen}
+        >
           +ADD
         </Button>
       </Box>

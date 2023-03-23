@@ -3,13 +3,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import NameInput from "./NameInput";
-import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import { styled } from "@mui/styles";
 
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base("appYke0X4d4wy6GUx");
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
+  process.env.REACT_APP_AIRTABLE_BASE_ID
+);
 
 const SubmitButton = styled(Button)({
   background: "linear-gradient(45deg, rgba(207,185,145) 99%, #000000 1%)", //"linear-gradient(45deg, #4568dc 30%, #b06ab3 90%)",
@@ -36,7 +35,7 @@ const style = {
   color: "#191b1d",
 };
 
-function CreateRecord(
+async function CreateRecord(
   users,
   sessionTitle,
   eventTypeSelected,
@@ -50,11 +49,11 @@ function CreateRecord(
   gears,
   locations
 ) {
-  base("Events").create(
-    [
+  try {
+    const records = await base("Events").create([
       {
         fields: {
-          "Event Name": sessionTitle, //Need to be changed for a new record to be created
+          "Event Name": sessionTitle,
           "Start Time": startTimeSelected,
           "Proposed End Time": endTimeSelected,
           "🚪 Room(s)": roomSelected,
@@ -68,20 +67,17 @@ function CreateRecord(
           Location: locations,
         },
       },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function (record) {
-        console.log(record.getId());
-      });
-    }
-  );
+    ]);
+
+    records.forEach(function (record) {
+      console.log(record.getId());
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-function UpdateRecord(
+async function UpdateRecord(
   eventID,
   users,
   sessionTitle,
@@ -96,8 +92,8 @@ function UpdateRecord(
   gears,
   locations
 ) {
-  base("Events").update(
-    [
+  try {
+    const records = await base("Events").update([
       {
         id: eventID,
         fields: {
@@ -115,17 +111,14 @@ function UpdateRecord(
           Location: locations,
         },
       },
-    ],
-    function (err, records) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach(function (record) {
-        console.log("record updated");
-      });
-    }
-  );
+    ]);
+
+    records.forEach(function () {
+      console.log("record updated");
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default function Submit({
@@ -158,7 +151,6 @@ export default function Submit({
   setNewEvent,
   updateEvent,
   setUpdateEvent,
-  CancelEvent,
   setCancelEvent,
   timeCorrect,
   setUserCount,
@@ -167,20 +159,16 @@ export default function Submit({
   roomBookingRecord,
 }) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
 
-  const [error, setError] = React.useState(false);
-  const [value, setValue] = React.useState(null);
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setOpen(true);
 
     // getting the IDs lists for linking fields
-    var users = [];
-    var faculties = [];
-    var courses = [];
-    var gears = [];
-    var locations = [];
+    const users = [];
+    const faculties = [];
+    const courses = [];
+    const gears = [];
+    const locations = [];
 
     if (userSelected) {
       userSelected.forEach(function (obj) {
@@ -211,7 +199,7 @@ export default function Submit({
     console.log(courses);
     // perform form action
     if (newEvent) {
-      CreateRecord(
+      await CreateRecord(
         users,
         sessionTitle,
         eventTypeSelected,
@@ -226,7 +214,7 @@ export default function Submit({
         locations
       );
     } else if (updateEvent) {
-      UpdateRecord(
+      await UpdateRecord(
         eventID,
         users,
         sessionTitle,
@@ -244,7 +232,6 @@ export default function Submit({
     }
     console.log("checking error");
   };
-
   const handleClose = () => {
     // Clears all form fields
     // event record data
@@ -280,13 +267,27 @@ export default function Submit({
     <div>
       <SubmitButton
         variant="contained"
-        disabled={!(sessionTitle && roomTypeSelected && eventTypeSelected && endTimeSelected && startTimeSelected && timeCorrect)}
+        disabled={
+          !(
+            sessionTitle &&
+            roomTypeSelected &&
+            eventTypeSelected &&
+            endTimeSelected &&
+            startTimeSelected &&
+            timeCorrect
+          )
+        }
         onClick={handleSubmit}
       >
         SUBMIT
       </SubmitButton>
 
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submission Successful!

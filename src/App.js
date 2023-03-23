@@ -1,10 +1,13 @@
 import * as React from "react";
-import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import "./App.css";
-import CustomBtn from "./components/customBtn";
-import NavBar from "./components/navBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Navbar } from "./containers";
 
 import home from "./pages/home";
 import schedules from "./pages/schedules";
@@ -40,7 +43,8 @@ const theme = createTheme({
     MuiCssBaseline: {
       "@global": {
         body: {
-          backgroundImage: "url(https://www.pfw.edu/themes/fire/theme/assets/media/images/texture--gray.jpg)",
+          backgroundImage:
+            "url(https://www.pfw.edu/themes/fire/theme/assets/media/images/texture--gray.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         },
@@ -53,17 +57,22 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <NavBar />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
 
-          <Switch>
-            <Route path="/" exact component={home} />
-            <Route path="/schedules" exact component={schedules} />
-            <Route path="/gear" exact component={gear} />
-            <Route path="/contact" exact component={contact} />
-          </Switch>
-        </ThemeProvider>
+            <div className="navbar">
+              <Navbar />
+            </div>
+
+            <Switch>
+              <Route path="/" exact component={home} />
+              <Route path="/schedules" exact component={schedules} />
+              <Route path="/gear" exact component={gear} />
+              <Route path="/contact" exact component={contact} />
+            </Switch>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </div>
     </Router>
   );

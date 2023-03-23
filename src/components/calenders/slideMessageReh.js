@@ -1,5 +1,5 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 const noteStyle = {
   background: "#0A0A0A",
@@ -23,7 +23,9 @@ function SlideMessageReh() {
     <animated.div style={slideStyle}>
       <div style={noteStyle}>
         <h1>Need some practice?</h1>
-        <h3>Please check out the calendar below before you book a Rehearsal Space</h3>
+        <h3>
+          Please check out the calendar below before you book a Rehearsal Space
+        </h3>
       </div>
     </animated.div>
   );

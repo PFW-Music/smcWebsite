@@ -1,5 +1,5 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 const noteStyle = {
   background: "#0A0A0A",
@@ -23,7 +23,10 @@ function SlideMessageCollab() {
     <animated.div style={slideStyle}>
       <div style={noteStyle}>
         <h1>Looking for space?</h1>
-        <h3>Take advantage of the edit suites and other collaboration spaces in the SMC building.</h3>
+        <h3>
+          Take advantage of the edit suites and other collaboration spaces in
+          the SMC building.
+        </h3>
       </div>
     </animated.div>
   );

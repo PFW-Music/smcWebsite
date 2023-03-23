@@ -1,11 +1,17 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
-.main-nav-active{
-  color:rgb(8, 0, 0);
+.main-nav-active {
+    color: rgb(8, 0, 0);
 }
 
-.main-nav:hover{
-  color:rgb(24, 5, 5) !important;
+.main-nav:hover {
+    color: rgb(24, 5, 5) !important;
+}
+
+.navbarlinks {
+    background-color: #181A1B;
+    font-family: 'Manrope', sans-serif;
+    display: flex;
 }

@@ -1,6 +1,5 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
-import Typography from "@mui/material/Typography";
+import { animated, useSpring } from "react-spring";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
@@ -38,8 +37,10 @@ function SlideMessage() {
               width: "80%",
             }}
           >
-            Everyone can take advantage of scheduling time in the edit & collaboration spaces in the SMC building. Approved students registered for certain
-            classes have privileges to schedule time in the recording studio, rehearsal room and control room.
+            Everyone can take advantage of scheduling time in the edit &
+            collaboration spaces in the SMC building. Approved students
+            registered for certain classes have privileges to schedule time in
+            the recording studio, rehearsal room and control room.
           </Box>
         </div>
       </animated.div>
