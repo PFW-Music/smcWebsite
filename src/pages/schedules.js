@@ -1,6 +1,6 @@
 import React from "react";
 import IframeSlide from "../components/IframeSlide";
-import HeaderWithSubtitle from "../components/HeaderWithSubtitle"
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 
 function schedules() {
   return (

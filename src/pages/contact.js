@@ -1,5 +1,5 @@
 import React from "react";
-import HeaderWithSubtitle from "../components/HeaderWithSubtitle"
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 
 import "../fade-styles.css";
 

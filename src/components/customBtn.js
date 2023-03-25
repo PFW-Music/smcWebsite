@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@mui/material/";
-import withStyles from '@mui/styles/withStyles';
+import withStyles from "@mui/styles/withStyles";
 
 const StyledButton = withStyles({
   root: {

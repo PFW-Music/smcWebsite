@@ -9,7 +9,7 @@ import FormActions from "../components/form/FormActions";
 import EventID from "../components/form/EventID";
 import Submit from "../components/form/Submit";
 import IframeSlide from "../components/IframeSlide";
-import HeaderWithSubtitle from "../components/HeaderWithSubtitle"
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
 import Box from "@mui/material/Box";

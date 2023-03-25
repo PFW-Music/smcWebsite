@@ -18,27 +18,6 @@ let StartTime;
 let EndTime;
 let unavailableRoom;
 
-
-{
-  /**
-   Daylight savings time changes are made in this section. The values in this comment were working on the given dates:
-   March 13, 2022 - November 6, 2022:
-   line 63 newTime.getHours() > 19
-   line 64 newTime.setDate(newTime.getDate() + 1);
-   line 65 newTime.setHours(newTime.getHours() - 20);
-   line 67 newTime.setHours(newTime.getHours() + 4)
-
-   Nov 7, 2022 - March 11, 2023: (the current)
-   line 63 newTime.getHours() > 18
-   line 64 newTime.setDate(newTime.getDate() + 1);
-   line 65 newTime.setHours(newTime.getHours() - 19);
-   line 67 newTime.setHours(newTime.getHours() + 5)
-
-   Sorry we couldn't work the switching issue into our solution, good luck.
-   */
-}
-
-
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
     <MuiAlert
@@ -271,7 +250,7 @@ export default function DateTimeValidation({
         {successMsg && (
           <Snackbar
             open={successMsg}
-            autoHideDuration={2000}
+            autoHideDuration={500}
             onClose={handleRealClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
