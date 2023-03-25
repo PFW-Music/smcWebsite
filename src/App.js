@@ -7,7 +7,7 @@ import {
 import "./App.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navbar } from "./containers";
+import Navbar from "./components/Navbar";
 
 import home from "./pages/home";
 import schedules from "./pages/schedules";

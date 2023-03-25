@@ -1,5 +1,5 @@
 import React from "react";
-import SlideMessageContact from "../components/slideMessageContact";
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle"
 
 import "../fade-styles.css";
 
@@ -38,7 +38,10 @@ function FadeInSection(props) {
 export default function Fades() {
   return (
     <div className="FadeStyles">
-      <SlideMessageContact />
+      <HeaderWithSubtitle
+        title="Contact Us"
+        subtitle="See below for information on getting in contact with John Buteyn..."
+      />
 
       <FadeInSection>
         <div className="box" style={{ backgroundColor: "transparent" }}>

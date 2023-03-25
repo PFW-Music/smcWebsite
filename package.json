@@ -15,6 +15,7 @@
     "airtable": "^0.11.6",
     "date-fns": "^2.25.0",
     "dotenv": "^16.0.3",
+    "list-react-files": "^0.2.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-datepicker": "^4.10.0",

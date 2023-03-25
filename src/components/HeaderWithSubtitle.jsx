@@ -7,7 +7,7 @@ const noteStyle = {
   padding: "1.5rem",
 };
 
-function SlideMessageCollab() {
+function SlideMessage({ title, subtitle }) {
   const slideStyle = useSpring({
     from: {
       opacity: 0,
@@ -22,14 +22,11 @@ function SlideMessageCollab() {
   return (
     <animated.div style={slideStyle}>
       <div style={noteStyle}>
-        <h1>Looking for space?</h1>
-        <h3>
-          Take advantage of the edit suites and other collaboration spaces in
-          the SMC building.
-        </h3>
+        <h1>{title}</h1>
+        <h3>{subtitle}</h3>
       </div>
     </animated.div>
   );
 }
 
-export default SlideMessageCollab;
+export default SlideMessage;

@@ -1,6 +1,4 @@
 import React from "react";
-import SlideCalendar from "../components/slideCalendar";
-import SlideMessage from "../components/slideMessage";
 import NameInput from "../components/form/NameInput";
 import EventDetailsInput from "../components/form/EventDetailsInput";
 import RoomSelection from "../components/form/RoomSelection";
@@ -10,6 +8,8 @@ import CourseInput from "../components/form/CourseInput";
 import FormActions from "../components/form/FormActions";
 import EventID from "../components/form/EventID";
 import Submit from "../components/form/Submit";
+import IframeSlide from "../components/IframeSlide";
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle"
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
 import Box from "@mui/material/Box";
@@ -345,7 +345,13 @@ function Home() {
 
 	return (
 		<div>
-			<SlideMessage />
+			<HeaderWithSubtitle
+				title="Schedule SMC Events"
+				subtitle="Everyone can take advantage of scheduling time in the edit &
+            collaboration spaces in the SMC building. Approved students
+            registered for certain classes have privileges to schedule time in
+            the recording studio, rehearsal room and control room."
+			/>
 			{/**<SlideCalendar/> */}
 
 			<Fade in={true}>{SMChours}</Fade>
@@ -354,7 +360,7 @@ function Home() {
 			{CancelEvent && <Grow in={CancelEvent}>{requestEventID}</Grow>}
 			<Grow in={newEvent || (updateEvent && goodID)}>{nameInput}</Grow>
 			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<SlideCalendar />
+				<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />
 			)}
 			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
 				<Grow in={userCount > 0}>{eventDetailsInput}</Grow>

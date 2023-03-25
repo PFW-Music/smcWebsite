@@ -12,7 +12,7 @@ const embedStyle = {
   border: "",
 };
 
-function SlideCalendarCollabComponent() {
+function IframeSlideComponent({ src }) {
   const [showIframe, setShowIframe] = useState(false);
   const slideStyle = useSpring({
     from: {
@@ -39,7 +39,7 @@ function SlideCalendarCollabComponent() {
         {showIframe && (
           <iframe
             className="airtable-embed"
-            src="https://airtable.com/embed/shru3rbc7s9mbQj2i"
+            src={src}
             sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
             loading="lazy"
             width="50%"
@@ -52,6 +52,6 @@ function SlideCalendarCollabComponent() {
   );
 }
 
-const SlideCalendarCollab = React.memo(SlideCalendarCollabComponent);
+const IframeSlide = React.memo(IframeSlideComponent);
 
-export default SlideCalendarCollab;
+export default IframeSlide;
