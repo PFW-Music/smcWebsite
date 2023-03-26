@@ -6,7 +6,7 @@ const containerStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#181A1B",
+  backgroundColor: "#16181A",
   padding: "15px",
   width: "100%"
 };
@@ -15,7 +15,7 @@ const containerStyle2 = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#181A1B",
+  backgroundColor: "#16181A",
   padding: "15px",
   flexDirection: "column"
 };

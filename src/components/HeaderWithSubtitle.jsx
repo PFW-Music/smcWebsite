@@ -3,8 +3,8 @@ import { animated, useSpring } from "react-spring";
 import { Text } from "@nextui-org/react";
 
 const noteStyle = {
-  background: "#0A0A0A",
-  color: "#F5F5F5",
+  background: "#16181A",
+  color: "#16181A",
   padding: "1.5rem",
 };
 
