@@ -390,7 +390,6 @@ function NameInput({
       </DialogContent>
 
       <DialogActions>
-        {/* TODO : add functionality to the ok button */}
         <Button bordered color="warning" auto onClick={handleOk}>
           Ok
         </Button>

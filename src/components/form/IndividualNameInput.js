@@ -224,7 +224,6 @@ function NameInput({
       </Stack>
     </DialogContent>
     <DialogActions>
-      {/* TODO : add functionality to the ok button */}
       <Button bordered color="warning" auto>
         Ok
       </Button>
