@@ -1,5 +1,6 @@
 import React from "react";
 import { animated, useSpring } from "react-spring";
+import { Text } from "@nextui-org/react";
 
 const noteStyle = {
   background: "#0A0A0A",
@@ -22,8 +23,8 @@ function SlideMessage({ title, subtitle }) {
   return (
     <animated.div style={slideStyle}>
       <div style={noteStyle}>
-        <h1>{title}</h1>
-        <h3>{subtitle}</h3>
+        <Text size={40} color="textLight">{title}</Text>
+        <Text size={25} color="textLight">{subtitle}</Text>
       </div>
     </animated.div>
   );

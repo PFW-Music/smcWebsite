@@ -43,7 +43,7 @@ function IframeSlideComponent({ src }) {
             sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
             loading="lazy"
             width="50%"
-            height="533"
+            height="600"
             style={embedStyle}
           />
         )}

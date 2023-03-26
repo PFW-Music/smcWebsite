@@ -4,7 +4,6 @@ import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 
 function schedules() {
   return (
-
     <div>
       <HeaderWithSubtitle
         title="Ready to go on record?"

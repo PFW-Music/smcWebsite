@@ -10,14 +10,14 @@ import gear from "./pages/gear";
 import contact from "./pages/contact";
 import { NextUIProvider } from "@nextui-org/react";
 
+
 function App() {
   return (
     <NextUIProvider>
       <Router>
         <div className="App">
           <CssBaseline />
-            <NavbarCustom />
-
+          <NavbarCustom />
           <Switch>
             <Route path="/" exact component={home} />
             <Route path="/schedules" exact component={schedules} />

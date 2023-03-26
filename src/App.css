@@ -1,7 +1,9 @@
 .App {
     text-align: center;
-}
+    font-family: 'Inter', sans-serif;
+    font-weight: lighter;
 
+}
 .main-nav-active {
     color: rgb(8, 0, 0);
 }
@@ -12,6 +14,6 @@
 
 .navbarlinks {
     background-color: #181A1B;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Inter', sans-serif;
     display: flex;
 }
