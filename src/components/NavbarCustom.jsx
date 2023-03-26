@@ -1,5 +1,4 @@
 import React from "react";
-import LogoPFW from "../assets/LogoPFW.webp";
 import { Navbar } from "@nextui-org/react";
 
 const containerStyle = {
@@ -28,7 +27,7 @@ const NavbarCustom = () => {
   return (<div style={containerStyle}>
     <div style={containerStyle2}>
       <a href="https://pfw-smc.notion.site/pfw-smc/PFW-Sweetwater-Music-Center-17d134f1dd704a56909044ddb24d61ed">
-        <img src={LogoPFW} alt="logo" height={45} />
+        <img src={"LogoPFW.webp"} alt="logo" height={45} />
       </a>
       <Navbar isCompact isBordered variant="sticky">
         <Navbar.Content enableCursorHighlight hideIn="L" variant="underline">
