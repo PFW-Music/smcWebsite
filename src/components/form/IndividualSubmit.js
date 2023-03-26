@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { styled } from "@mui/styles";
@@ -10,16 +10,6 @@ const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
   process.env.REACT_APP_AIRTABLE_BASE_ID
 );
 
-const SubmitButton = styled(Button)({
-  background: "linear-gradient(45deg, #555960 99%, #000000 1%)", //"linear-gradient(45deg, #ffd06a 30%, #fded2d 90%)",
-  border: 0,
-  borderRadius: 4,
-  boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-  color: "white",
-  height: 50,
-  padding: "0 30px"
-});
-
 //create global variables here
 
 const style = {
@@ -28,7 +18,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#e7dcc8",
+  bgcolor: "#16181A",
   outline: 0,
   boxShadow: 20,
   p: 4,
@@ -103,21 +93,16 @@ export default function Submit({
 
   return (
     <div>
-      <SubmitButton
-        sx={{
-          backgroundColor: "rgba(207,185,145)",
-          "&:hover": { backgroundColor: "#7a6d55" }
-        }}
-        variant="contained"
-        disabled={
-          !(endTimeSelected && startTimeSelected && timeCorrect) ||
-          gearSelected.length === 0 ||
-          userSelected.length === 0
-        }
-        onClick={handleSubmit}
+      <Button bordered color="warning" auto
+              onClick={handleSubmit}
+              disabled={
+                !(endTimeSelected && startTimeSelected && timeCorrect) ||
+                gearSelected.length === 0 ||
+                userSelected.length === 0
+              }
       >
         SUBMIT
-      </SubmitButton>
+      </Button>
 
       <Modal
         open={open}

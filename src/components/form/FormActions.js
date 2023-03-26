@@ -1,20 +1,17 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { styled } from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 
-const ActionButton = styled(Button)({
-  // background: "linear-gradient(45deg, #555960 99%, #000000 1%)", //"linear-gradient(45deg, #4568dc 30%, #b06ab3 90%)",
-  border: 0,
-  borderRadius: 4,
-  boxShadow: "(0 3px 5px 2px rgba(255, 105, 135, .3)",
-  color: "white",
-  padding: "0 20px" //this is where the creation/update/cancel buttons are
-});
+const containerStyle = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "20px" // You can adjust the gap between cards if needed
+};
 
 export default function FormActions({
                                       setNewEvent,
@@ -61,51 +58,28 @@ export default function FormActions({
     setGoodID(false);
   };
 
-  return (
-    <Box>
-      <Grid container justifyContent="center" alignItems="center" spacing={1}>
-        <Grid item xs>
-          <ActionButton
-            sx={{
-              backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" }
-            }}
-            variant="contained"
-            startIcon={<AddCircleIcon />}
-            onClick={handleNewEvent}
-          >
-            Create Event
-          </ActionButton>
-        </Grid>
+  return (<div style={containerStyle}>
+      <Button bordered color="warning"
+              onClick={handleNewEvent}
+              icon={<AddCircleIcon />}
+      >
+        Create Event
+      </Button>
+      <Button bordered color="warning"
+              onClick={handleUpdateEvent}
+              icon={<EditIcon />}
+      >
+        Update Event
+      </Button>
+      <Button bordered color="warning"
+              onClick={handleCancelEvent}
+              icon={<DeleteIcon />}
+      >
+        Cancel Event
+      </Button>
 
-        <Grid item xs>
-          <ActionButton
-            sx={{
-              backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" }
-            }}
-            variant="contained"
-            startIcon={<EditIcon />}
-            onClick={handleUpdateEvent}
-          >
-            Update Event
-          </ActionButton>
-        </Grid>
+    </div>
 
-        <Grid item xs>
-          <ActionButton
-            sx={{
-              backgroundColor: "rgba(207,185,145)",
-              "&:hover": { backgroundColor: "#7a6d55" }
-            }}
-            variant="contained"
-            startIcon={<DeleteIcon />}
-            onClick={handleCancelEvent}
-          >
-            Cancel Event
-          </ActionButton>
-        </Grid>
-      </Grid>
-    </Box>
+
   );
 }

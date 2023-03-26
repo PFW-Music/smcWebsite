@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import Grid from "@mui/material/Grid";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar"; //test
@@ -47,7 +47,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#e7dcc8",
+  bgcolor: "#16181A",
   outline: 0,
   boxShadow: 20,
   p: 4,
@@ -140,8 +140,8 @@ export default function EventID({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmitCancellation}>Yes</Button>
-        <Button onClick={handleCloseCancelDialog}>No</Button>
+        <Button bordered color="primary" auto onClick={handleSubmitCancellation}>Yes</Button>
+        <Button bordered color="primary" auto onClick={handleCloseCancelDialog}>No</Button>
       </DialogActions>
     </Dialog>
   );
@@ -210,8 +210,10 @@ export default function EventID({
             alignItems="center"
             sx={{ textAlign: "left" }}
           >
+
+
             <Button
-              variant="contained"
+              bordered color="warning" auto
               disabled={!eventID}
               onClick={handleCheckID}
             >

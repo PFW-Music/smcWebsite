@@ -1,26 +1,23 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { styled } from "@mui/styles";
 
 const Airtable = require("airtable");
 const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
   process.env.REACT_APP_AIRTABLE_BASE_ID
 );
 
-const SubmitButton = styled(Button)({
-  background: "linear-gradient(45deg, rgba(207,185,145) 99%, #000000 1%)", //"linear-gradient(45deg, #4568dc 30%, #b06ab3 90%)",
-  border: 0,
-  borderRadius: 4,
-  boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-  color: "white",
-  height: 51,
-  padding: "0 30px",
-});
-
 //create global variables here
+const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '16px', // You can adjust the gap between cards if needed
+};
 
 const style = {
   position: "absolute",
@@ -28,7 +25,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#e7dcc8",
+  bgcolor: "#16181A",
   outline: 0,
   boxShadow: 20,
   p: 4,
@@ -264,23 +261,22 @@ export default function Submit({
   };
 
   return (
-    <div>
-      <SubmitButton
-        variant="contained"
-        disabled={
-          !(
-            sessionTitle &&
-            roomTypeSelected &&
-            eventTypeSelected &&
-            endTimeSelected &&
-            startTimeSelected &&
-            timeCorrect
-          )
-        }
-        onClick={handleSubmit}
+    <div style={containerStyle}>
+      <Button bordered color="warning" auto
+              onClick={handleSubmit}
+              disabled={
+                !(
+                  sessionTitle &&
+                  roomTypeSelected &&
+                  eventTypeSelected &&
+                  endTimeSelected &&
+                  startTimeSelected &&
+                  timeCorrect
+                )
+              }
       >
         SUBMIT
-      </SubmitButton>
+      </Button>
 
       <Modal
         open={open}

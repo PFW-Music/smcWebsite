@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import "react-datetime/css/react-datetime.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -201,14 +201,7 @@ export default function DateTimeValidation({
 
       <Box justifyContent="center" alignItems="center">
         <br />
-        <Button
-          sx={{
-            backgroundColor: "rgba(207,185,145)",
-            "&:hover": { backgroundColor: "#7a6d55" }
-          }}
-          variant="contained"
-          onClick={EndTimeCheck}
-        >
+        <Button color="warning" auto ghost onClick={EndTimeCheck}>
           check availability
         </Button>
       </Box>

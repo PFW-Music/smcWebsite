@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Button } from "@nextui-org/react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -391,8 +391,14 @@ function NameInput({
 
       <DialogActions>
         {/* TODO : add functionality to the ok button */}
-        <Button onClick={handleOk}>Ok</Button>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button bordered color="warning" auto onClick={handleOk}>
+          Ok
+        </Button>
+        <Button bordered color="warning" auto
+                onClick={handleClose}>
+          Cancel
+        </Button>
+
       </DialogActions>
     </Dialog>
   );
@@ -400,14 +406,8 @@ function NameInput({
   return (
     <div>
       <Box sx={{ textAlign: "left", m: 2 }}>
-        <Button
-          sx={{
-            backgroundColor: "rgba(207,185,145)",
-            "&:hover": { backgroundColor: "#7a6d55" }
-          }}
-          variant="contained"
-          onClick={handleClickOpen}
-        >
+        <Button bordered color="warning" auto
+                onClick={handleClickOpen}>
           +ADD
         </Button>
       </Box>
