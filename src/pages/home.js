@@ -145,6 +145,7 @@ function Home() {
 	const [disabledRoomTypes, setDisabledRoomTypes] = React.useState([]);
 	const [timeCorrect, setTimeCorrect] = React.useState(false);
 	const [gearList, setGearList] = React.useState([]);
+	const [filteredGearList, setFilteredGearList] = React.useState([]);
 	const [roomBookingRecord, setRoomBookingRecord] = React.useState([]);
 
 	const [addGear, setAddGear] = React.useState(false);
@@ -241,6 +242,8 @@ function Home() {
 				setEndTimeSelected={setEndTimeSelected}
 				setTimeCorrect={setTimeCorrect}
 				roomBookingRecord={roomBookingRecord}
+				gearList={gearList}
+				setFilteredGearList={setFilteredGearList}
 			/>
 			<br />
 		</Paper>
@@ -261,7 +264,7 @@ function Home() {
 		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
 			<GearCheckOut
 				setGearSelected={setGearSelected}
-				gearList={gearList}
+				gearList={filteredGearList}
 				addGear={addGear}
 				setAddGear={setAddGear}
 				startTimeSelected={startTimeSelected}
@@ -374,7 +377,7 @@ function Home() {
 					<Grow in={userCount > 0}>{timeInput}</Grow>
 				)}
 			<Grow in={newEvent || (updateEvent && goodID)}>{courseInput}</Grow>
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+			{userCount > 0 && timeCorrect && (newEvent || (updateEvent && goodID)) && (
 				<Grow in={userCount > 0}>{gearInput}</Grow>
 			)}
 			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (

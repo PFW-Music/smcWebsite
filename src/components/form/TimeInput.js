@@ -30,11 +30,49 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   );
 });
 
+function filterTemporallyUnavailableGear(gearList, startTimeSelected, endTimeSelected) {
+  let temporallyFilteredGear = [];
+  let eventStart = null;
+  let eventEnd = null;
+  let conflictFound = false;
+
+  for (let gearIndex = 0; gearIndex < gearList.length; gearIndex++) {
+    conflictFound = false;
+
+    //No events
+    if (typeof gearList[gearIndex].eventStart === "undefined" || typeof gearList[gearIndex].eventEnd === "undefined"){
+      temporallyFilteredGear.push(gearList[gearIndex]);
+      continue;
+    }
+
+    //loop through start and end times
+    for (let eventIndex = 0; eventIndex < gearList[gearIndex].eventStart.length && !conflictFound; eventIndex++){
+      eventStart = gearList[gearIndex].eventStart[eventIndex];
+      eventEnd = gearList[gearIndex].eventEnd[eventIndex];
+
+      //Chosen start or end is in the middle of an existing event
+      conflictFound = conflictFound || (startTimeSelected > eventStart && startTimeSelected < eventEnd);
+      conflictFound = conflictFound || (endTimeSelected > eventStart && endTimeSelected < eventEnd);
+      //Chosen start is before event and chosen end is after event
+      conflictFound = conflictFound || (startTimeSelected < eventStart && endTimeSelected > eventEnd);
+    }
+    if (!conflictFound) {
+      temporallyFilteredGear.push(gearList[gearIndex]);
+    }
+    // else {
+    //   console.log(gearList[gearIndex]);
+    // }
+  }
+  return temporallyFilteredGear;
+}
+
 export default function DateTimeValidation({
                                              setTimeCorrect,
                                              setStartTimeSelected,
                                              setEndTimeSelected,
-                                             roomBookingRecord
+                                             roomBookingRecord,
+                                             gearList,
+                                             setFilteredGearList
                                            }) {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
@@ -70,6 +108,7 @@ export default function DateTimeValidation({
   };
 
   const EndTimeCheck = () => {
+    let realEndTime;
     if (!StartTime || !EndTime) {
       setInvalidFormat(true);
       setTimeCorrect(false);
@@ -101,7 +140,7 @@ export default function DateTimeValidation({
       let conflictFound = false;
 
       if (typeof roomBookingRecord !== "undefined") {
-        let realEndTime = new Date(EndTime);
+        realEndTime = new Date(EndTime);
         realEndTime.setHours(realEndTime.getHours());
         realEndTime = realEndTime.toISOString();
 
@@ -153,6 +192,7 @@ export default function DateTimeValidation({
         setRoomUnavailable(false);
         setSuccessMsg(true);
         setTimeCorrect(true);
+        setFilteredGearList(filterTemporallyUnavailableGear(gearList, StartTime, realEndTime));
       }
     }
   };
