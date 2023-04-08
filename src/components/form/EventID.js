@@ -1,6 +1,8 @@
 import React from "react";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@nextui-org/react";
+import Grid from "@mui/material/Grid";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Dialog from "@mui/material/Dialog";
@@ -32,6 +34,19 @@ function UpdateRecord(eventID) {
   );
 }
 
+const style = {
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#16181A",
+  outline: 0,
+  boxShadow: 20,
+  p: 4,
+  color: "#191b1d",
+};
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
     <MuiAlert
@@ -45,14 +60,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function EventID({
-                                  IDerror,
-                                  setIDError,
-                                  eventID,
-                                  setEventID,
-                                  setGoodID,
-                                  updateEvent,
-                                  CancelEvent,
-                                }) {
+  IDerror,
+  setIDError,
+  eventID,
+  setEventID,
+  setGoodID,
+  updateEvent,
+  CancelEvent,
+}) {
   const [successMsg, setSuccessMsg] = React.useState(false);
   const [openCancelDialog, setOpenCancelDialog] = React.useState(false);
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
@@ -135,64 +150,98 @@ export default function EventID({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-400 bg-gray-900 p-4 rounded-lg">
+      <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Cancellation Successful!
         </Typography>
-        <Typography id="modal-modal-description" className="mt-2">
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           Please check your inbox for the confirmation.
         </Typography>
-      </div>
+      </Box>
     </Modal>
   );
 
   return (
-    <div className="flex items-center mx-auto">
-      <div className="grid grid-cols-2 gap-1">
-        <div>
-          <TextField
-            variant="standard"
-            error={IDerror}
-            label={IDerror ? "Error" : "Event Record ID"}
-            helperText={IDerror ? "ID does not exist in the system :(" : ""}
-            value={eventID}
-            size="small"
-            onChange={(event) => {
-              setEventID(event.target.value);
+    <Box m="auto" sx={{ display: "flex", alignItems: "center" }}>
+      <Grid container spacing={1}>
+        <Grid item>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { width: 300 },
             }}
-            fullWidth
-            className={` ${
-              IDerror ? "text-red-500" : "text-white"
-            } border-b border-gray-400`}
-          />
-        </div>
-        <div className="flex items-center">
-          <Button
-            bordered
-            color="warning"
-            auto
-            disabled={!eventID}
-            onClick={handleCheckID}
+            noValidate
+            autoComplete="off"
           >
-            confirm
-          </Button>
-          {successMsg && (
-            <Snackbar
-              open={successMsg}
-              autoHideDuration={200}
-              onClose={handleCloseMessage}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            {IDerror && (
+              <TextField
+                variant="standard"
+                error
+                label="Error"
+                helperText="ID does not exist in the system :("
+                value={eventID}
+                size="small"
+                onChange={(event) => {
+                  setEventID(event.target.value);
+                }}
+                fullWidth
+                sx={{
+                  "& label": { color: "white" },
+                  "& input": { color: "white" },
+                }}
+              />
+            )}
+            {!IDerror && (
+              <TextField
+                variant="standard"
+                label="Event Record ID"
+                value={eventID}
+                size="small"
+                onChange={(event) => {
+                  setEventID(event.target.value);
+                }}
+                fullWidth
+                sx={{
+                  "& label": { color: "white" },
+                  "& input": { color: "white" },
+                }}
+              />
+            )}
+          </Box>
+        </Grid>
+        <Grid item alignItems="stretch" style={{ display: "flex" }}>
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            sx={{ textAlign: "left" }}
+          >
+            <Button
+              bordered
+              color="warning"
+              auto
+              disabled={!eventID}
+              onClick={handleCheckID}
             >
-              <Alert severity="success">
-                Your booking record was found! Please re-fill up this form to
-                update us about your booking :)
-              </Alert>
-            </Snackbar>
-          )}
-          {confirmCancelDialog}
-          {succesCancellation}
-        </div>
-      </div>
-    </div>
+              confirm
+            </Button>
+            {successMsg && (
+              <Snackbar
+                open={successMsg}
+                autoHideDuration={200}
+                onClose={handleCloseMessage}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              >
+                <Alert severity="success">
+                  Your booking record was found! Please re-fill up this form to
+                  update us about your booking :)
+                </Alert>
+              </Snackbar>
+            )}
+            {confirmCancelDialog}
+            {succesCancellation}
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }

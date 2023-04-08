@@ -1,11 +1,12 @@
-
 import React, { useEffect, useCallback } from "react";
+import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import Collapse from "@mui/material/Collapse";
@@ -22,6 +23,9 @@ const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
+//NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
+
+// This will be used to store input data
 let userValues = [];
 
 const emojis = [
@@ -57,7 +61,6 @@ function renderItem({ item, handleRemoveName }) {
           title="Delete"
           onClick={() => handleRemoveName(item)}
           size="large"
-          className="text-gray-500"
         >
           <DeleteIcon />
         </IconButton>
@@ -68,9 +71,10 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-let gearList = [];
-let lendLevel = "";
+let gearList = []; //store list of gear available to user
+let lendLevel = ""; //store determined lending level
 
+////////////////////// Filtering gears accessible using API data
 function filterGear() {
   if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
     lendLevel = "Lending Level 4";
@@ -86,9 +90,13 @@ function filterGear() {
     userValues.some((element) => element.gearAccess === "Gear Level 1")
   ) {
     lendLevel = "Lending Level 1";
-  } else {
+  }
+  //CASE: User has no lendLevel (staff) RETURN: Empty gearList for selection options
+  else {
     return gearList;
   }
+
+  //API call to appropriate view on Airtable. View called depends on "lendLevel" determined above.
 
   base("Gear")
     .select({
@@ -96,6 +104,8 @@ function filterGear() {
     })
     .eachPage(
       function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
+
         records.forEach(function (record) {
           gearList.push({
             name: record.get("Item"),
@@ -105,6 +115,10 @@ function filterGear() {
             eventStatus: record.get("Events Status"),
           });
         });
+
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
         fetchNextPage();
       },
       function done(err) {
@@ -119,6 +133,7 @@ function filterGear() {
 
 let roomTypes;
 
+////////////////////// Filtering gears using API data
 function filterRoomType(disabled) {
   if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
     disabled = [];
@@ -131,6 +146,7 @@ function filterRoomType(disabled) {
   ) {
     disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
   } else {
+    // roomTypes[] remains empty as the user has no access levels
     disabled = [
       "Recording Studio 🎙️",
       "Rehearsal Spaces 🎧",
@@ -159,6 +175,8 @@ function NameInput({
     userNameList.slice(0, 3)
   );
 
+
+
   const Initilize = useCallback(() => {
     userValues = [];
     gearList = [];
@@ -183,7 +201,7 @@ function NameInput({
     userNameList.splice(userNameList.indexOf(item), 1);
     userValues = userValues.filter((user) => user.name !== item);
 
-    setUserCount(userNameList.length);
+    setUserCount(userNameList.length); // send data to home
     setUserSelected(userValues);
     setDisabledRoomTypes(filterRoomType(roomTypes));
     setGearList(filterGear());
@@ -218,6 +236,7 @@ function NameInput({
 
   const handleChange = (newValue) => {
     if (!value) {
+      // Handle the case when value is null or undefined
       return;
     }
     if (nameCheck(newValue, value.name, phoneVal)) {
@@ -227,11 +246,13 @@ function NameInput({
         } else {
           setError(false);
           setPassFail(false);
+          const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+          userEmoji.push(randomEmoji);
           handleClose();
           userValues.push(newValue);
           userNameList.push(newValue.name);
 
-          setUserCount(userNameList.length);
+          setUserCount(userNameList.length); // send data to home
           setUserSelected(userValues);
           setDisabledRoomTypes(filterRoomType(roomTypes));
           setGearList(filterGear());
@@ -256,7 +277,7 @@ function NameInput({
     <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
       <DialogTitle>Find your name</DialogTitle>
       <DialogContent>
-        <div className="w-full space-y-4">
+        <Stack spacing={0} sx={{ width: 480 }}>
           <Autocomplete
             value={value}
             onChange={handleName}
@@ -270,16 +291,19 @@ function NameInput({
             options={peopleAllInfo}
             getOptionLabel={(option) => {
               if (typeof option === "string") {
+                // Value selected with enter, right from the input
                 return option;
-              } else return option.name;
+              } else return option.name; // Regular option
             }}
             renderOption={(props, option) => <li {...props}>{option.name}</li>}
-            className="w-full"
+            sx={{ width: 450 }}
             freeSolo
             renderInput={(params) => (
               <div>
-                <div className="flex items-center">
-                  <SearchRoundedIcon className="text-gray-500 mr-2 my-2" />
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <SearchRoundedIcon
+                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
+                  />
                   {error && (
                     <TextField
                       {...params}
@@ -290,7 +314,6 @@ function NameInput({
                       size="small"
                       variant="standard"
                       value={params.inputProps.value || ""}
-                      className="w-full"
                     />
                   )}
                   {!error && (
@@ -301,15 +324,14 @@ function NameInput({
                       size="small"
                       variant="standard"
                       value={params.inputProps.value || ""}
-                      className="w-full"
                     />
                   )}
-                </div>
+                </Box>
               </div>
             )}
           />
           <div>
-            <div className="flex items-center">
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               {passFail && (
                 <TextField
                   passFail
@@ -327,7 +349,11 @@ function NameInput({
                   variant="standard"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  className="w-1/2 ml-auto mr-8"
+                  style={{
+                    width: "50%",
+                    marginLeft: "auto",
+                    marginRight: 30,
+                  }}
                 />
               )}
               {!passFail && (
@@ -346,12 +372,16 @@ function NameInput({
                   size="small"
                   inputProps={{ maxLength: 4, minLength: 4 }}
                   InputLabelProps={{ required: false }}
-                  className="w-1/2 ml-auto mr-8"
+                  style={{
+                    width: "50%",
+                    marginLeft: "auto",
+                    marginRight: 30,
+                  }}
                 />
               )}
-            </div>
+            </Box>
           </div>
-        </div>
+        </Stack>
       </DialogContent>
 
       <DialogActions>
@@ -367,17 +397,14 @@ function NameInput({
 
   return (
     <div>
-      <div className="text-left m-2">
+      <Box sx={{ textAlign: "left", m: 2 }}>
         <Button bordered color="warning" auto onClick={handleClickOpen}>
           +ADD
         </Button>
-      </div>
+      </Box>
       {nameInputDialog}
       {userNameList.length !== 0 && (
-        <Paper
-          variant="outlined"
-          className="mt-2 shadow-md"
-        >
+        <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1 }}>
           <Paper />
           <List>
             <List>

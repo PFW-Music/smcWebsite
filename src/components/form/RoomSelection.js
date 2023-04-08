@@ -39,15 +39,15 @@ let roomSelectedAllInfo = [];
 let eventsList = [];
 
 export default function RoomSelectionInput({
-                                             roomOptionStudio,
-                                             roomOptionRehearsal,
-                                             roomOptionECspace,
-                                             disabledRoomTypes,
-                                             setRoomTypeSelected,
-                                             setRoomSelected,
-                                             roomBookingRecord,
-                                             setRoomBookingRecord,
-                                           }) {
+  roomOptionStudio,
+  roomOptionRehearsal,
+  roomOptionECspace,
+  disabledRoomTypes,
+  setRoomTypeSelected,
+  setRoomSelected,
+  roomBookingRecord,
+  setRoomBookingRecord,
+}) {
   const [roomType, setRoomType] = React.useState("");
   const [room, setRoom] = React.useState([]);
 
@@ -146,7 +146,7 @@ export default function RoomSelectionInput({
   };
 
   const roomSelectionStudio = (
-    <FormControl fullWidth variant="standard" className="m-1 w-96">
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel>Select studio room(s)</InputLabel>
       <Select
         variant="standard"
@@ -182,7 +182,7 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionRehearsal = (
-    <FormControl fullWidth variant="standard" className="m-1 w-96">
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel id="demo-multiple-chip-label">
         Select rehearsal room(s)
       </InputLabel>
@@ -200,7 +200,7 @@ export default function RoomSelectionInput({
           />
         }
         renderValue={(selected) => (
-          <Box className="flex flex-wrap gap-1">
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((value) => (
               <Chip
                 key={value}
@@ -226,7 +226,7 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionECspace = (
-    <FormControl fullWidth variant="standard" className="m-1 w-96">
+    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
       <InputLabel id="demo-multiple-chip-label">
         Select Edit & Collaboration room(s)
       </InputLabel>
@@ -264,10 +264,10 @@ export default function RoomSelectionInput({
 
   return (
     <div>
-      <Stack spacing={1} className="p-2">
+      <Stack spacing={1} sx={{ p: 2 }}>
         <div>
           <FormControl fullWidth variant="standard">
-            <InputLabel id="event-type-label" className="text-white">
+            <InputLabel id="event-type-label" sx={{ color: "white" }}>
               Room Type
             </InputLabel>
             <Select

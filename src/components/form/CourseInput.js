@@ -1,144 +1,143 @@
-import base from "../airtable";
+import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import React, { useEffect, useState } from "react";
-import { Checkbox } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Fade from "@mui/material/Fade";
+import base from "../airtable";
 
-////////////////////////////////////API Magic//////////////////////////////////////////////////////
-let courseList = [];
-let className = "";
-let classDay = "";
-let classTime = "";
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-base("Classes")
-  .select({
-    view: "ALL CLASSES", // Replace "Grid view" with the correct view name from your Airtable base
-  })
-  .eachPage(
-    function page(records, fetchNextPage) {
-      // This function (`page`) will get called for each page of records.
+const fetchCourses = async () => {
+  let courseList = [];
 
-      records.forEach(function (record) {
-        className = record.get("Name");
-        classDay = record.get("Week Day(s)");
-        classTime = record.get("Meeting Time");
+  await base("Classes")
+    .select({
+      view: "ALL CLASSES",
+    })
+    .eachPage((records, fetchNextPage) => {
+      records.forEach((record) => {
+        let className = record.get("Name");
+        let classDay = record.get("Week Day(s)");
+        let classTime = record.get("Meeting Time");
 
-        if (typeof className !== "undefined") {
-          if (typeof classDay !== "undefined") {
+        if (className) {
+          if (classDay) {
             className += ", " + String(classDay).substring(0, 3);
           }
-          if (typeof classTime !== "undefined") {
+          if (classTime) {
             className += ", " + String(classTime);
           }
           courseList.push({ key: record.id, name: className });
         }
       });
 
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
       fetchNextPage();
-    },
-    function done(err) {
-      if (err) {
-        console.error(err);
-      }
-    }
-  );
+    });
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+  return courseList;
+};
 
-// This will be used to store input data
-let userCourse;
+const CourseSelectionInput = ({
+  setCourseSelected,
+  addCourse,
+  setAddCourse,
+}) => {
+  const [courses, setCourses] = useState([]);
 
-export default function CourseSelectionInput({
-                                               setCourseSelected,
-                                               addCourse,
-                                               setAddCourse,
-                                             }) {
-  const [course, setCourse] = React.useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchCourses();
+      setCourses(data);
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangeCourse = (event) => {
     setAddCourse(event.target.checked);
   };
 
-  const courseInput = (
-    <div className="mt-2">
-      <Autocomplete
-        multiple
-        freeSolo
-        disableCloseOnSelect
-        className="w-full"
-        value={course}
-        onChange={(event, newValue) => {
-          if (typeof newValue === "string") {
-            setCourse({
-              title: newValue,
-            });
-          } else {
-            setCourse(newValue);
-            userCourse = newValue;
-            setCourseSelected(newValue);
-            console.log(userCourse);
-          }
-        }}
-        id="Search-for-course"
-        options={courseList}
-        getOptionLabel={(option) => option.name}
-        renderOption={(props, option, { selected }) => (
-          <li {...props}>
-            <Checkbox
-              icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-              checkedIcon={<CheckBoxIcon fontSize="small" />}
-              className="mr-2"
-              checked={selected}
-            />
-            {option.name}
-          </li>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="Select course(s)"
-            fullWidth
-            InputLabelProps={{
-              className: "text-white"
-            }}
-            inputProps={{
-              ...params.inputProps,
-              className: "text-white"
-            }}
-          />
-        )}
-      ></Autocomplete>
-    </div>
-  );
+  const handleCourseChange = (event, newCourses) => {
+    setCourseSelected(newCourses);
+  };
 
   return (
-    <div className="p-4 space-y-0">
-      <div
-        className="flex flex-col items-start flex-wrap text-left text-lg font-mono leading-6"
+    <Stack spacing={0} sx={{ p: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+          textAlign: "left",
+          fontSize: 24,
+          fontFamily: "Monospace",
+          lineHeight: 2,
+          flexDirection: "column",
+        }}
       >
-        <label htmlFor="course-assignment" className="text-white">
+        <FormLabel component="legend" sx={{ color: "white" }}>
           Is this time slot for a course assignment?
-        </label>
-        <div className="flex items-center">
-          <Checkbox
-            checked={addCourse}
-            onChange={handleChangeCourse}
-            inputProps={{ 'aria-label': 'Course assignment checkbox' }}
-          />
-          <label htmlFor="course-assignment" className="text-white">
-            Course assignment
-          </label>
-        </div>
-      </div>
-      <div className="justify-center">
-        {addCourse && courseInput}
-      </div>
-    </div>
+        </FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox checked={addCourse} onChange={handleChangeCourse} />
+          }
+          label="Course assignment"
+          sx={{ color: "white" }}
+        />
+      </Box>
+      <Box sx={{ justifyContent: "center" }}>
+        {addCourse && (
+          <Fade in={addCourse}>
+            <FormControl sx={{ m: 1 }} variant="standard">
+              <Autocomplete
+                multiple
+                freeSolo
+                disableCloseOnSelect
+                sx={{ width: 600 }}
+                value={courses}
+                onChange={handleCourseChange}
+                id="Search-for-course"
+                options={courses}
+                getOptionLabel={(option) => option.name}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox
+                      icon={icon}
+                      checkedIcon={checkedIcon}
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option.name}
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Select course(s)"
+                    fullWidth
+                    sx={{
+                      "& label": { color: "white" },
+                      "& input": { color: "white" },
+                    }}
+                  />
+                )}
+              ></Autocomplete>
+            </FormControl>
+          </Fade>
+        )}
+      </Box>
+    </Stack>
   );
-}
+};
+
+export default CourseSelectionInput;

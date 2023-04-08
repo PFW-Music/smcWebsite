@@ -7,10 +7,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function EventDetailsInput({
-                                            setSessionTitle,
-                                            setEventTypeSelected,
-                                            setUsageSelected,
-                                          }) {
+  setSessionTitle,
+  setEventTypeSelected,
+  setUsageSelected,
+}) {
   const eventTypes = [
     "Summer Booking 🏖",
     "Recording Session 🎙",
@@ -38,7 +38,7 @@ export default function EventDetailsInput({
 
   return (
     <div>
-      <Stack spacing={1} className="p-2">
+      <Stack spacing={1} sx={{ p: 2 }}>
         <TextField
           variant="standard"
           id="outlined-name"
@@ -47,12 +47,11 @@ export default function EventDetailsInput({
             setSessionTitle(event.target.value);
           }}
           fullWidth
-          className="text-white"
-          InputLabelProps={{ className: "text-white" }}
+          sx={{ "& label": { color: "white" }, "& input": { color: "white" } }}
         />
 
         <FormControl fullWidth variant="standard">
-          <InputLabel id="event-type-label" className="text-white">
+          <InputLabel id="event-type-label" sx={{ color: "white" }}>
             Event Type
           </InputLabel>
           <Select
@@ -60,7 +59,7 @@ export default function EventDetailsInput({
             value={selectedEventType}
             onChange={handleEventTypeSelect}
             autoWidth
-            className="text-white"
+            sx={{ color: "white" }}
           >
             {eventTypes.map((type) => (
               <MenuItem key={type} value={type}>
@@ -71,7 +70,7 @@ export default function EventDetailsInput({
         </FormControl>
 
         <FormControl fullWidth variant="standard">
-          <InputLabel id="event-usage-label" className="text-white">
+          <InputLabel id="event-usage-label" sx={{ color: "white" }}>
             Intended Use
           </InputLabel>
           <Select
@@ -79,7 +78,7 @@ export default function EventDetailsInput({
             value={selectedEventUsage}
             onChange={handleEventUsageSelect}
             autoWidth
-            className="text-white"
+            sx={{ color: "white" }}
           >
             {eventUsages.map((usage) => (
               <MenuItem key={usage} value={usage}>

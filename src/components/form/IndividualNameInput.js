@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -21,6 +22,7 @@ const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
+// This will be used to store input data
 let userValues = [];
 
 const emojis = [
@@ -56,7 +58,6 @@ function renderItem({ item, handleRemoveName }) {
           auto
           onClick={handleRemoveName(item)}
           icon={<DeleteIcon />}
-          className="border border-warning text-warning"
         >
           Delete
         </Button>
@@ -67,21 +68,72 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-const gearList = [];
-let lendLevel = "";
+const gearList = []; //store list of gear available to user
+let lendLevel = ""; //store determined lending level
 
+////////////////////// Filtering gears accessible using API data
 function filterGear() {
-  // ...
+  if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
+    lendLevel = "Lending Level 4";
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 3")
+  ) {
+    lendLevel = "Lending Level 3";
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 2")
+  ) {
+    lendLevel = "Lending Level 2";
+  } else if (
+    userValues.some((element) => element.gearAccess === "Gear Level 1")
+  ) {
+    lendLevel = "Lending Level 1";
+  } else {
+    return gearList;
+  }
+
+  //API call to appropriate view on Airtable. View called depends on "lendLevel" determined above.
+
+  base("Gear")
+    .select({
+      view: lendLevel,
+    })
+    .eachPage(
+      function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
+
+        records.forEach(function (record) {
+          gearList.push({
+            name: record.get("Item"),
+            id: record.id,
+            eventStart: record.get("Start Time (from Events)"),
+            eventEnd: record.get("End Time (from Events)"),
+            eventStatus: record.get("Status (from Events)"),
+          });
+        });
+
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+      },
+      function done(err) {
+        if (err) {
+          console.error(err);
+        }
+      }
+    );
+
+  return gearList;
 }
 
 const filter = createFilterOptions();
 
 function NameInput({
-                     peopleAllInfo,
-                     userSelected,
-                     setUserSelected,
-                     setGearList,
-                   }) {
+  peopleAllInfo,
+  userSelected,
+  setUserSelected,
+  setGearList,
+}) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [value, setValue] = React.useState(null);
@@ -140,6 +192,8 @@ function NameInput({
         setError(true);
       } else {
         setError(false);
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        userEmoji.push(randomEmoji);
         handleClose();
         userValues.push(newValue);
         userNameList.push(newValue.name);
@@ -170,17 +224,18 @@ function NameInput({
             options={peopleAllInfo}
             getOptionLabel={(option) => {
               if (typeof option === "string") {
+                // Value selected with enter, right from the input
                 return option;
-              } else return option.name;
+              } else return option.name; // Regular option
             }}
             renderOption={(props, option) => <li {...props}>{option.name}</li>}
             sx={{ width: 450 }}
             freeSolo
             renderInput={(params) => (
               <div>
-                <div className="flex items-end">
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                   <SearchRoundedIcon
-                    className="text-action-active mr-1 my-3.5"
+                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
                   />
                   {error && (
                     <TextField
@@ -191,7 +246,6 @@ function NameInput({
                       helperText="This user has already been added"
                       size="small"
                       variant="standard"
-                      className="!text-error"
                     />
                   )}
                   {!error && (
@@ -203,28 +257,17 @@ function NameInput({
                       variant="standard"
                     />
                   )}
-                </div>
+                </Box>
               </div>
             )}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button
-          bordered
-          color="warning"
-          auto
-          className="border border-warning text-warning"
-        >
+        <Button bordered color="warning" auto>
           Ok
         </Button>
-        <Button
-          bordered
-          color="warning"
-          auto
-          onClick={handleClose}
-          className="border border-warning text-warning"
-        >
+        <Button bordered color="warning" auto onClick={handleClose}>
           Cancel
         </Button>
       </DialogActions>
@@ -233,23 +276,15 @@ function NameInput({
 
   return (
     <div>
-      <div className="text-left m-2">
-        <Button
-          bordered
-          color="warning"
-          auto
-          onClick={handleClickOpen}
-          className="border border-warning text-warning"
-        >
+      {/* Remove {Initilize} from here */}
+      <Box sx={{ textAlign: "left", m: 2 }}>
+        <Button bordered color="warning" auto onClick={handleClickOpen}>
           +ADD
         </Button>
-      </div>
+      </Box>
       {nameInputDialog}
       {userNameList.length !== 0 && (
-        <Paper
-          variant="outlined"
-          className="mt-2 shadow-md"
-        >
+        <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1 }}>
           <Paper />
           <List>
             {nameInDisplay.map((item) => (

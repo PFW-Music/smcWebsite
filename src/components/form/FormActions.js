@@ -68,7 +68,6 @@ function FormActions({
   return (
     <Stack
       display="flex"
-      className="flex justify-center items-center p-2"
       direction={isSmallScreen ? "column" : "row"}
       justifyContent="center"
       alignItems="center"
@@ -80,7 +79,6 @@ function FormActions({
         color="warning"
         onClick={handleNewEvent}
         icon={<AddCircleIcon />}
-        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Create Event
       </Button>
@@ -89,7 +87,6 @@ function FormActions({
         color="warning"
         onClick={handleUpdateEvent}
         icon={<EditIcon />}
-        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Update Event
       </Button>
@@ -98,7 +95,6 @@ function FormActions({
         color="warning"
         onClick={handleCancelEvent}
         icon={<DeleteIcon />}
-        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Cancel Event
       </Button>
