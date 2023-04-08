@@ -7,10 +7,6 @@ import { Button } from "@nextui-org/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-let StartTime;
-let EndTime;
-let unavailableRoom;
-
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
     <MuiAlert
@@ -185,7 +181,8 @@ function DateTimeValidation({
       setRoomUnavailable(false);
       setSuccessMsg(true);
       setTimeCorrect(true);
-      setFilteredGearList(filterTemporallyUnavailableGear(gearList, StartTime, realEndTime));
+      setFilteredGearList(filterTemporallyUnavailableGear(gearList, startTime, realEndTime));
+
     }
   };
 
