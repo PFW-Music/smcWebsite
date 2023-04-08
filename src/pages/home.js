@@ -267,8 +267,6 @@ function Home() {
 				gearList={filteredGearList}
 				addGear={addGear}
 				setAddGear={setAddGear}
-				startTimeSelected={startTimeSelected}
-				endTimeSelected={endTimeSelected}
 			/>
 			<br />
 		</Paper>
