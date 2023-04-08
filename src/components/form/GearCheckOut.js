@@ -1,6 +1,4 @@
-// noinspection DuplicatedCode
-
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
@@ -12,24 +10,25 @@ import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Stack from "@mui/material/Stack";
-import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 // This will be used to store input data
 let userGear;
+let unavailableGear;
 
 const embedStyle = {
   background: "transparent",
-  border: ""
+  border: "",
 };
 
 const iFrameGear = (
   <iframe
     className="airtable-embed"
-    title="AirtableGearView"
     src="https://airtable.com/embed/shrmH9r8B0Zd8LwcU?backgroundColor=red"
     sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
     loading="lazy"
@@ -45,16 +44,32 @@ function sleep(delay = 0) {
   });
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return (
+    <MuiAlert
+      elevation={6}
+      ref={ref}
+      variant="filled"
+      horizontal="center"
+      {...props}
+    />
+  );
+});
+
 export default function GearCheckOut({
-                                       setGearSelected,
-                                       gearList,
-                                       addGear,
-                                       setAddGear,
-                                     }) {
+  setGearSelected,
+  gearList,
+  addGear,
+  setAddGear,
+  startTimeSelected,
+  endTimeSelected,
+}) {
   const [gear, setGear] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
+  const [gearUnavailable, setGearUnavailable] = React.useState(false);
+  const [successMsg, setSuccessMsg] = React.useState(false);
 
   React.useEffect(() => {
     let active = true;
@@ -86,16 +101,89 @@ export default function GearCheckOut({
     setAddGear(event.target.checked);
   };
 
+  const handleFakeClose = (event, reason) => {
+    if (reason === "clickaway") {
+    }
+  };
+
+  const handleRealClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccessMsg(false);
+  };
+
+  const availabilityCheck = () => {
+    const gears = userGear;
+    const StartTime = startTimeSelected;
+    const EndTime = endTimeSelected;
+
+    let conflictFound = false;
+
+    if (gears && StartTime && EndTime) {
+      let realEndTime = new Date(EndTime);
+      realEndTime.setHours(realEndTime.getHours() + 1);
+      realEndTime = realEndTime.toISOString();
+
+      for (let i = 0; !conflictFound && i < gears.length; i++) {
+        if (!gears[i].eventStart) continue;
+        for (let j = 0; !conflictFound && j < gears[i].eventStart.length; j++) {
+          if (gears[i].eventStatus[j] !== "Booked ✅") continue;
+
+          // User selected time is covering and existing session
+          if (
+            StartTime <= gears[i].eventStart[j] &&
+            realEndTime >= gears[i].eventEnd[j]
+          ) {
+            conflictFound = true;
+            unavailableGear = gears[i].name;
+            break;
+          }
+          // User selected start time is during an existing session
+          else if (
+            StartTime >= gears[i].eventStart[j] &&
+            StartTime <= gears[i].eventEnd[j]
+          ) {
+            conflictFound = true;
+            unavailableGear = gears[i].name;
+            break;
+          }
+          // User selected end time is during an existing session
+          else if (
+            realEndTime >= gears[i].eventStart[j] &&
+            realEndTime <= gears[i].eventEnd[j]
+          ) {
+            conflictFound = true;
+            unavailableGear = gears[i].name;
+            break;
+          }
+        }
+      }
+    }
+
+    if (conflictFound) {
+      setGearUnavailable(true);
+      setSuccessMsg(false);
+    } else {
+      setGearUnavailable(false);
+      setSuccessMsg(true);
+    }
+  };
+
   const handleOnChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setGear({
-        title: newValue
+        title: newValue,
       });
     } else {
       setGear(newValue);
       userGear = newValue;
       setGearSelected(newValue);
-      console.log(userGear);
+
+      // call function to check for availability
+      setGearUnavailable(false);
+      setSuccessMsg(false);
+      if (newValue.length !== 0) availabilityCheck();
     }
   };
 
@@ -132,8 +220,8 @@ export default function GearCheckOut({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
             {option.name}
@@ -154,7 +242,7 @@ export default function GearCheckOut({
                   ) : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
-              )
+              ),
             }}
           />
         )}
@@ -175,7 +263,7 @@ export default function GearCheckOut({
           fontSize: 24,
           fontFamily: "Monospace",
           lineHeight: 2,
-          width: 400
+          width: 400,
         }}
       >
         <FormLabel component="legend">
@@ -189,8 +277,8 @@ export default function GearCheckOut({
               sx={{
                 color: pink[800],
                 "&.Mui-checked": {
-                  color: pink[600]
-                }
+                  color: pink[600],
+                },
               }}
             />
           }
@@ -204,11 +292,35 @@ export default function GearCheckOut({
             display: "flex",
             alignItems: "flex-start",
             flexWrap: "wrap",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
-          <Fade in={addGear}>{gearInput}</Fade>
-          <Fade in={addGear}>{iFrameGear}</Fade>
+          {addGear && gearInput}
+          {iFrameGear}
+          {gearUnavailable && (
+            <Snackbar
+              open={gearUnavailable}
+              autoHideDuration={10}
+              onClose={handleFakeClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+              <Alert severity="error">
+                {unavailableGear} is not available at the inputted time!
+              </Alert>
+            </Snackbar>
+          )}
+          {successMsg && (
+            <Snackbar
+              open={successMsg}
+              autoHideDuration={2000}
+              onClose={handleRealClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+              <Alert severity="success">
+                Gear availability is good at inputted time
+              </Alert>
+            </Snackbar>
+          )}
         </Box>
       )}
     </Stack>

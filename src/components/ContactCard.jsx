@@ -1,50 +1,33 @@
-import React from 'react';
+import React from "react";
+import Image from "next/image";
 import { Card, Text } from "@nextui-org/react";
-import "../fade-styles.css";
 
-function FadeInSection(props) {
-  const [isVisible, setVisible] = React.useState(false);
-  const domRef = React.useRef();
-
-  React.useEffect(() => {
-    let observer = null;
-
-    if (domRef.current) {
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => setVisible(entry.isIntersecting));
-      });
-
-      observer.observe(domRef.current);
-    }
-
-    return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-    };
-  }, []);
-
-  return (<div
-    className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
-    ref={domRef}
-  >
-    {props.children}
-  </div>);
-}
-
-const ContactCard = ({ type, url, email, subject, body, phone, iconSrc, title, description, ...rest }) => {
+const ContactCard = ({
+  type,
+  url,
+  email,
+  subject,
+  body,
+  phone,
+  iconSrc,
+  title,
+  description,
+  ...rest
+}) => {
   const handleClick = () => {
     switch (type) {
-      case 'website':
-        window.open(url, '_blank');
+      case "website":
+        window.open(url, "_blank");
         break;
-      case 'email':
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      case "email":
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+          subject
+        )}&body=${encodeURIComponent(body)}`;
         break;
-      case 'phone':
+      case "phone":
         window.location.href = `tel:${phone}`;
         break;
-      case 'sms':
+      case "sms":
         window.location.href = `sms:${phone}`;
         break;
       default:
@@ -53,22 +36,31 @@ const ContactCard = ({ type, url, email, subject, body, phone, iconSrc, title, d
   };
 
   const contentStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const Center = {
+    background: "#16181A",
+    color: "white",
+    padding: "1.5rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 
   return (
-    <FadeInSection>
+    <div style={Center}>
       <Card
         isPressable
         isHoverable
         variant="bordered"
         css={{
-          backgroundColor: '$accents7',
-          width: '400px',
-          height: '400px',
+          backgroundColor: "$accents7",
+          width: "350px",
+          height: "350px",
           padding: "15px",
         }}
         onClick={handleClick}
@@ -76,13 +68,13 @@ const ContactCard = ({ type, url, email, subject, body, phone, iconSrc, title, d
       >
         <Card.Body>
           <div style={contentStyle}>
-            <img src={iconSrc} alt={title} height={50} width={50} />
-            <Text size={35}>{title}</Text>
+            <Image src={iconSrc} alt={title} height={55} width={55} />
+            <Text size={30}>{title}</Text>
             <Text size={20}>{description}</Text>
           </div>
         </Card.Body>
       </Card>
-    </FadeInSection>
+    </div>
   );
 };
 

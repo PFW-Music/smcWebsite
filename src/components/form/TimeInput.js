@@ -1,19 +1,12 @@
-import React from "react";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
-import "react-datetime/css/react-datetime.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-//TimeInput.js is for general time input, IndividualTimeInput.js is for gear time input
-
-// This will be used to store input data
 let StartTime;
 let EndTime;
 let unavailableRoom;
@@ -29,6 +22,19 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     />
   );
 });
+
+const roundToNearestHalfHour = (date) => {
+  const minutes = date.getMinutes();
+  const roundedMinutes = minutes >= 30 ? 60 : 30;
+  date.setMinutes(roundedMinutes);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
+
+const addHours = (date, hours) => {
+  return new Date(date.getTime() + hours * 60 * 60 * 1000);
+};
 
 function filterTemporallyUnavailableGear(gearList, startTimeSelected, endTimeSelected) {
   let temporallyFilteredGear = [];
@@ -66,231 +72,232 @@ function filterTemporallyUnavailableGear(gearList, startTimeSelected, endTimeSel
   return temporallyFilteredGear;
 }
 
-export default function DateTimeValidation({
-                                             setTimeCorrect,
-                                             setStartTimeSelected,
-                                             setEndTimeSelected,
-                                             roomBookingRecord,
-                                             gearList,
-                                             setFilteredGearList
-                                           }) {
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const [invalidTime, setInvalidTime] = React.useState(false);
-  const [invalidFormat, setInvalidFormat] = React.useState(false);
-  const [roomUnavailable, setRoomUnavailable] = React.useState(false);
-  const [successMsg, setSuccessMsg] = React.useState(false);
+function DateTimeValidation({
+  setTimeCorrect,
+  setStartTimeSelected,
+  setEndTimeSelected,
+                              roomBookingRecord,
+                              gearList,
+                              setFilteredGearList
+}) {
+  const [invalidTime, setInvalidTime] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [roomUnavailable, setRoomUnavailable] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [unavailableRoom, setUnavailableRoom] = useState("");
 
-  const handleStartDateChange = (date) => {
+  useEffect(() => {
+    const roundedDate = roundToNearestHalfHour(new Date());
+    setStartDate(roundedDate);
+    setStartTime(roundedDate.toISOString());
+
+    const oneHourForward = addHours(roundedDate, 1);
+    setEndDate(oneHourForward);
+    setEndTime(oneHourForward.toISOString());
+  }, []);
+
+  const handleDateChange = (type, date) => {
     setTimeCorrect(false);
-    setStartDate(date);
-    // console.log(formattedStartDate);
-    StartTime = date.toISOString();
-  };
+    if (type === "start") {
+      setStartDate(date);
+      const startTime = date.toISOString();
+      setStartTime(startTime);
 
-  const handleEndDateChange = (date) => {
-    setTimeCorrect(false);
-    setEndDate(date);
-    // console.log(formattedEndDate);
-    EndTime = date.toISOString();
-  };
-
-  const handleFakeClose = (event, reason) => {
-    if (reason === "clickaway") {
+      const oneHourForward = addHours(date, 1);
+      setEndDate(oneHourForward);
+      setEndTime(oneHourForward.toISOString());
+    } else {
+      setEndDate(date);
+      setEndTime(date.toISOString());
     }
   };
 
-  const handleRealClose = (event, reason) => {
+  const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setSuccessMsg(false);
   };
 
-  const EndTimeCheck = () => {
+  const checkAvailability = () => {
     let realEndTime;
-    if (!StartTime || !EndTime) {
-      setInvalidFormat(true);
+
+    setInvalidTime(startTime > endTime);
+
+    if (startTime > endTime) {
       setTimeCorrect(false);
       return;
-    } else {
-      setInvalidFormat(false);
     }
+    setTimeCorrect(true);
+    setStartTimeSelected(startTime);
+    setEndTimeSelected(endTime);
 
-    if (
-      StartTime === "NaN-NaN-NaNTNaN:NaN:00.000Z" ||
-      EndTime === "NaN-NaN-NaNTNaN:NaN:00.000Z"
-    ) {
-      setInvalidFormat(true);
-    } else {
-      setInvalidFormat(false);
+    let conflictFound = false;
 
-      if (StartTime > EndTime) {
-        setInvalidTime(true);
-        setTimeCorrect(false);
-        return;
-      } else {
-        setInvalidTime(false);
-        setTimeCorrect(true);
-        setStartTimeSelected(StartTime);
-        setEndTimeSelected(EndTime);
-      }
+    if (typeof roomBookingRecord !== "undefined") {
+      realEndTime = new Date(endTime);
+      realEndTime.setHours(realEndTime.getHours());
+      realEndTime = realEndTime.toISOString();
 
+      for (let i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
+        if (typeof roomBookingRecord[i].eventStart == "undefined") continue;
+        for (
+          let j = 0;
+          !conflictFound && j < roomBookingRecord[i].eventStart.length;
+          j++
+        ) {
+          if (roomBookingRecord[i].eventStatus[j] !== "Booked ✅") continue;
 
-      let conflictFound = false;
-
-      if (typeof roomBookingRecord !== "undefined") {
-        realEndTime = new Date(EndTime);
-        realEndTime.setHours(realEndTime.getHours());
-        realEndTime = realEndTime.toISOString();
-
-        for (let i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
-          if (typeof roomBookingRecord[i].eventStart == "undefined") continue;
-          for (
-            let j = 0;
-            !conflictFound && j < roomBookingRecord[i].eventStart.length;
-            j++
+          if (
+            startTime <= roomBookingRecord[i].eventStart[j] &&
+            realEndTime >= roomBookingRecord[i].eventEnd[j]
           ) {
-            if (roomBookingRecord[i].eventStatus[j] !== "Booked ✅") continue;
-
-            // User selected time is covering and existing session
-            if (
-              StartTime <= roomBookingRecord[i].eventStart[j] &&
-              realEndTime >= roomBookingRecord[i].eventEnd[j]
-            ) {
-              conflictFound = true;
-              unavailableRoom = roomBookingRecord[i].name;
-              break;
-            }
-            // User selected start time is during an existing session
-            else if (
-              StartTime >= roomBookingRecord[i].eventStart[j] &&
-              StartTime <= roomBookingRecord[i].eventEnd[j]
-            ) {
-              conflictFound = true;
-              unavailableRoom = roomBookingRecord[i].name;
-              break;
-            }
-            // User selected end time is during an existing session
-            else if (
-              realEndTime > roomBookingRecord[i].eventStart[j] &&
-              realEndTime < roomBookingRecord[i].eventEnd[j]
-            ) {
-              conflictFound = true;
-              unavailableRoom = roomBookingRecord[i].name;
-              break;
-            }
+            conflictFound = true;
+            setUnavailableRoom(roomBookingRecord[i].name);
+            break;
+          } else if (
+            startTime >= roomBookingRecord[i].eventStart[j] &&
+            startTime <= roomBookingRecord[i].eventEnd[j]
+          ) {
+            conflictFound = true;
+            setUnavailableRoom(roomBookingRecord[i].name);
+            break;
+          } else if (
+            realEndTime > roomBookingRecord[i].eventStart[j] &&
+            realEndTime < roomBookingRecord[i].eventEnd[j]
+          ) {
+            conflictFound = true;
+            setUnavailableRoom(roomBookingRecord[i].name);
+            break;
           }
         }
       }
+    }
 
-      if (conflictFound) {
-        setRoomUnavailable(true);
-        setSuccessMsg(false);
-        setTimeCorrect(false);
-      } else {
-        setRoomUnavailable(false);
-        setSuccessMsg(true);
-        setTimeCorrect(true);
-        setFilteredGearList(filterTemporallyUnavailableGear(gearList, StartTime, realEndTime));
-      }
+    if (conflictFound) {
+      setRoomUnavailable(true);
+      setSuccessMsg(false);
+      setTimeCorrect(false);
+    } else {
+      setRoomUnavailable(false);
+      setSuccessMsg(true);
+      setTimeCorrect(true);
+      setFilteredGearList(filterTemporallyUnavailableGear(gearList, StartTime, realEndTime));
     }
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <div>
       <Stack spacing={1}>
-
-
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
-          <h4>Select Start Date</h4>
-          <DatePicker
-            showIcon
-            placeholderText="Select Start Date"
-            showTimeSelect
-            dateFormat="MMMM d, yyyy h:mmaa"
-            selected={startDate}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            onChange={handleStartDateChange}
-          />
-
-          <h4>Select End Date</h4>
-          <DatePicker
-            showIcon
-            placeholderText="Select End Date"
-            showTimeSelect
-            dateFormat="MMMM d, yyyy h:mmaa"
-            selected={endDate}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            onChange={handleEndDateChange}
-          />
-        </div>
+        <DatePickerSection
+          startDate={startDate}
+          endDate={endDate}
+          handleDateChange={handleDateChange}
+        />
       </Stack>
 
       <Box justifyContent="center" alignItems="center">
         <br />
-        <Button color="warning" auto ghost onClick={EndTimeCheck}>
+        <Button color="warning" auto ghost onClick={checkAvailability}>
           check availability
         </Button>
       </Box>
-      <div>
-        {invalidTime && (
-          <Snackbar
-            open={invalidTime}
-            autoHideDuration={10}
-            onClose={handleFakeClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert severity="error">
-              Proposed start time should not exceed end time!
-            </Alert>
-          </Snackbar>
-        )}
-        {invalidFormat && (
-          <Snackbar
-            open={invalidFormat}
-            autoHideDuration={10}
-            onClose={handleFakeClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert severity="error">Time format invalid!</Alert>
-          </Snackbar>
-        )}
-        {roomUnavailable && (
-          <Snackbar
-            open={roomUnavailable}
-            autoHideDuration={10}
-            onClose={handleFakeClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert severity="error">
-              {unavailableRoom} is not available at inputted time!
-            </Alert>
-          </Snackbar>
-        )}
-        {successMsg && (
-          <Snackbar
-            open={successMsg}
-            autoHideDuration={500}
-            onClose={handleRealClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert severity="success">Room is available at inputted time</Alert>
-          </Snackbar>
-        )}
-      </div>
-    </LocalizationProvider>
+      <NotificationSection
+        invalidTime={invalidTime}
+        roomUnavailable={roomUnavailable}
+        successMsg={successMsg}
+        handleClose={handleClose}
+        unavailableRoom={unavailableRoom}
+      />
+    </div>
   );
 }
+
+const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
+  const filterEndTime = (time) => {
+    if (startDate.toDateString() === time.toDateString()) {
+      return time > startDate;
+    }
+    return true;
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h4>Select Start Date</h4>
+      <DatePicker
+        showIcon
+        placeholderText="Select Start Date"
+        showTimeSelect
+        dateFormat="MMMM d, yyyy h:mmaa"
+        selected={startDate}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+        onChange={(date) => handleDateChange("start", date)}
+      />
+
+      <h4>Select End Date</h4>
+      <DatePicker
+        showIcon
+        placeholderText="Select End Date"
+        showTimeSelect
+        dateFormat="MMMM d, yyyy h:mmaa"
+        selected={endDate}
+        selectsEnd
+        startDate={startDate}
+        endDate={endDate}
+        minDate={startDate}
+        filterTime={filterEndTime}
+        onChange={(date) => handleDateChange("end", date)}
+      />
+    </div>
+  );
+};
+
+const NotificationSection = ({
+                               roomUnavailable,
+                               successMsg,
+                               handleClose,
+                               unavailableRoom,
+                             }) => {
+  return (
+    <div>
+      {roomUnavailable && (
+        <Snackbar
+          open={roomUnavailable}
+          autoHideDuration={10}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="error">
+            {unavailableRoom} is not available at inputted time!
+          </Alert>
+        </Snackbar>
+      )}
+      {successMsg && (
+        <Snackbar
+          open={successMsg}
+          autoHideDuration={500}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="success">
+            Room is available at inputted time
+          </Alert>
+        </Snackbar>
+      )}
+    </div>
+  );
+};
+
+export default DateTimeValidation;

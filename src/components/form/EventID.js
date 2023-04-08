@@ -1,10 +1,8 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@nextui-org/react";
-import Grid from "@mui/material/Grid";
 import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar"; //test
+import Snackbar from "@mui/material/Snackbar";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,11 +10,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
+import base from "../airtable";
 
 function UpdateRecord(eventID) {
   base("Events").update(
@@ -33,30 +27,10 @@ function UpdateRecord(eventID) {
         console.error(err);
         return;
       }
-      records.forEach(function () {
-        console.log("record updated");
-      });
-      console.log(records); // Log the updated records outside the loop
+      records.forEach(function () {});
     }
   );
 }
-
-const style = {
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "#16181A",
-  outline: 0,
-  boxShadow: 20,
-  p: 4,
-  color: "#191b1d",
-};
-
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} children={"Hi"} />;
-// });
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return (
@@ -71,14 +45,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function EventID({
-  IDerror,
-  setIDError,
-  eventID,
-  setEventID,
-  setGoodID,
-  updateEvent,
-  CancelEvent,
-}) {
+                                  IDerror,
+                                  setIDError,
+                                  eventID,
+                                  setEventID,
+                                  setGoodID,
+                                  updateEvent,
+                                  CancelEvent,
+                                }) {
   const [successMsg, setSuccessMsg] = React.useState(false);
   const [openCancelDialog, setOpenCancelDialog] = React.useState(false);
   const [openCancelSuccess, setOpenCancelSuccess] = React.useState(false);
@@ -115,7 +89,6 @@ export default function EventID({
 
   const handleSubmitCancellation = () => {
     UpdateRecord(eventID);
-    //DeleteRecord(eventID);
     setOpenCancelDialog(false);
     setOpenCancelSuccess(true);
 
@@ -135,13 +108,22 @@ export default function EventID({
       <DialogTitle>{"Are you sure to cancel this event?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Once an event is cancelled, the action cannot be undone. Click "Yes"
-          to proceed the cancellation.
+          Once an event is cancelled, the action cannot be undone. Click Yes to
+          proceed the cancellation.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button bordered color="primary" auto onClick={handleSubmitCancellation}>Yes</Button>
-        <Button bordered color="primary" auto onClick={handleCloseCancelDialog}>No</Button>
+        <Button
+          bordered
+          color="primary"
+          auto
+          onClick={handleSubmitCancellation}
+        >
+          Yes
+        </Button>
+        <Button bordered color="primary" auto onClick={handleCloseCancelDialog}>
+          No
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -153,90 +135,64 @@ export default function EventID({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-400 bg-gray-900 p-4 rounded-lg">
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Cancellation Successful!
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography id="modal-modal-description" className="mt-2">
           Please check your inbox for the confirmation.
         </Typography>
-      </Box>
+      </div>
     </Modal>
   );
 
   return (
-    <Box m="auto" sx={{ display: "flex", alignItems: "center" }}>
-      <Grid container spacing={1}>
-        <Grid item>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { width: 300 },
+    <div className="flex items-center mx-auto">
+      <div className="grid grid-cols-2 gap-1">
+        <div>
+          <TextField
+            variant="standard"
+            error={IDerror}
+            label={IDerror ? "Error" : "Event Record ID"}
+            helperText={IDerror ? "ID does not exist in the system :(" : ""}
+            value={eventID}
+            size="small"
+            onChange={(event) => {
+              setEventID(event.target.value);
             }}
-            noValidate
-            autoComplete="off"
+            fullWidth
+            className={` ${
+              IDerror ? "text-red-500" : "text-white"
+            } border-b border-gray-400`}
+          />
+        </div>
+        <div className="flex items-center">
+          <Button
+            bordered
+            color="warning"
+            auto
+            disabled={!eventID}
+            onClick={handleCheckID}
           >
-            {IDerror && (
-              <TextField
-                variant="standard"
-                error
-                label="Error"
-                helperText="ID does not exist in the system :("
-                value={eventID}
-                size="small"
-                onChange={(event) => {
-                  setEventID(event.target.value);
-                  console.log(event.target.value);
-                }}
-              />
-            )}
-            {!IDerror && (
-              <TextField
-                variant="standard"
-                label="Event Record ID"
-                value={eventID}
-                size="small"
-                onChange={(event) => {
-                  setEventID(event.target.value);
-                  console.log(event.target.value);
-                }}
-              />
-            )}
-          </Box>
-        </Grid>
-        <Grid item alignItems="stretch" style={{ display: "flex" }}>
-          <Box
-            justifyContent="center"
-            alignItems="center"
-            sx={{ textAlign: "left" }}
-          >
-
-
-            <Button
-              bordered color="warning" auto
-              disabled={!eventID}
-              onClick={handleCheckID}
+            confirm
+          </Button>
+          {successMsg && (
+            <Snackbar
+              open={successMsg}
+              autoHideDuration={200}
+              onClose={handleCloseMessage}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-              confirm
-            </Button>
-            {successMsg && (
-              <Snackbar
-                open={successMsg}
-                autoHideDuration={2000}
-                onClose={handleCloseMessage}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              >
-                <Alert severity="success">
-                  Your booking record was found! Please re-fill up this form to
-                  update us about your booking :)
-                </Alert>
-              </Snackbar>
-            )}
-            {confirmCancelDialog}
-            {succesCancellation}
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+              <Alert severity="success">
+                Your booking record was found! Please re-fill up this form to
+                update us about your booking :)
+              </Alert>
+            </Snackbar>
+          )}
+          {confirmCancelDialog}
+          {succesCancellation}
+        </div>
+      </div>
+    </div>
   );
 }

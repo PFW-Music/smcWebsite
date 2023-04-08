@@ -1,59 +1,38 @@
-Guide for CS360 Team
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Source Code:
-The source code for the website can be found in the GitHub repository PFW-Music/smcWebsite.
+## Getting Started
 
-.env File Requirements:
-The following keys are required in the .env file:
+First, run the development server:
 
-makefile
-Copy code
-REACT_APP_API_KEY=xxxxxxx
-REACT_APP_AIRTABLE_BASE_ID=xxxxxxx
-Maintenance:
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
-Clone the smcWebsite repository.
-Install the required node modules by running the following command in the terminal:
-Copy code
-npm install
-Create the .env file and input the values as described in "Configure Environment Variables in Create React App &
-Netlify."
-(Optional) If you need to change the API key (e.g. for testing on a copy of the Airtable base), update the .env file in
-the root of the project directory. If the change needs to be deployed, remember to update the environment variable on
-Netlify as well.
-To test changes on the development server, run the following command in the terminal:
-sql
-Copy code
-npm start
-Deployment with Netlify:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Make sure the default branch on GitHub is set to prod for live deployments of the application.
-Login to Netlify.
-Go to "Team Overview" and select "Add new site".
-Choose "Import an existing project" and select the repository where the project resides.
-Build and deploy the application.
-Note: The API Key is sensitive information and should be saved on Netlify as an environment variable. To add the API Key
-to Netlify, go to "Site settings" > "Build & deploy" > "Environment" > "Environment variables" and add the following
-values:
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-bash
-Copy code
-Key field: REACT_APP_API_KEY
-Value field: The actual API Key of the base, which can be found at airtable.com/api
-Getting Started with Create React App:
-This project was bootstrapped with Create React App. In the project directory, you can run:
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-Available Scripts:
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-npm start: Runs the app in development mode. Open http://localhost:3000 to view it in the browser.
-npm test: Launches the test runner in interactive watch mode.
-npm run build: Builds the app for production to the build folder.
-npm run eject: This is a one-way operation that removes the single build dependency from your project and copies all the
-configuration files and transitive dependencies into your project.
-Notes:
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-The .env file is not on GitHub to prevent the leakage of user data. For more information on creating this file, please
-refer to this article.
-If changing the API Key (for example, to test on a copy of the Airtable base), it must be changed in the .env file in
-the root of the project directory. If this change needs to be deployed, the environment variable on Netlify must also be
-changed.
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

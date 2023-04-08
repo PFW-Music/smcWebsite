@@ -1,22 +1,18 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
+import base from "../airtable";
 
 //create global variables here
 const containerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '16px', // You can adjust the gap between cards if needed
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "16px", // You can adjust the gap between cards if needed
 };
 
 const style = {
@@ -30,6 +26,10 @@ const style = {
   boxShadow: 20,
   p: 4,
   color: "#191b1d",
+};
+
+const textStyle = {
+  color: "#fff",
 };
 
 async function CreateRecord(
@@ -262,18 +262,21 @@ export default function Submit({
 
   return (
     <div style={containerStyle}>
-      <Button bordered color="warning" auto
-              onClick={handleSubmit}
-              disabled={
-                !(
-                  sessionTitle &&
-                  roomTypeSelected &&
-                  eventTypeSelected &&
-                  endTimeSelected &&
-                  startTimeSelected &&
-                  timeCorrect
-                )
-              }
+      <Button
+        bordered
+        color="warning"
+        auto
+        onClick={handleSubmit}
+        disabled={
+          !(
+            sessionTitle &&
+            roomTypeSelected &&
+            eventTypeSelected &&
+            endTimeSelected &&
+            startTimeSelected &&
+            timeCorrect
+          )
+        }
       >
         SUBMIT
       </Button>
@@ -285,10 +288,10 @@ export default function Submit({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" sx={textStyle}>
             Submission Successful!
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id="modal-modal-description" sx={textStyle}>
             Please check your inbox for booking confirmation.
           </Typography>
         </Box>

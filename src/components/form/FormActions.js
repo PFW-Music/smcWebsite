@@ -1,27 +1,19 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Stack from "@mui/material/Stack";
 
-const containerStyle = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "20px" // You can adjust the gap between cards if needed
-};
-
-export default function FormActions({
-                                      setNewEvent,
-                                      setUpdateEvent,
-                                      setCancelEvent,
-                                      setEventID,
-                                      setIDError,
-                                      setGoodID,
-                                      setUserSelected
-                                    }) {
+function FormActions({
+                       setNewEvent,
+                       setUpdateEvent,
+                       setCancelEvent,
+                       setEventID,
+                       setIDError,
+                       setGoodID,
+                       setUserSelected,
+                     }) {
   const handleNewEvent = () => {
     setNewEvent(true);
     setUpdateEvent(false);
@@ -58,28 +50,60 @@ export default function FormActions({
     setGoodID(false);
   };
 
-  return (<div style={containerStyle}>
-      <Button bordered color="warning"
-              onClick={handleNewEvent}
-              icon={<AddCircleIcon />}
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkIsSmallScreen = () => {
+      setIsSmallScreen(window.matchMedia("(max-width: 600px)").matches);
+    };
+
+    checkIsSmallScreen();
+    window.addEventListener("resize", checkIsSmallScreen);
+
+    return () => {
+      window.removeEventListener("resize", checkIsSmallScreen);
+    };
+  }, []);
+
+  return (
+    <Stack
+      display="flex"
+      className="flex justify-center items-center p-2"
+      direction={isSmallScreen ? "column" : "row"}
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}
+      sx={{ p: 2 }}
+    >
+      <Button
+        bordered
+        color="warning"
+        onClick={handleNewEvent}
+        icon={<AddCircleIcon />}
+        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Create Event
       </Button>
-      <Button bordered color="warning"
-              onClick={handleUpdateEvent}
-              icon={<EditIcon />}
+      <Button
+        bordered
+        color="warning"
+        onClick={handleUpdateEvent}
+        icon={<EditIcon />}
+        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Update Event
       </Button>
-      <Button bordered color="warning"
-              onClick={handleCancelEvent}
-              icon={<DeleteIcon />}
+      <Button
+        bordered
+        color="warning"
+        onClick={handleCancelEvent}
+        icon={<DeleteIcon />}
+        className="border border-warning rounded text-warning mr-2 mb-2"
       >
         Cancel Event
       </Button>
-
-    </div>
-
-
+    </Stack>
   );
 }
+
+export default FormActions;

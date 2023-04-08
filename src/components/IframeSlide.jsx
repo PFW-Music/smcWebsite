@@ -1,54 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { animated, useSpring } from "react-spring";
+import React from "react";
 
 const noteStyle = {
   background: "#16181A",
   color: "white",
   padding: "1.5rem",
-};
-
-const embedStyle = {
-  background: "transparent",
-  border: "",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 function IframeSlideComponent({ src }) {
-  const [showIframe, setShowIframe] = useState(false);
-  const slideStyle = useSpring({
-    from: {
-      opacity: 0,
-      marginRight: -500,
-    },
-    to: {
-      opacity: 1,
-      marginRight: 0,
-    },
-    onRest: () => setShowIframe(true),
-  });
-
-  useEffect(() => {
-    return () => {
-      setShowIframe(false);
-    };
-  }, []);
-
   return (
-    <animated.div style={slideStyle}>
-      <div style={noteStyle}>
-        <br />
-        {showIframe && (
-          <iframe
-            className="airtable-embed"
-            src={src}
-            sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
-            loading="lazy"
-            width="50%"
-            height="600"
-            style={embedStyle}
-          />
-        )}
-      </div>
-    </animated.div>
+    <div style={noteStyle}>
+      <iframe
+        className="airtable-embed"
+        src={src}
+        sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
+        loading="lazy"
+        width="1000"
+        height="600"
+      />
+    </div>
   );
 }
 

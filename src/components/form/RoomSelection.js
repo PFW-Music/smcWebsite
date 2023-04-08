@@ -1,8 +1,5 @@
-import * as React from "react";
-import { useEffect } from "react"; //test
-import { useTheme } from "@mui/material/styles";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
-import { makeStyles } from "@mui/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,16 +7,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import { pink } from "@mui/material/colors";
 import _without from "lodash/without";
 import Checkbox from "@mui/material/Checkbox";
-import Fade from "@mui/material/Fade";
-
-///////////////////   API Magic   ////////////////////////////////
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
+import base from "../airtable";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,45 +17,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-};
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  formControl: {
-
-    minWidth: 300
-  },
-  inputLabel: {
-    color: "gray",
-    "&.Mui-focused": {
-      color: pink[800]
-    }
-  },
-  inputFocused: {},
-  select: {
-    color: "black",
-    "&:before": {
-      // changes the bottom textbox border when not focused
-      borderColor: "gray"
     },
-    "&:after": {
-      // changes the bottom textbox border when clicked/focused.  thought it would be the same with input label
-      borderColor: pink[800]
-    }
   },
-  outlinedInput: {
-    color: "gray",
-    "&:after": {
-      borderColor: pink[800]
-    }
-  }
-}));
+};
 
 // This will be used to store input data
 let userRoomType;
@@ -76,17 +30,8 @@ let userRoomSelection;
 const roomTypes = [
   "Recording Studio 🎙️",
   "Rehearsal Spaces 🎧",
-  "Edit & Collaboration Spaces 🎒"
+  "Edit & Collaboration Spaces 🎒",
 ];
-
-function getStyles(type, eventType, theme) {
-  return {
-    fontWeight:
-      eventType.indexOf(type) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium
-  };
-}
 
 // Variables to used for API filtering
 let roomOptionsAllInfo = [];
@@ -101,11 +46,9 @@ export default function RoomSelectionInput({
                                              setRoomTypeSelected,
                                              setRoomSelected,
                                              roomBookingRecord,
-                                             setRoomBookingRecord
+                                             setRoomBookingRecord,
                                            }) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [roomType, setRoomType] = React.useState('');
+  const [roomType, setRoomType] = React.useState("");
   const [room, setRoom] = React.useState([]);
 
   const [isStudio, setIsStudio] = React.useState(false);
@@ -114,7 +57,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoomType = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setRoomType(
       // On autofill, we get a stringified value.
@@ -122,7 +65,6 @@ export default function RoomSelectionInput({
     );
     userRoomType = value;
     setRoomTypeSelected(value);
-    console.log(userRoomType);
 
     if (userRoomType === "Recording Studio 🎙️") {
       roomOptionsAllInfo = roomOptionStudio;
@@ -130,14 +72,12 @@ export default function RoomSelectionInput({
       setIsRehearsal(false);
       setIsECspace(false);
       setRoom([]); // Clear user input
-      console.log(roomOptionsAllInfo);
     } else if (userRoomType === "Rehearsal Spaces 🎧") {
       roomOptionsAllInfo = roomOptionRehearsal;
       setIsStudio(false);
       setIsRehearsal(true);
       setIsECspace(false);
       setRoom([]); // Clear user input
-      console.log(roomOptionsAllInfo);
     } else if (userRoomType === "Edit & Collaboration Spaces 🎒") {
       roomOptionsAllInfo = roomOptionECspace;
       setIsStudio(false);
@@ -149,7 +89,7 @@ export default function RoomSelectionInput({
 
   const handleChangeRoom = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setRoom(
       // On autofill, we get a stringified value.
@@ -157,8 +97,6 @@ export default function RoomSelectionInput({
     );
     userRoomSelection = value;
     setRoomSelected(value);
-    //console.log(value);
-    //console.log(roomOptionsAllInfo);
 
     //GENERATING ARRAY WITH ALL INFO ON ROOM SELECTED
     const valueLength = value.length;
@@ -171,7 +109,6 @@ export default function RoomSelectionInput({
           roomSelectedAllInfo.push(roomOptionsAllInfo[x]);
       }
     }
-    console.log("filtered array", roomSelectedAllInfo);
 
     ///////////////////   API Magic   ////////////////////////////////
 
@@ -180,69 +117,25 @@ export default function RoomSelectionInput({
     eventsList = [];
     let eventsListLength = 0;
     for (let j = 0; j < roomSelectedAllInfoLength; j++) {
-      base("Rooms").find(roomSelectedAllInfo[j].key, function(err, record) {
+      base("Rooms").find(roomSelectedAllInfo[j].key, function (err, record) {
         if (err) {
-          console.error(err);
           return;
         }
-        //console.log('Retrieved', record);
         eventsList.push({
           name: record.get("Name"),
           id: record.id,
           eventStart: record.get("Events Start"),
           eventEnd: record.get("Events End"),
-          eventStatus: record.get("Events Status")
+          eventStatus: record.get("Events Status"),
         });
         eventsListLength++;
       });
     }
     setRoomBookingRecord(eventsList);
-    console.log("Events:", eventsList);
-
-    //Please ignore this battlefield. But honor the fallen.
-
-    // //Crawling all events to find associated times which are stored in unavailableTimes[]
-    // unavailableTimes = [];
-
-    // console.log(j);
-    // console.log(eventsList);
-
-    // console.log("Here");
-    // console.log(JSON.stringify(eventsList[0]))
-
-    // for(const element in eventsList){
-    //   console.log(typeof(element));
-    //   console.log(element);
-    // }
-
-    //eventsList.forEach(element => console.log(element));
-
-    // eventsList.forEach(function (element) {
-    //   console.log(element);
-    // });
-
-    // for (var k = 0; k < eventsListLength; k++){
-
-    //   base('Events').find(eventsListLength[k].key, function(err, record) {
-    //     if (err) { console.error(err); return; }
-    //   console.log('Retrieved event rec', record);
-
-    // });
-
-    // }
   };
 
   useEffect(() => {
-    //console.log("roomBookingRecord:", roomBookingRecord);
     if (roomBookingRecord.length !== 0) {
-      console.log(
-        "one room records",
-        roomBookingRecord[0].eventStart[0],
-        roomBookingRecord[0].eventEnd[0],
-        roomBookingRecord[0].eventStatus[0]
-      );
-      //var test = roomBookingRecord[0].events[0];
-      //console.log("test",test)
     }
   }, [roomBookingRecord]);
 
@@ -253,10 +146,8 @@ export default function RoomSelectionInput({
   };
 
   const roomSelectionStudio = (
-    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
-      <InputLabel className={classes.inputLabel}>
-        Select studio room(s)
-      </InputLabel>
+    <FormControl fullWidth variant="standard" className="m-1 w-96">
+      <InputLabel>Select studio room(s)</InputLabel>
       <Select
         variant="standard"
         labelId="event-multiple-selection"
@@ -264,14 +155,8 @@ export default function RoomSelectionInput({
         value={room}
         onChange={handleChangeRoom}
         multiple
-        input={
-          <OutlinedInput
-            id="select-multiple-chip"
-            label="Select studio room(s)"
-          />
-        }
         renderValue={(selected) => (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+          <Box>
             {selected.map((value) => (
               <Chip
                 key={value}
@@ -287,20 +172,8 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionStudio.map((option) => (
-          <MenuItem
-            key={option.key}
-            value={option.name}
-            style={getStyles(option.name, room, theme)}
-          >
-            <Checkbox
-              checked={room.indexOf(option.name) > -1}
-              sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600]
-                }
-              }}
-            />
+          <MenuItem key={option.key} value={option.name}>
+            <Checkbox checked={room.indexOf(option.name) > -1} />
             {option.name}
           </MenuItem>
         ))}
@@ -309,7 +182,7 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionRehearsal = (
-    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
+    <FormControl fullWidth variant="standard" className="m-1 w-96">
       <InputLabel id="demo-multiple-chip-label">
         Select rehearsal room(s)
       </InputLabel>
@@ -327,7 +200,7 @@ export default function RoomSelectionInput({
           />
         }
         renderValue={(selected) => (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+          <Box className="flex flex-wrap gap-1">
             {selected.map((value) => (
               <Chip
                 key={value}
@@ -343,20 +216,8 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionRehearsal.map((option) => (
-          <MenuItem
-            key={option.key}
-            value={option.name}
-            style={getStyles(option.name, room, theme)}
-          >
-            <Checkbox
-              checked={room.indexOf(option.name) > -1}
-              sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600]
-                }
-              }}
-            />
+          <MenuItem key={option.key} value={option.name}>
+            <Checkbox checked={room.indexOf(option.name) > -1} />
             {option.name}
           </MenuItem>
         ))}
@@ -365,25 +226,18 @@ export default function RoomSelectionInput({
   );
 
   const roomSelectionECspace = (
-    <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
+    <FormControl fullWidth variant="standard" className="m-1 w-96">
       <InputLabel id="demo-multiple-chip-label">
         Select Edit & Collaboration room(s)
       </InputLabel>
       <Select
-        variant="standard"
         labelId="event-multiple-selection"
         id="event-multiple-chip"
         value={room}
         onChange={handleChangeRoom}
         multiple
-        input={
-          <OutlinedInput
-            id="select-multiple-chip"
-            label="Select Edit & Collaboration room(s)"
-          />
-        }
         renderValue={(selected) => (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+          <Box>
             {selected.map((value) => (
               <Chip
                 key={value}
@@ -399,20 +253,8 @@ export default function RoomSelectionInput({
         MenuProps={MenuProps}
       >
         {roomOptionECspace.map((option) => (
-          <MenuItem
-            key={option.key}
-            value={option.name}
-            style={getStyles(option.name, room, theme)}
-          >
-            <Checkbox
-              checked={room.indexOf(option.name) > -1}
-              sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600]
-                }
-              }}
-            />
+          <MenuItem key={option.key} value={option.name}>
+            <Checkbox checked={room.indexOf(option.name) > -1} />
             {option.name}
           </MenuItem>
         ))}
@@ -422,23 +264,17 @@ export default function RoomSelectionInput({
 
   return (
     <div>
-      <Stack spacing={1}>
+      <Stack spacing={1} className="p-2">
         <div>
-          <FormControl variant="standard" sx={{ m: 1, width: 400 }}>
-            <InputLabel className={classes.inputLabel}>Room Type</InputLabel>
+          <FormControl fullWidth variant="standard">
+            <InputLabel id="event-type-label" className="text-white">
+              Room Type
+            </InputLabel>
             <Select
-              variant="standard"
-              className={classes.select}
               value={roomType}
               onChange={handleChangeRoomType}
-              input={
-                <OutlinedInput
-                  className={classes.outlinedInput}
-                  label="Room Type"
-                />
-              }
               renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                <Box>
                   {selected.map((value) => (
                     <Chip key={value} label={value} />
                   ))}
@@ -450,7 +286,6 @@ export default function RoomSelectionInput({
                 <MenuItem
                   key={type}
                   value={type}
-                  style={getStyles(type, roomType, theme)}
                   disabled={disabledRoomTypes.indexOf(type) > -1}
                 >
                   {type}
@@ -461,11 +296,9 @@ export default function RoomSelectionInput({
         </div>
 
         <div>
-          {isStudio && <Fade in={isStudio}>{roomSelectionStudio}</Fade>}
-          {isRehearsal && (
-            <Fade in={isRehearsal}>{roomSelectionRehearsal}</Fade>
-          )}
-          {isECspace && <Fade in={isECspace}>{roomSelectionECspace}</Fade>}
+          {isStudio && roomSelectionStudio}
+          {isRehearsal && roomSelectionRehearsal}
+          {isECspace && roomSelectionECspace}
         </div>
       </Stack>
     </div>

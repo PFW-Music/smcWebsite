@@ -1,19 +1,10 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { pink } from "@mui/material/colors";
+import base from "../airtable";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import Stack from "@mui/material/Stack";
-import Fade from "@mui/material/Fade";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+import React, { useEffect, useState } from "react";
+import { Checkbox } from "@mui/material";
 
 ////////////////////////////////////API Magic//////////////////////////////////////////////////////
 let courseList = [];
@@ -21,20 +12,15 @@ let className = "";
 let classDay = "";
 let classTime = "";
 
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
-
 base("Classes")
   .select({
-    view: "ALL CLASSES" // Replace "Grid view" with the correct view name from your Airtable base
+    view: "ALL CLASSES", // Replace "Grid view" with the correct view name from your Airtable base
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
+      records.forEach(function (record) {
         className = record.get("Name");
         classDay = record.get("Week Day(s)");
         classTime = record.get("Meeting Time");
@@ -70,7 +56,7 @@ let userCourse;
 export default function CourseSelectionInput({
                                                setCourseSelected,
                                                addCourse,
-                                               setAddCourse
+                                               setAddCourse,
                                              }) {
   const [course, setCourse] = React.useState([]);
 
@@ -79,17 +65,17 @@ export default function CourseSelectionInput({
   };
 
   const courseInput = (
-    <FormControl sx={{ m: 1 }} variant="standard">
+    <div className="mt-2">
       <Autocomplete
         multiple
         freeSolo
         disableCloseOnSelect
-        sx={{ width: 400 }}
+        className="w-full"
         value={course}
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             setCourse({
-              title: newValue
+              title: newValue,
             });
           } else {
             setCourse(newValue);
@@ -104,64 +90,55 @@ export default function CourseSelectionInput({
         renderOption={(props, option, { selected }) => (
           <li {...props}>
             <Checkbox
-              icon={icon}
-              checkedIcon={checkedIcon}
-              style={{ marginRight: 8 }}
+              icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+              checkedIcon={<CheckBoxIcon fontSize="small" />}
+              className="mr-2"
               checked={selected}
-              sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600]
-                }
-              }}
             />
             {option.name}
           </li>
         )}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" label="Select course(s)" />
+          <TextField
+            {...params}
+            variant="standard"
+            label="Select course(s)"
+            fullWidth
+            InputLabelProps={{
+              className: "text-white"
+            }}
+            inputProps={{
+              ...params.inputProps,
+              className: "text-white"
+            }}
+          />
         )}
       ></Autocomplete>
-    </FormControl>
+    </div>
   );
 
   return (
-    <Stack spacing={0}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          textAlign: "left",
-          m: 2,
-          fontSize: 24,
-          fontFamily: "Monospace",
-          lineHeight: 2,
-          width: 400
-        }}
+    <div className="p-4 space-y-0">
+      <div
+        className="flex flex-col items-start flex-wrap text-left text-lg font-mono leading-6"
       >
-        <FormLabel component="legend">
+        <label htmlFor="course-assignment" className="text-white">
           Is this time slot for a course assignment?
-        </FormLabel>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={addCourse}
-              onChange={handleChangeCourse}
-              sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600]
-                }
-              }}
-            />
-          }
-          label="Course assignment"
-        />
-      </Box>
-      <Box sx={{ justifyContent: "center" }}>
-        {addCourse && <Fade in={addCourse}>{courseInput}</Fade>}
-      </Box>
-    </Stack>
+        </label>
+        <div className="flex items-center">
+          <Checkbox
+            checked={addCourse}
+            onChange={handleChangeCourse}
+            inputProps={{ 'aria-label': 'Course assignment checkbox' }}
+          />
+          <label htmlFor="course-assignment" className="text-white">
+            Course assignment
+          </label>
+        </div>
+      </div>
+      <div className="justify-center">
+        {addCourse && courseInput}
+      </div>
+    </div>
   );
 }

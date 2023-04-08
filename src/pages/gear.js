@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import IndividualNameInput from "../components/form/IndividualNameInput";
 import IndividualTimeInput from "../components/form/IndividualTimeInput";
@@ -8,15 +9,11 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grow from "@mui/material/Grow";
 import FormLabel from "@mui/material/FormLabel";
+import base from "../components/airtable";
 
 ///////////////////////////////////////////             ///////////////////////////////////////////
 ///////////////////////////////////////////  API CALLS  ///////////////////////////////////////////
 ///////////////////////////////////////////             ///////////////////////////////////////////
-
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
 
 const peopleAllInfo = [];
 
@@ -24,22 +21,19 @@ let x = 0;
 ///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
   .select({
-    view: "ALL PEOPLE"
+    view: "ALL PEOPLE",
   })
   .eachPage(
     function page(records, fetchNextPage) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function(record) {
+      records.forEach(function (record) {
         peopleAllInfo[x] = {
           id: record.id,
           name: record.get("Person"),
-          gearAccess: record.get("Gear Access")
+          gearAccess: record.get("Gear Access"),
         };
         x = x + 1;
-
-        // console.log(x, "Retrieved", record.get("Person"), record);
-        // console.log(x, "Retrieved", record.get("Person"), record.get("Room Access"), record.get("Gear Access"));
       });
 
       // To fetch the next page of records, call `fetchNextPage`.
@@ -49,12 +43,11 @@ base("SMC People")
     },
     function done(err) {
       if (err) {
-        console.error(err);
       }
     }
   );
 
-function Gear() {
+function Gear1() {
   const [userSelected, setUserSelected] = React.useState([]);
   const [gear, setGear] = React.useState([]);
   const [gearList, setGearList] = React.useState([]);
@@ -67,7 +60,7 @@ function Gear() {
   const nameInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
       <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
-        Who's booking?
+        Who is booking?
         <br />
         <FormLabel component="legend">
           Add users to see a list of gear available to your access level in the
@@ -118,7 +111,6 @@ function Gear() {
       <br />
     </Paper>
   );
-
   return (
     <div>
       <Grow in={true}>{nameInput}</Grow>
@@ -136,4 +128,10 @@ function Gear() {
   );
 }
 
-export default Gear;
+export default function Gear() {
+  return (
+    <div>
+      <Gear1 />
+    </div>
+  );
+}

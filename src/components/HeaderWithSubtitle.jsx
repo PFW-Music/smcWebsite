@@ -1,32 +1,33 @@
 import React from "react";
-import { animated, useSpring } from "react-spring";
 import { Text } from "@nextui-org/react";
 
 const noteStyle = {
   background: "#16181A",
   color: "#16181A",
-  padding: "1.5rem",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  maxWidth: "1000px",
+};
+
+const center = {
+  background: "#16181A",
+  color: "#16181A",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
 };
 
 function SlideMessage({ title, subtitle }) {
-  const slideStyle = useSpring({
-    from: {
-      opacity: 0,
-      marginLeft: -500,
-    },
-    to: {
-      opacity: 1,
-      marginLeft: 0,
-    },
-  });
-
   return (
-    <animated.div style={slideStyle}>
+    <div style={center}>
       <div style={noteStyle}>
-        <Text size={40} color="textLight">{title}</Text>
-        <Text size={25} color="textLight">{subtitle}</Text>
+        <Text size={"35px"}>{title}</Text>
+        <Text size={"20px"}>{subtitle}</Text>
       </div>
-    </animated.div>
+    </div>
   );
 }
 

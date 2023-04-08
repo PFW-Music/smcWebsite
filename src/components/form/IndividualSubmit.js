@@ -1,14 +1,9 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { styled } from "@mui/styles";
-
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-  process.env.REACT_APP_AIRTABLE_BASE_ID
-);
+import base from "../airtable";
 
 //create global variables here
 
@@ -22,7 +17,16 @@ const style = {
   outline: 0,
   boxShadow: 20,
   p: 4,
-  color: "#191b1d"
+  color: "#191b1d",
+};
+
+const containerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "16px", // You can adjust the gap between cards if needed
 };
 
 async function CreateEventRecord(
@@ -40,13 +44,12 @@ async function CreateEventRecord(
           "Proposed End Time": endTimeSelected,
           Students: users,
           Status: "Booked ✅",
-          "Gear Selection": gears
-        }
-      }
+          "Gear Selection": gears,
+        },
+      },
     ]);
 
-    records.forEach(function(record) {
-      console.log("event table updated");
+    records.forEach(function (record) {
       return record.getId();
     });
   } catch (err) {
@@ -55,12 +58,12 @@ async function CreateEventRecord(
 }
 
 export default function Submit({
-                                 userSelected,
-                                 startTimeSelected,
-                                 endTimeSelected,
-                                 gearSelected,
-                                 timeCorrect
-                               }) {
+  userSelected,
+  startTimeSelected,
+  endTimeSelected,
+  gearSelected,
+  timeCorrect,
+}) {
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -71,19 +74,18 @@ export default function Submit({
     const gears = [];
 
     if (userSelected) {
-      userSelected.forEach(function(obj) {
+      userSelected.forEach(function (obj) {
         users.push(obj.id);
       });
     }
     if (gearSelected) {
-      gearSelected.forEach(function(obj) {
+      gearSelected.forEach(function (obj) {
         gears.push(obj.id);
       });
     }
 
     // create record
     await CreateEventRecord(users, startTimeSelected, endTimeSelected, gears);
-    console.log("checking error");
   };
   const handleClose = () => {
     // slose the confirmation page
@@ -92,14 +94,17 @@ export default function Submit({
   };
 
   return (
-    <div>
-      <Button bordered color="warning" auto
-              onClick={handleSubmit}
-              disabled={
-                !(endTimeSelected && startTimeSelected && timeCorrect) ||
-                gearSelected.length === 0 ||
-                userSelected.length === 0
-              }
+    <div style={containerStyle}>
+      <Button
+        bordered
+        color="warning"
+        auto
+        onClick={handleSubmit}
+        disabled={
+          !(endTimeSelected && startTimeSelected && timeCorrect) ||
+          gearSelected.length === 0 ||
+          userSelected.length === 0
+        }
       >
         SUBMIT
       </Button>
