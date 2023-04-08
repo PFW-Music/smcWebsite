@@ -32,6 +32,32 @@ const addHours = (date, hours) => {
   return new Date(date.getTime() + hours * 60 * 60 * 1000);
 };
 
+function useTimeSelection() {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  useEffect(() => {
+    const roundedDate = roundToNearestHalfHour(new Date());
+    setStartDate(roundedDate);
+
+    const oneHourForward = addHours(roundedDate, 1);
+    setEndDate(oneHourForward);
+  }, []);
+
+  const handleDateChange = (type, date) => {
+    if (type === "start") {
+      setStartDate(date);
+
+      const oneHourForward = addHours(date, 1);
+      setEndDate(oneHourForward);
+    } else {
+      setEndDate(date);
+    }
+  };
+
+  return { startDate, endDate, handleDateChange };
+}
+
 function filterTemporallyUnavailableGear(gearList, startTimeSelected, endTimeSelected) {
   let temporallyFilteredGear = [];
   let eventStart = null;
@@ -42,28 +68,35 @@ function filterTemporallyUnavailableGear(gearList, startTimeSelected, endTimeSel
     conflictFound = false;
 
     //No events
-    if (typeof gearList[gearIndex].eventStart === "undefined" || typeof gearList[gearIndex].eventEnd === "undefined"){
+    if (
+      typeof gearList[gearIndex].eventStart === "undefined" ||
+      typeof gearList[gearIndex].eventEnd === "undefined"
+    ) {
       temporallyFilteredGear.push(gearList[gearIndex]);
       continue;
     }
 
     //loop through start and end times
-    for (let eventIndex = 0; eventIndex < gearList[gearIndex].eventStart.length && !conflictFound; eventIndex++){
+    for (
+      let eventIndex = 0;
+      eventIndex < gearList[gearIndex].eventStart.length && !conflictFound;
+      eventIndex++
+    ) {
       eventStart = gearList[gearIndex].eventStart[eventIndex];
       eventEnd = gearList[gearIndex].eventEnd[eventIndex];
 
       //Chosen start or end is in the middle of an existing event
-      conflictFound = conflictFound || (startTimeSelected > eventStart && startTimeSelected < eventEnd);
-      conflictFound = conflictFound || (endTimeSelected > eventStart && endTimeSelected < eventEnd);
+      conflictFound =
+        conflictFound || (startTimeSelected > eventStart && startTimeSelected < eventEnd);
+      conflictFound =
+        conflictFound || (endTimeSelected > eventStart && endTimeSelected < eventEnd);
       //Chosen start is before event and chosen end is after event
-      conflictFound = conflictFound || (startTimeSelected < eventStart && endTimeSelected > eventEnd);
+      conflictFound =
+        conflictFound || (startTimeSelected < eventStart && endTimeSelected > eventEnd);
     }
     if (!conflictFound) {
       temporallyFilteredGear.push(gearList[gearIndex]);
     }
-    // else {
-    //   console.log(gearList[gearIndex]);
-    // }
   }
   return temporallyFilteredGear;
 }
@@ -72,44 +105,16 @@ function DateTimeValidation({
   setTimeCorrect,
   setStartTimeSelected,
   setEndTimeSelected,
-                              roomBookingRecord,
-                              gearList,
-                              setFilteredGearList
+  roomBookingRecord,
+  gearList,
+  setFilteredGearList,
 }) {
   const [invalidTime, setInvalidTime] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const [roomUnavailable, setRoomUnavailable] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
   const [unavailableRoom, setUnavailableRoom] = useState("");
 
-  useEffect(() => {
-    const roundedDate = roundToNearestHalfHour(new Date());
-    setStartDate(roundedDate);
-    setStartTime(roundedDate.toISOString());
-
-    const oneHourForward = addHours(roundedDate, 1);
-    setEndDate(oneHourForward);
-    setEndTime(oneHourForward.toISOString());
-  }, []);
-
-  const handleDateChange = (type, date) => {
-    setTimeCorrect(false);
-    if (type === "start") {
-      setStartDate(date);
-      const startTime = date.toISOString();
-      setStartTime(startTime);
-
-      const oneHourForward = addHours(date, 1);
-      setEndDate(oneHourForward);
-      setEndTime(oneHourForward.toISOString());
-    } else {
-      setEndDate(date);
-      setEndTime(date.toISOString());
-    }
-  };
+  const { startDate, endDate, handleDateChange } = useTimeSelection();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -118,8 +123,9 @@ function DateTimeValidation({
     setSuccessMsg(false);
   };
 
-  const checkAvailability = () => {
-    let realEndTime;
+  const handleAvailabilityCheck = () => {
+    const startTime = startDate.toISOString();
+    const endTime = endDate.toISOString();
 
     setInvalidTime(startTime > endTime);
 
@@ -131,47 +137,11 @@ function DateTimeValidation({
     setStartTimeSelected(startTime);
     setEndTimeSelected(endTime);
 
-    let conflictFound = false;
-
-    if (typeof roomBookingRecord !== "undefined") {
-      realEndTime = new Date(endTime);
-      realEndTime.setHours(realEndTime.getHours());
-      realEndTime = realEndTime.toISOString();
-
-      for (let i = 0; !conflictFound && i < roomBookingRecord.length; i++) {
-        if (typeof roomBookingRecord[i].eventStart == "undefined") continue;
-        for (
-          let j = 0;
-          !conflictFound && j < roomBookingRecord[i].eventStart.length;
-          j++
-        ) {
-          if (roomBookingRecord[i].eventStatus[j] !== "Booked ✅") continue;
-
-          if (
-            startTime <= roomBookingRecord[i].eventStart[j] &&
-            realEndTime >= roomBookingRecord[i].eventEnd[j]
-          ) {
-            conflictFound = true;
-            setUnavailableRoom(roomBookingRecord[i].name);
-            break;
-          } else if (
-            startTime >= roomBookingRecord[i].eventStart[j] &&
-            startTime <= roomBookingRecord[i].eventEnd[j]
-          ) {
-            conflictFound = true;
-            setUnavailableRoom(roomBookingRecord[i].name);
-            break;
-          } else if (
-            realEndTime > roomBookingRecord[i].eventStart[j] &&
-            realEndTime < roomBookingRecord[i].eventEnd[j]
-          ) {
-            conflictFound = true;
-            setUnavailableRoom(roomBookingRecord[i].name);
-            break;
-          }
-        }
-      }
-    }
+    const conflictFound = checkRoomAvailability(
+      startTime,
+      endTime,
+      roomBookingRecord
+    );
 
     if (conflictFound) {
       setRoomUnavailable(true);
@@ -181,9 +151,59 @@ function DateTimeValidation({
       setRoomUnavailable(false);
       setSuccessMsg(true);
       setTimeCorrect(true);
-      setFilteredGearList(filterTemporallyUnavailableGear(gearList, startTime, realEndTime));
-
+      setFilteredGearList(
+        filterTemporallyUnavailableGear(gearList, startTime, endTime)
+      );
     }
+  };
+
+  const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
+    let realEndTime = new Date(endTime);
+    realEndTime.setHours(realEndTime.getHours());
+    realEndTime = realEndTime.toISOString();
+
+    let conflictFound = false;
+
+    if (typeof roomBookingRecord === "undefined") {
+      return conflictFound;
+    }
+
+    for (const record of roomBookingRecord) {
+      if (typeof record.eventStart === "undefined") continue;
+
+      for (let j = 0; j < record.eventStart.length; j++) {
+        if (record.eventStatus[j] !== "Booked ✅") continue;
+
+        if (
+          startTime <= record.eventStart[j] &&
+          realEndTime >= record.eventEnd[j]
+        ) {
+          conflictFound = true;
+          setUnavailableRoom(record.name);
+          break;
+        } else if (
+          startTime >= record.eventStart[j] &&
+          startTime <= record.eventEnd[j]
+        ) {
+          conflictFound = true;
+          setUnavailableRoom(record.name);
+          break;
+        } else if (
+          realEndTime > record.eventStart[j] &&
+          realEndTime < record.eventEnd[j]
+        ) {
+          conflictFound = true;
+          setUnavailableRoom(record.name);
+          break;
+        }
+      }
+
+      if (conflictFound) {
+        break;
+      }
+    }
+
+    return conflictFound;
   };
 
   return (
@@ -198,12 +218,11 @@ function DateTimeValidation({
 
       <Box justifyContent="center" alignItems="center">
         <br />
-        <Button color="warning" auto ghost onClick={checkAvailability}>
+        <Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
           check availability
         </Button>
       </Box>
       <NotificationSection
-        invalidTime={invalidTime}
         roomUnavailable={roomUnavailable}
         successMsg={successMsg}
         handleClose={handleClose}
@@ -262,11 +281,11 @@ const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
 };
 
 const NotificationSection = ({
-                               roomUnavailable,
-                               successMsg,
-                               handleClose,
-                               unavailableRoom,
-                             }) => {
+  roomUnavailable,
+  successMsg,
+  handleClose,
+  unavailableRoom,
+}) => {
   return (
     <div>
       {roomUnavailable && (
