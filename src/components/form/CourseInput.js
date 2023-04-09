@@ -46,6 +46,7 @@ const fetchCourses = async () => {
 };
 
 const CourseSelectionInput = ({
+  courseSelected,
   setCourseSelected,
   addCourse,
   setAddCourse,
@@ -103,7 +104,7 @@ const CourseSelectionInput = ({
                 freeSolo
                 disableCloseOnSelect
                 sx={{ width: 600 }}
-                value={courses}
+                value={courseSelected}
                 onChange={handleCourseChange}
                 id="Search-for-course"
                 options={courses}

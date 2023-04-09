@@ -396,9 +396,11 @@ export default function Home() {
           <Grow in={userCount > 0}>{timeInput}</Grow>
         )}
       <Grow in={newEvent || (updateEvent && goodID)}>{courseInput}</Grow>
-      {userCount > 0 && timeCorrect && (newEvent || (updateEvent && goodID)) && (
-        <Grow in={userCount > 0}>{gearInput}</Grow>
-      )}
+      {userCount > 0 &&
+        timeCorrect &&
+        (newEvent || (updateEvent && goodID)) && (
+          <Grow in={userCount > 0}>{gearInput}</Grow>
+        )}
       {userCount > 0 && (newEvent || (updateEvent && goodID)) && (
         <Submit
           userSelected={userSelected}

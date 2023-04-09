@@ -8,7 +8,7 @@ const noteStyle = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  maxWidth: "1000px",
+  maxWidth: "800px",
 };
 
 const center = {
