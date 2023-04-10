@@ -1,37 +1,5 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import base from "../airtable";
-
-const containerStyle = {
-	display: "flex",
-	flexDirection: "column",
-	justifyContent: "center",
-	alignItems: "center",
-	gap: "16px",
-};
-
-const modalStyle = {
-	display: "flex",
-	flexDirection: "column",
-	alignItems: "center",
-	position: "absolute",
-	top: "40%",
-	left: "50%",
-	transform: "translate(-50%, -50%)",
-	width: 400,
-	bgcolor: "#16181A",
-	outline: 0,
-	boxShadow: 20,
-	p: 4,
-	color: "#191b1d",
-};
-
-const textStyle = {
-	color: "#fff",
-};
 
 async function createRecord(
 	users,
@@ -228,10 +196,20 @@ export default function Submit({
 	};
 
 	return (
-		<div style={containerStyle}>
-			<Button
-				variant="outlined"
-				color="warning"
+		<div className="flex flex-col items-center justify-center gap-4">
+			<button
+				className={`${
+					!(
+						sessionTitle &&
+						roomTypeSelected &&
+						eventTypeSelected &&
+						endTimeSelected &&
+						startTimeSelected &&
+						timeCorrect
+					)
+						? "bg-gray-300 cursor-not-allowed"
+						: "bg-yellow-500 hover:bg-yellow-600"
+				} text-white font-semibold py-2 px-4 border border-yellow-500 rounded`}
 				onClick={handleSubmit}
 				disabled={
 					!(
@@ -245,23 +223,38 @@ export default function Submit({
 				}
 			>
 				SUBMIT
-			</Button>
+			</button>
 
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
-			>
-				<Box sx={modalStyle}>
-					<Typography id="modal-modal-title" sx={textStyle}>
-						Submission Successful!
-					</Typography>
-					<Typography id="modal-modal-description" sx={textStyle}>
-						Please check your inbox for booking confirmation.
-					</Typography>
-				</Box>
-			</Modal>
+			{open && (
+				<div
+					className="fixed z-10 inset-0 overflow-y-auto"
+					aria-labelledby="modal-title"
+					role="dialog"
+					aria-modal="true"
+				>
+					<div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+						<div
+							className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+							aria-hidden="true"
+						></div>
+						<div className="bg-black inline-block p-6 my-8 border border-yellow-500 text-white overflow-hidden shadow-xl transform transition-all">
+							<h2
+								id="modal-title"
+								className="text-xl font-bold mb-2 text-white"
+							>
+								Submission Successful!
+							</h2>
+							<p>Please check your inbox for booking confirmation.</p>
+							<button
+								className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 border border-yellow-500 rounded mt-4"
+								onClick={handleClose}
+							>
+								Close
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

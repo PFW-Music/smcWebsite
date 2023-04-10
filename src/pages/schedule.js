@@ -4,7 +4,7 @@ import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 
 export default function Schedule() {
 	return (
-		<div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-8">
+		<div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center py-8">
 			<div className="w-full max-w-5xl px-4">
 				<HeaderWithSubtitle
 					title="Ready to go on record?"
