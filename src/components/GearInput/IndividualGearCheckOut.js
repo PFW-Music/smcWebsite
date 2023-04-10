@@ -2,7 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
-import { pink } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -220,10 +219,7 @@ export default function GearCheckOut({
                   style={{ marginRight: 8 }}
                   checked={selected}
                   sx={{
-                    color: pink[800],
-                    "&.Mui-checked": {
-                      color: pink[600],
-                    },
+                    "&.Mui-checked": {},
                   }}
                 />
                 {option.name}

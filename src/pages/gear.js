@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import IndividualNameInput from "../components/form/NameInput/IndividualNameInput";
-import IndividualTimeInput from "../components/form/TimeInput/IndividualTimeInput";
+import IndividualNameInput from "../components/NameInput/IndividualNameInput";
+import IndividualTimeInput from "../components/TimeInput/IndividualTimeInput";
 import IndividualGearCheckOut from "../components/GearInput/IndividualGearCheckOut";
-import IndividualSubmit from "../components/form/SubmitButton/IndividualSubmit";
+import IndividualSubmit from "../components/SubmitButton/IndividualSubmit";
 
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";

@@ -9,7 +9,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import _without from "lodash/without";
 import Checkbox from "@mui/material/Checkbox";
-import base from "../airtable";
+import base from "./airtable";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

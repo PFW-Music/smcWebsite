@@ -4,7 +4,6 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { pink } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -70,7 +69,6 @@ export default function GearCheckOut({
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
 
-
   React.useEffect(() => {
     let active = true;
 
@@ -113,8 +111,6 @@ export default function GearCheckOut({
     setSuccessMsg(false);
   };
 
-  
-
   const handleOnChange = (event, newValue) => {
     if (typeof newValue === "string") {
       setGear({
@@ -124,8 +120,7 @@ export default function GearCheckOut({
       setGear(newValue);
       userGear = newValue;
       setGearSelected(newValue);
-
-     }
+    }
   };
 
   const gearInput = (
@@ -159,10 +154,7 @@ export default function GearCheckOut({
               style={{ marginRight: 8 }}
               checked={selected}
               sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600],
-                },
+                "&.Mui-checked": {},
               }}
             />
             {option.name}
@@ -216,10 +208,7 @@ export default function GearCheckOut({
               checked={addGear}
               onChange={handleChangeGear}
               sx={{
-                color: pink[800],
-                "&.Mui-checked": {
-                  color: pink[600],
-                },
+                "&.Mui-checked": {},
               }}
             />
           }
@@ -238,7 +227,7 @@ export default function GearCheckOut({
         >
           {addGear && gearInput}
           {iFrameGear}
-          </Box>
+        </Box>
       )}
     </Stack>
   );

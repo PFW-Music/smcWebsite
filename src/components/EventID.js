@@ -12,7 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import base from "../airtable";
+import base from "./airtable";
 
 function UpdateRecord(eventID) {
   base("Events").update(
