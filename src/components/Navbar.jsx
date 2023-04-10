@@ -4,35 +4,27 @@ import Image from "next/image";
 
 const NavbarCustom = () => {
 	return (
-		<div className="flex justify-center items-center bg-gray-900 w-full flex-col p-4">
+		<div className="flex flex-col items-center justify-center bg-neutral-900 w-full p-4">
 			<Image src={"/LogoPFW.webp"} width={300} height={50} alt={"Logo"}></Image>
-			<ul className="list-none m-0 p-4 flex justify-center">
+			<ul className="flex list-none m-0 p-4">
 				<li className="mr-4">
-					<Link href="/">
-						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
-							Home
-						</span>
+					<Link href="/" className="text-blue-500">
+						Home
 					</Link>
 				</li>
 				<li className="mr-4">
-					<Link href="/schedule">
-						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
-							Schedules
-						</span>
+					<Link href="/schedule" className="text-blue-500">
+						Schedules
 					</Link>
 				</li>
 				<li className="mr-4">
-					<Link href="/gear">
-						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
-							Gear
-						</span>
+					<Link href="/gear" className="text-blue-500">
+						Gear
 					</Link>
 				</li>
 				<li className="mr-4">
-					<Link href="/contact">
-						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
-							Contact Us
-						</span>
+					<Link href="/contact" className="text-blue-500">
+						Contact Us
 					</Link>
 				</li>
 			</ul>

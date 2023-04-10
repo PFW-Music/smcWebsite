@@ -5,7 +5,7 @@ import ContactCard from "../components/ContactCard";
 
 export default function Contact() {
 	return (
-		<div>
+		<div className="bg-neutral-900 min-h-screen">
 			<HeaderWithSubtitle
 				title="Contact Us"
 				subtitle="See below for information on getting in contact with John Buteyn..."
