@@ -16,129 +16,129 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const fetchCourses = async () => {
-  let courseList = [];
+	let courseList = [];
 
-  await base("Classes")
-    .select({
-      view: "ALL CLASSES",
-    })
-    .eachPage((records, fetchNextPage) => {
-      records.forEach((record) => {
-        let className = record.get("Name");
-        let classDay = record.get("Week Day(s)");
-        let classTime = record.get("Meeting Time");
+	await base("Classes")
+		.select({
+			view: "ALL CLASSES",
+		})
+		.eachPage((records, fetchNextPage) => {
+			records.forEach((record) => {
+				let className = record.get("Name");
+				let classDay = record.get("Week Day(s)");
+				let classTime = record.get("Meeting Time");
 
-        if (className) {
-          if (classDay) {
-            className += ", " + String(classDay).substring(0, 3);
-          }
-          if (classTime) {
-            className += ", " + String(classTime);
-          }
-          courseList.push({ key: record.id, name: className });
-        }
-      });
+				if (className) {
+					if (classDay) {
+						className += ", " + String(classDay).substring(0, 3);
+					}
+					if (classTime) {
+						className += ", " + String(classTime);
+					}
+					courseList.push({ key: record.id, name: className });
+				}
+			});
 
-      fetchNextPage();
-    });
+			fetchNextPage();
+		});
 
-  return courseList;
+	return courseList;
 };
 
 const CourseSelectionInput = ({
-  courseSelected,
-  setCourseSelected,
-  addCourse,
-  setAddCourse,
+	courseSelected,
+	setCourseSelected,
+	addCourse,
+	setAddCourse,
 }) => {
-  const [courses, setCourses] = useState([]);
+	const [courses, setCourses] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchCourses();
-      setCourses(data);
-    };
+	useEffect(() => {
+		const fetchData = async () => {
+			const data = await fetchCourses();
+			setCourses(data);
+		};
 
-    fetchData();
-  }, []);
+		fetchData();
+	}, []);
 
-  const handleChangeCourse = (event) => {
-    setAddCourse(event.target.checked);
-  };
+	const handleChangeCourse = (event) => {
+		setAddCourse(event.target.checked);
+	};
 
-  const handleCourseChange = (event, newCourses) => {
-    setCourseSelected(newCourses);
-  };
+	const handleCourseChange = (event, newCourses) => {
+		setCourseSelected(newCourses);
+	};
 
-  return (
-    <Stack spacing={0} sx={{ p: 2 }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          textAlign: "left",
-          fontSize: 24,
-          fontFamily: "Monospace",
-          lineHeight: 2,
-          flexDirection: "column",
-        }}
-      >
-        <FormLabel component="legend" sx={{ color: "white" }}>
-          Is this time slot for a course assignment?
-        </FormLabel>
-        <FormControlLabel
-          control={
-            <Checkbox checked={addCourse} onChange={handleChangeCourse} />
-          }
-          label="Course assignment"
-          sx={{ color: "white" }}
-        />
-      </Box>
-      <Box sx={{ justifyContent: "center" }}>
-        {addCourse && (
-          <Fade in={addCourse}>
-            <FormControl sx={{ m: 1 }} variant="standard">
-              <Autocomplete
-                multiple
-                freeSolo
-                disableCloseOnSelect
-                sx={{ width: 600 }}
-                value={courseSelected}
-                onChange={handleCourseChange}
-                id="Search-for-course"
-                options={courses}
-                getOptionLabel={(option) => option.name}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
-                    <Checkbox
-                      icon={icon}
-                      checkedIcon={checkedIcon}
-                      style={{ marginRight: 8 }}
-                      checked={selected}
-                    />
-                    {option.name}
-                  </li>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Select course(s)"
-                    fullWidth
-                    sx={{
-                      "& label": { color: "white" },
-                      "& input": { color: "white" },
-                    }}
-                  />
-                )}
-              ></Autocomplete>
-            </FormControl>
-          </Fade>
-        )}
-      </Box>
-    </Stack>
-  );
+	return (
+		<Stack spacing={0} sx={{ p: 2 }}>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "flex-start",
+					flexWrap: "wrap",
+					textAlign: "left",
+					fontSize: 24,
+					fontFamily: "Monospace",
+					lineHeight: 2,
+					flexDirection: "column",
+				}}
+			>
+				<FormLabel component="legend" sx={{ color: "white" }}>
+					Is this time slot for a course assignment?
+				</FormLabel>
+				<FormControlLabel
+					control={
+						<Checkbox checked={addCourse} onChange={handleChangeCourse} />
+					}
+					label="Course assignment"
+					sx={{ color: "white" }}
+				/>
+			</Box>
+			<Box sx={{ justifyContent: "center" }}>
+				{addCourse && (
+					<Fade in={addCourse}>
+						<FormControl sx={{ m: 1 }} variant="standard">
+							<Autocomplete
+								multiple
+								freeSolo
+								disableCloseOnSelect
+								sx={{ width: 600 }}
+								value={courseSelected}
+								onChange={handleCourseChange}
+								id="Search-for-course"
+								options={courses}
+								getOptionLabel={(option) => option.name}
+								renderOption={(props, option, { selected }) => (
+									<li {...props}>
+										<Checkbox
+											icon={icon}
+											checkedIcon={checkedIcon}
+											style={{ marginRight: 8 }}
+											checked={selected}
+										/>
+										{option.name}
+									</li>
+								)}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										variant="standard"
+										label="Select course(s)"
+										fullWidth
+										sx={{
+											"& label": { color: "white" },
+											"& input": { color: "white" },
+										}}
+									/>
+								)}
+							></Autocomplete>
+						</FormControl>
+					</Fade>
+				)}
+			</Box>
+		</Stack>
+	);
 };
 
 export default CourseSelectionInput;

@@ -116,7 +116,6 @@ function DateTimeValidation({
 	gearList,
 	setFilteredGearList,
 }) {
-	const [invalidTime, setInvalidTime] = useState(false);
 	const [roomUnavailable, setRoomUnavailable] = useState(false);
 	const [successMsg, setSuccessMsg] = useState(false);
 	const [unavailableRoom, setUnavailableRoom] = useState("");
@@ -133,8 +132,6 @@ function DateTimeValidation({
 	const handleAvailabilityCheck = () => {
 		const startTime = startDate.toISOString();
 		const endTime = endDate.toISOString();
-
-		setInvalidTime(startTime > endTime);
 
 		if (startTime > endTime) {
 			setTimeCorrect(false);
