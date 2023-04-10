@@ -1,13 +1,15 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Button } from "@nextui-org/react";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import base from "./airtable";
+import base from "../airtable";
 
-//create global variables here
-
-const style = {
+const modalStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   position: "absolute",
   top: "40%",
   left: "50%",
@@ -23,13 +25,12 @@ const style = {
 const containerStyle = {
   display: "flex",
   flexDirection: "column",
-  flexWrap: "wrap",
-  justifyContent: "center",
   alignItems: "center",
-  gap: "16px", // You can adjust the gap between cards if needed
+  justifyContent: "center",
+  gap: "16px",
 };
 
-async function CreateEventRecord(
+async function createEventRecord(
   users,
   startTimeSelected,
   endTimeSelected,
@@ -69,26 +70,13 @@ export default function Submit({
   const handleSubmit = async () => {
     setOpen(true);
 
-    // getting the IDs lists for linking fields
-    const users = [];
-    const gears = [];
+    const users = userSelected.map((obj) => obj.id);
+    const gears = gearSelected.map((obj) => obj.id);
 
-    if (userSelected) {
-      userSelected.forEach(function (obj) {
-        users.push(obj.id);
-      });
-    }
-    if (gearSelected) {
-      gearSelected.forEach(function (obj) {
-        gears.push(obj.id);
-      });
-    }
-
-    // create record
-    await CreateEventRecord(users, startTimeSelected, endTimeSelected, gears);
+    await createEventRecord(users, startTimeSelected, endTimeSelected, gears);
   };
+
   const handleClose = () => {
-    // slose the confirmation page
     setOpen(false);
     window.location.reload();
   };
@@ -96,9 +84,8 @@ export default function Submit({
   return (
     <div style={containerStyle}>
       <Button
-        bordered
+        variant="outlined"
         color="warning"
-        auto
         onClick={handleSubmit}
         disabled={
           !(endTimeSelected && startTimeSelected && timeCorrect) ||
@@ -115,7 +102,7 @@ export default function Submit({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submission Successful!
           </Typography>

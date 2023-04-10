@@ -2,47 +2,42 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const containerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: "#16181A",
-  width: "100%",
-  flexDirection: "column",
-  padding: "15px",
-};
-
-const listStyle = {
-  listStyleType: "none",
-  margin: 0,
-  padding: "10px",
-  display: "flex",
-};
-
-const listItemStyle = {
-  marginRight: "10px",
-};
-
 const NavbarCustom = () => {
-  return (
-    <div style={containerStyle}>
-      <Image src={"/LogoPFW.webp"} width={300} height={50} alt={"Logo"}></Image>
-      <ul style={listStyle}>
-        <li style={listItemStyle}>
-          <Link href="/">Home</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/schedule">Schedules</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/gear">Gear</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/contact">Contact Us</Link>
-        </li>
-      </ul>
-    </div>
-  );
+	return (
+		<div className="flex justify-center items-center bg-gray-900 w-full flex-col p-4">
+			<Image src={"/LogoPFW.webp"} width={300} height={50} alt={"Logo"}></Image>
+			<ul className="list-none m-0 p-4 flex justify-center">
+				<li className="mr-4">
+					<Link href="/">
+						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
+							Home
+						</span>
+					</Link>
+				</li>
+				<li className="mr-4">
+					<Link href="/schedule">
+						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
+							Schedules
+						</span>
+					</Link>
+				</li>
+				<li className="mr-4">
+					<Link href="/gear">
+						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
+							Gear
+						</span>
+					</Link>
+				</li>
+				<li className="mr-4">
+					<Link href="/contact">
+						<span className="text-white hover:text-gray-300 cursor-pointer inline-block">
+							Contact Us
+						</span>
+					</Link>
+				</li>
+			</ul>
+		</div>
+	);
 };
 
 export default NavbarCustom;
