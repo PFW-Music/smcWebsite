@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import base from "../airtable";
+import base from "../../airtable";
 
 //create global variables here
 
