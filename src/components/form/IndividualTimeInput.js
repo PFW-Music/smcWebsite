@@ -59,34 +59,44 @@ const CustomDatePicker = ({ label, selectedDate, onChange, ...rest }) => (
 );
 
 export default function DateTimeValidation({
-                                             setTimeCorrect,
-                                             setStartTimeSelected,
-                                             setEndTimeSelected,
-                                             roomBookingRecord,
-                                           }) {
-  const [startDate, setStartDate] = useState(roundToNearestHalfHour(new Date()));
-  const [endDate, setEndDate] = useState(addHours(roundToNearestHalfHour(new Date()), 1));
+  setTimeCorrect,
+  setStartTimeSelected,
+  setEndTimeSelected,
+  roomBookingRecord,
+}) {
+  const [startDate, setStartDate] = useState(
+    roundToNearestHalfHour(new Date())
+  );
+  const [endDate, setEndDate] = useState(
+    addHours(roundToNearestHalfHour(new Date()), 1)
+  );
   const [invalidTime, setInvalidTime] = useState(false);
   const [invalidFormat, setInvalidFormat] = useState(false);
   const [roomUnavailable, setRoomUnavailable] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [unavailableRoom, setUnavailableRoom] = useState("");
 
-  const handleStartDateChange = useCallback((date) => {
-    setTimeCorrect(false);
-    setStartDate(date);
-    setStartTimeSelected(date.toISOString());
+  const handleStartDateChange = useCallback(
+    (date) => {
+      setTimeCorrect(false);
+      setStartDate(date);
+      setStartTimeSelected(date.toISOString());
 
-    const oneHourForward = addHours(date, 1);
-    setEndDate(oneHourForward);
-    setEndTimeSelected(oneHourForward.toISOString());
-  }, [setEndTimeSelected, setStartTimeSelected, setTimeCorrect]);
+      const oneHourForward = addHours(date, 1);
+      setEndDate(oneHourForward);
+      setEndTimeSelected(oneHourForward.toISOString());
+    },
+    [setEndTimeSelected, setStartTimeSelected, setTimeCorrect]
+  );
 
-  const handleEndDateChange = useCallback((date) => {
-    setTimeCorrect(false);
-    setEndDate(date);
-    setEndTimeSelected(date.toISOString());
-  }, [setEndTimeSelected, setTimeCorrect]);
+  const handleEndDateChange = useCallback(
+    (date) => {
+      setTimeCorrect(false);
+      setEndDate(date);
+      setEndTimeSelected(date.toISOString());
+    },
+    [setEndTimeSelected, setTimeCorrect]
+  );
 
   const handleClose = useCallback((event, reason) => {
     if (reason !== "clickaway") {
