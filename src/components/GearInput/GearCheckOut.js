@@ -1,234 +1,175 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import React, { useState, useEffect } from "react";
+import {
+	Box,
+	FormLabel,
+	FormControl,
+	FormControlLabel,
+	Checkbox,
+	Autocomplete,
+	TextField,
+	CircularProgress,
+} from "@mui/material";
+import {
+	CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
+	CheckBox as CheckBoxIcon,
+} from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
-import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-// This will be used to store input data
-let userGear;
-let unavailableGear;
-
 const embedStyle = {
-  background: "transparent",
-  border: "",
+	background: "transparent",
+	border: "",
 };
 
 const iFrameGear = (
-  <iframe
-    className="airtable-embed"
-    title="AirtableGearView"
-    src="https://airtable.com/embed/shrmH9r8B0Zd8LwcU?backgroundColor=red"
-    sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
-    loading="lazy"
-    width="100%"
-    height="533"
-    style={embedStyle}
-  />
+	<iframe
+		className="airtable-embed"
+		title="AirtableGearView"
+		src="https://airtable.com/embed/shrmH9r8B0Zd8LwcU?backgroundColor=red"
+		sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
+		loading="lazy"
+		width="100%"
+		height="533"
+		style={embedStyle}
+	/>
 );
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
+const sleep = async (delay = 0) => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	});
+};
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return (
-    <MuiAlert
-      elevation={6}
-      ref={ref}
-      variant="filled"
-      horizontal="center"
-      {...props}
-    />
-  );
-});
+const GearInput = ({
+	gear,
+	handleGearSelectionChange,
+	open,
+	setOpen,
+	options,
+	loading,
+}) => {
+	return (
+		<FormControl variant="standard">
+			<Autocomplete
+				open={open}
+				onOpen={() => setOpen(true)}
+				onClose={() => setOpen(false)}
+				multiple
+				freeSolo
+				disableCloseOnSelect
+				value={gear}
+				onChange={handleGearSelectionChange}
+				id="Search-for-course"
+				options={options}
+				getOptionLabel={(option) =>
+					typeof option === "string" ? option : option.name
+				}
+				renderOption={(props, option, { selected }) => (
+					<li {...props}>
+						<Checkbox
+							icon={icon}
+							checkedIcon={checkedIcon}
+							style={{ marginRight: 8 }}
+							checked={selected}
+							sx={{ "&.Mui-checked": {} }}
+						/>
+						{option.name}
+					</li>
+				)}
+				renderInput={(params) => (
+					<TextField
+						{...params}
+						variant="outlined"
+						label="Add Gear(s)"
+						helperText="Available gear can be viewed below."
+						InputProps={{
+							...params.InputProps,
+							endAdornment: (
+								<React.Fragment>
+									{loading ? (
+										<CircularProgress color="inherit" size={20} />
+									) : null}
+									{params.InputProps.endAdornment}
+								</React.Fragment>
+							),
+						}}
+					/>
+				)}
+			/>
+		</FormControl>
+	);
+};
 
-export default function GearCheckOut({
-  setGearSelected,
-  gearList,
-  addGear,
-  setAddGear,
-  startTimeSelected,
-  endTimeSelected,
-}) {
-  const [gear, setGear] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
-  const loading = open && options.length === 0;
+const GearCheckOut = ({ setGearSelected, gearList, addGear, setAddGear }) => {
+	const [gear, setGear] = useState([]);
+	const [open, setOpen] = useState(false);
+	const [options, setOptions] = useState([]);
+	const loading = open && options.length === 0;
 
-  React.useEffect(() => {
-    let active = true;
+	useEffect(() => {
+		if (!loading) return;
 
-    if (!loading) {
-      return undefined;
-    }
+		let active = true;
+		(async () => {
+			await sleep(1000);
+			if (active) setOptions([...gearList]);
+		})();
 
-    (async () => {
-      await sleep(1e3); // For demo purposes.
+		return () => {
+			active = false;
+		};
+	}, [loading, gearList]);
 
-      if (active) {
-        setOptions([...gearList]);
-      }
-    })();
+	useEffect(() => {
+		if (!open) setOptions([]);
+	}, [open]);
 
-    return () => {
-      active = false;
-    };
-  }, [loading, gearList]);
+	const handleGearCheckboxChange = (event) => {
+		setAddGear(event.target.checked);
+	};
 
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+	const handleGearSelectionChange = (event, newValue) => {
+		if (typeof newValue === "string") {
+			setGear({ title: newValue });
+		} else {
+			setGear(newValue);
+			setGearSelected(newValue);
+		}
+	};
 
-  const handleChangeGear = (event) => {
-    setAddGear(event.target.checked);
-  };
+	return (
+		<Stack spacing={0}>
+			<Box className="flex items-start flex-wrap text-left m-2 text-xl font-mono leading-8 w-96">
+				<FormLabel component="legend">
+					Need to checkout gear for the event?
+				</FormLabel>
+				<FormControlLabel
+					control={
+						<Checkbox checked={addGear} onChange={handleGearCheckboxChange} />
+					}
+					label="Gear check-out"
+				/>
+			</Box>
 
-  const handleFakeClose = (event, reason) => {
-    if (reason === "clickaway") {
-    }
-  };
+			{addGear && (
+				<Box className="flex items-start flex-wrap justify-center">
+					{addGear && (
+						<GearInput
+							gear={gear}
+							handleGearSelectionChange={handleGearSelectionChange}
+							open={open}
+							setOpen={setOpen}
+							options={options}
+							loading={loading}
+						/>
+					)}
+					{iFrameGear}
+				</Box>
+			)}
+		</Stack>
+	);
+};
 
-  const handleRealClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSuccessMsg(false);
-  };
-
-  const handleOnChange = (event, newValue) => {
-    if (typeof newValue === "string") {
-      setGear({
-        title: newValue,
-      });
-    } else {
-      setGear(newValue);
-      userGear = newValue;
-      setGearSelected(newValue);
-    }
-  };
-
-  const gearInput = (
-    <FormControl sx={{ m: 1, width: 400 }} variant="standard">
-      <Autocomplete
-        open={open}
-        onOpen={() => {
-          setOpen(true);
-        }}
-        onClose={() => {
-          setOpen(false);
-        }}
-        multiple
-        freeSolo
-        disableCloseOnSelect
-        value={gear}
-        onChange={handleOnChange}
-        id="Search-for-course"
-        options={options}
-        getOptionLabel={(option) => {
-          if (typeof option === "string") {
-            // Value selected with enter, right from the input
-            return option;
-          } else return option.name; // Regular option
-        }}
-        renderOption={(props, option, { selected }) => (
-          <li {...props}>
-            <Checkbox
-              icon={icon}
-              checkedIcon={checkedIcon}
-              style={{ marginRight: 8 }}
-              checked={selected}
-              sx={{
-                "&.Mui-checked": {},
-              }}
-            />
-            {option.name}
-          </li>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            label="Add Gear(s)"
-            helperText="Available gear can be viewed below."
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
-          />
-        )}
-      ></Autocomplete>
-      <br />
-    </FormControl>
-  );
-
-  return (
-    <Stack spacing={0}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          textAlign: "left",
-          m: 2,
-          fontSize: 24,
-          fontFamily: "Monospace",
-          lineHeight: 2,
-          width: 400,
-        }}
-      >
-        <FormLabel component="legend">
-          Need to checkout gear for the event?
-        </FormLabel>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={addGear}
-              onChange={handleChangeGear}
-              sx={{
-                "&.Mui-checked": {},
-              }}
-            />
-          }
-          label="Gear check-out"
-        />
-      </Box>
-
-      {addGear && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          {addGear && gearInput}
-          {iFrameGear}
-        </Box>
-      )}
-    </Stack>
-  );
-}
+export default GearCheckOut;
