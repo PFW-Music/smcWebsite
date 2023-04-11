@@ -46,11 +46,11 @@ const fetchCourses = async () => {
 };
 
 const CourseSelectionInput = ({
-	courseSelected,
-	setCourseSelected,
-	addCourse,
-	setAddCourse,
-}) => {
+																courseSelected,
+																setCourseSelected,
+																addCourse,
+																setAddCourse,
+															}) => {
 	const [courses, setCourses] = useState([]);
 
 	useEffect(() => {
@@ -73,18 +73,9 @@ const CourseSelectionInput = ({
 	return (
 		<Stack spacing={0} sx={{ p: 2 }}>
 			<Box
-				sx={{
-					display: "flex",
-					alignItems: "flex-start",
-					flexWrap: "wrap",
-					textAlign: "left",
-					fontSize: 24,
-					fontFamily: "Monospace",
-					lineHeight: 2,
-					flexDirection: "column",
-				}}
+				className="flex flex-col items-start flex-wrap text-left text-xl font-mono leading-8"
 			>
-				<FormLabel component="legend" sx={{ color: "white" }}>
+				<FormLabel component="legend" className="text-white">
 					Is this time slot for a course assignment?
 				</FormLabel>
 				<FormControlLabel
@@ -92,10 +83,10 @@ const CourseSelectionInput = ({
 						<Checkbox checked={addCourse} onChange={handleChangeCourse} />
 					}
 					label="Course assignment"
-					sx={{ color: "white" }}
+					className="text-white"
 				/>
 			</Box>
-			<Box sx={{ justifyContent: "center" }}>
+			<Box className="justify-center">
 				{addCourse && (
 					<Fade in={addCourse}>
 						<FormControl sx={{ m: 1 }} variant="standard">
@@ -103,7 +94,7 @@ const CourseSelectionInput = ({
 								multiple
 								freeSolo
 								disableCloseOnSelect
-								sx={{ width: 600 }}
+								className="w-96"
 								value={courseSelected}
 								onChange={handleCourseChange}
 								id="Search-for-course"
@@ -126,10 +117,7 @@ const CourseSelectionInput = ({
 										variant="standard"
 										label="Select course(s)"
 										fullWidth
-										sx={{
-											"& label": { color: "white" },
-											"& input": { color: "white" },
-										}}
+										className="text-white"
 									/>
 								)}
 							></Autocomplete>
