@@ -397,11 +397,13 @@ function NameInput({
 
   return (
     <div>
-      <Box sx={{ textAlign: "left", m: 2 }}>
+      <div>
+      <Box sx={{display: 'flex', justifyContent: 'center', width: '100%', m: 2 }}>
         <Button bordered color="warning" auto onClick={handleClickOpen}>
           +ADD
         </Button>
       </Box>
+      </div>
       {nameInputDialog}
       {userNameList.length !== 0 && (
         <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1 }}>
