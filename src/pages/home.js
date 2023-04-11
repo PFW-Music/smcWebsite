@@ -220,22 +220,19 @@ export default function Home() {
 	const SMChours = (
 		<Container className="bg-neutral-900 text-white flex items-center justify-center">
 			<Card.Body>
-				<Text className="text-center" size={25}>
-					SMC Hours & Availability
-				</Text>
-				<Row className="justify-center">
+				<Text className="text-center text-2xl">SMC Hours & Availability</Text>
+				<Row className="text-xl justify-center">
 					<div className="columns-1">
-						<Text size={20}>Monday — Friday: </Text>
+						<Text>Monday — Friday: </Text>
 						<Text>8:00 AM — Midnight</Text>
 					</div>
 					<div className="columns-2"></div>
 					<div className="Columns-3">
-						<Text size={20}>Saturday & Sunday: </Text>
+						<Text>Saturday & Sunday: </Text>
 						<Text>12:00 PM — Midnight</Text>
 					</div>
 				</Row>
 			</Card.Body>
-			<Spacer y={1} />
 		</Container>
 	);
 

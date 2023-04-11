@@ -1,6 +1,10 @@
 import React from "react";
 import base from "../airtable";
-
+import { Button as NextButton } from "@nextui-org/react";
+import Modal from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+import Fade from "@mui/material//Fade";
+import Typography from "@mui/material/Typography";
 async function createRecord(
 	users,
 	sessionTitle,
@@ -197,19 +201,9 @@ export default function Submit({
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
-			<button
-				className={`${
-					!(
-						sessionTitle &&
-						roomTypeSelected &&
-						eventTypeSelected &&
-						endTimeSelected &&
-						startTimeSelected &&
-						timeCorrect
-					)
-						? "bg-gray-300 cursor-not-allowed"
-						: "bg-yellow-500 hover:bg-yellow-600"
-				} text-white font-semibold py-2 px-4 border border-yellow-500 rounded`}
+			<NextButton
+				bordered
+				color="warning"
 				onClick={handleSubmit}
 				disabled={
 					!(
@@ -223,38 +217,29 @@ export default function Submit({
 				}
 			>
 				SUBMIT
-			</button>
+			</NextButton>
 
-			{open && (
-				<div
-					className="fixed z-10 inset-0 overflow-y-auto"
-					aria-labelledby="modal-title"
-					role="dialog"
-					aria-modal="true"
-				>
-					<div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-						<div
-							className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-							aria-hidden="true"
-						></div>
-						<div className="bg-black inline-block p-6 my-8 border border-yellow-500 text-white overflow-hidden shadow-xl transform transition-all">
-							<h2
-								id="modal-title"
-								className="text-xl font-bold mb-2 text-white"
-							>
-								Submission Successful!
-							</h2>
-							<p>Please check your inbox for booking confirmation.</p>
-							<button
-								className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 border border-yellow-500 rounded mt-4"
-								onClick={handleClose}
-							>
-								Close
-							</button>
-						</div>
+			<Modal
+				className="flex items-center justify-center"
+				open={open}
+				onClose={handleClose}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+			>
+				<Fade in={open}>
+					<div className="bg-neutral-900 inline-block p-6 my-8 border border-yellow-500 text-white overflow-hidden shadow-xl transform transition-all">
+						<Typography variant="h5" className="font-bold mb-2">
+							Submission Successful!
+						</Typography>
+						<Typography>
+							Please check your inbox for booking confirmation.
+						</Typography>
 					</div>
-				</div>
-			)}
+				</Fade>
+			</Modal>
 		</div>
 	);
 }
