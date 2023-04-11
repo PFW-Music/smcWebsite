@@ -25,6 +25,7 @@ const RecordingStudioRoomsList = [];
 const RehearsalRoomsList = [];
 const ECRoomsList = [];
 
+let x = 0;
 base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
@@ -33,13 +34,15 @@ base("SMC People")
 		function page(records, fetchNextPage) {
 			records.forEach(function (record) {
 				SMCpeople.push({ name: record.get("Person"), id: record.id });
-				peopleAllInfo.push({
+				peopleAllInfo[x] = {
 					id: record.id,
 					name: record.get("Person"),
 					roomAccess: record.get("Room Access"),
 					gearAccess: record.get("Gear Access"),
 					phoneNum: record.get("Phone"),
-				});
+				};
+
+				x = x + 1;
 
 				if (record.get("Role").includes("Faculty/Staff 🎓")) {
 					facultyList.push({ name: record.get("Person"), id: record.id });
@@ -151,6 +154,91 @@ export default function Home() {
 	const [updateEvent, setUpdateEvent] = React.useState(false);
 	const [CancelEvent, setCancelEvent] = React.useState(false);
 
+	const nameInput = (
+		<InputSection
+			title="Who is booking?"
+			description="i.e. takes all responsibility!"
+		>
+			<NameInput
+				peopleAllInfo={peopleAllInfo}
+				userSelected={userSelected}
+				setUserSelected={setUserSelected}
+				setUserCount={setUserCount}
+				setDisabledRoomTypes={setDisabledRoomTypes}
+				setGearList={setGearList}
+			/>
+		</InputSection>
+	);
+
+	const eventDetailsInput = (
+		<InputSection title="Event Details">
+			<EventDetailsInput
+				facultyList={facultyList}
+				setSessionTitle={setSessionTitle}
+				setEventTypeSelected={setEventTypeSelected}
+				setFacultySelected={setFacultySelected}
+				setUsageSelected={setUsageSelected}
+			/>
+		</InputSection>
+	);
+
+	const roomInput = (
+		<InputSection
+			title="Room Selection"
+			description="📌 If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at the end of the form."
+		>
+			<RoomSelection
+				roomOptionStudio={RecordingStudioRoomsList}
+				roomOptionRehearsal={RehearsalRoomsList}
+				roomOptionECspace={ECRoomsList}
+				disabledRoomTypes={disabledRoomTypes}
+				setRoomTypeSelected={setRoomTypeSelected}
+				setRoomSelected={setRoomSelected}
+				roomBookingRecord={roomBookingRecord}
+				setRoomBookingRecord={setRoomBookingRecord}
+			/>
+		</InputSection>
+	);
+
+	const timeInput = (
+		<InputSection
+			title="Session Time"
+			description="📌 Based on your chosen Session Time, we wil notify you with the availability of the room(s) selected above."
+		>
+			<TimeInput
+				setStartTimeSelected={setStartTimeSelected}
+				setEndTimeSelected={setEndTimeSelected}
+				setTimeCorrect={setTimeCorrect}
+				roomBookingRecord={roomBookingRecord}
+				gearList={gearList}
+				setFilteredGearList={setFilteredGearList}
+			/>
+		</InputSection>
+	);
+
+	const courseInput = (
+		<InputSection title="Courses">
+			<CourseInput
+				setCourseSelected={setCourseSelected}
+				addCourse={addCourse}
+				setAddCourse={setAddCourse}
+			/>
+		</InputSection>
+	);
+
+	const gearInput = (
+		<InputSection title="Gear Checkout">
+			<GearCheckOut
+				setGearSelected={setGearSelected}
+				gearList={filteredGearList}
+				addGear={addGear}
+				setAddGear={setAddGear}
+				startTimeSelected={startTimeSelected}
+				endTimeSelected={endTimeSelected}
+			/>
+		</InputSection>
+	);
+
 	const formActions = (
 		<Box className="m-auto">
 			<FormActions
@@ -197,59 +285,15 @@ export default function Home() {
 				<SMCHours />
 				{formActions}
 				<Collapse in={newEvent || (updateEvent && goodID)}>
-					<NameInput
-						peopleAllInfo={peopleAllInfo}
-						userSelected={userSelected}
-						setUserSelected={setUserSelected}
-						setUserCount={setUserCount}
-						setDisabledRoomTypes={setDisabledRoomTypes}
-						setGearList={setGearList}
-					/>
+					{nameInput}
 					{userCount > 0 && (
 						<>
 							<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />
-							<EventDetailsInput
-								facultyList={facultyList}
-								setSessionTitle={setSessionTitle}
-								setEventTypeSelected={setEventTypeSelected}
-								setFacultySelected={setFacultySelected}
-								setUsageSelected={setUsageSelected}
-							/>
-							<RoomSelection
-								roomOptionStudio={RecordingStudioRoomsList}
-								roomOptionRehearsal={RehearsalRoomsList}
-								roomOptionECspace={ECRoomsList}
-								disabledRoomTypes={disabledRoomTypes}
-								setRoomTypeSelected={setRoomTypeSelected}
-								setRoomSelected={setRoomSelected}
-								roomBookingRecord={roomBookingRecord}
-								setRoomBookingRecord={setRoomBookingRecord}
-							/>
-							{roomSelected.length !== 0 && (
-								<TimeInput
-									setStartTimeSelected={setStartTimeSelected}
-									setEndTimeSelected={setEndTimeSelected}
-									setTimeCorrect={setTimeCorrect}
-									roomBookingRecord={roomBookingRecord}
-									gearList={gearList}
-									setFilteredGearList={setFilteredGearList}
-								/>
-							)}
-							<CourseInput
-								setCourseSelected={setCourseSelected}
-								addCourse={addCourse}
-								setAddCourse={setAddCourse}
-							/>
-							{timeCorrect && (
-								<GearCheckOut
-									setGearSelected={setGearSelected}
-									gearList={filteredGearList}
-									addGear={addGear}
-									setAddGear={setAddGear}
-									startTimeSelected={startTimeSelected}
-									endTimeSelected={endTimeSelected}
-								/>
-							)}
+							{eventDetailsInput}
+							{roomInput}
+							{roomSelected.length !== 0 && timeInput}
+							{courseInput}
+							{timeCorrect && gearInput}
 						</>
 					)}
 				</Collapse>
