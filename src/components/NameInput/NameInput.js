@@ -340,11 +340,6 @@ function NameInput({
                   helperText="User+Password combo failed."
                   onChange={(e) => setPhoneVal(e.target.value)}
                   value={phoneVal || ""}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleChange(value);
-                    }
-                  }}
                   size="small"
                   variant="standard"
                   inputProps={{ maxLength: 4, minLength: 4 }}
@@ -363,11 +358,6 @@ function NameInput({
                   label="Last 4 of Ph#"
                   onChange={(e) => setPhoneVal(e.target.value)}
                   value={phoneVal || ""}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleChange(value);
-                    }
-                  }}
                   variant="standard"
                   size="small"
                   inputProps={{ maxLength: 4, minLength: 4 }}
