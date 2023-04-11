@@ -18,11 +18,6 @@ import Stack from "@mui/material/Stack";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const embedStyle = {
-	background: "transparent",
-	border: "",
-};
-
 const iFrameGear = (
 	<iframe
 		className="airtable-embed"
@@ -32,15 +27,8 @@ const iFrameGear = (
 		loading="lazy"
 		width="100%"
 		height="533"
-		style={embedStyle}
 	/>
 );
-
-const sleep = async (delay = 0) => {
-	return new Promise((resolve) => {
-		setTimeout(resolve, delay);
-	});
-};
 
 const GearInput = ({
 	gear,
@@ -73,7 +61,6 @@ const GearInput = ({
 							checkedIcon={checkedIcon}
 							style={{ marginRight: 8 }}
 							checked={selected}
-							sx={{ "&.Mui-checked": {} }}
 						/>
 						{option.name}
 					</li>
@@ -112,10 +99,12 @@ const GearCheckOut = ({ setGearSelected, gearList, addGear, setAddGear }) => {
 		if (!loading) return;
 
 		let active = true;
-		(async () => {
-			await sleep(1000);
+
+		const fetchOptions = async () => {
 			if (active) setOptions([...gearList]);
-		})();
+		};
+
+		fetchOptions();
 
 		return () => {
 			active = false;
@@ -152,19 +141,16 @@ const GearCheckOut = ({ setGearSelected, gearList, addGear, setAddGear }) => {
 					label="Gear check-out"
 				/>
 			</Box>
-
 			{addGear && (
 				<Box className="flex items-start flex-wrap justify-center">
-					{addGear && (
-						<GearInput
-							gear={gear}
-							handleGearSelectionChange={handleGearSelectionChange}
-							open={open}
-							setOpen={setOpen}
-							options={options}
-							loading={loading}
-						/>
-					)}
+					<GearInput
+						gear={gear}
+						handleGearSelectionChange={handleGearSelectionChange}
+						open={open}
+						setOpen={setOpen}
+						options={options}
+						loading={loading}
+					/>
 					{iFrameGear}
 				</Box>
 			)}
