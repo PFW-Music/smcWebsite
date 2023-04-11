@@ -42,8 +42,8 @@ const ContactCard = ({
 				className="border border-gray-300 p-6 w-80 h-80 flex flex-col items-center justify-center cursor-pointer hover:border-gray-500 transition-all duration-200"
 			>
 				<Image src={iconSrc} alt={title} height={55} width={55} />
-				<Text className="text-2xl mt-4">{title}</Text>
-				<Text className="text-xl mt-2">{description}</Text>
+				<Text className="text-2xl">{title}</Text>
+				<Text className="text-xl">{description}</Text>
 			</div>
 		</div>
 	);
