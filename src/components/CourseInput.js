@@ -75,11 +75,7 @@ const CourseSelectionInput = ({
 			<Box
 				className="flex flex-col items-start flex-wrap text-left text-xl font-mono leading-8"
 			>
-<<<<<<< HEAD
 				<FormLabel sx={{ color: "white"}}>
-=======
-				<FormLabel component="legend" className="text-white">
->>>>>>> 9639ca62508635a2b9e5bbc402e874c838a765d9
 					Is this time slot for a course assignment?
 				</FormLabel>
 				<FormControlLabel

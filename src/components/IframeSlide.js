@@ -8,7 +8,7 @@ function IframeSlideComponent({ src }) {
 				src={src}
 				sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
 				loading="lazy"
-				width="1000"
+				width="600"
 				height="600"
 			/>
 		</div>
