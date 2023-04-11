@@ -7,7 +7,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import _without from "lodash/without";
 import Checkbox from "@mui/material/Checkbox";
 import base from "./airtable";
 
