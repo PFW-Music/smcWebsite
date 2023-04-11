@@ -59,7 +59,7 @@ function Gear1() {
 
   const nameInput = (
     <Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-      <Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
+      <Box sx={{ textAlign: "center", m: 2, fontSize: 22, lineHeight: 2 }}>
         Who is booking?
         <br />
         <FormLabel component="legend">

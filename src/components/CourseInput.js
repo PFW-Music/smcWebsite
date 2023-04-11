@@ -84,7 +84,7 @@ const CourseSelectionInput = ({
 					flexDirection: "column",
 				}}
 			>
-				<FormLabel component="legend" sx={{ color: "white" }}>
+				<FormLabel sx={{ color: "white"}}>
 					Is this time slot for a course assignment?
 				</FormLabel>
 				<FormControlLabel

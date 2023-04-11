@@ -166,7 +166,7 @@ export default function Home() {
 
 	const nameInput = (
 		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
+			<Box sx={{ textAlign: "center", m: 2, fontSize: 22, lineHeight: 2 }}>
 				Who is booking?
 				<br />
 			</Box>
@@ -219,7 +219,7 @@ export default function Home() {
 					<Grid item xs={11}>
 						<FormLabel component="legend">
 							<Box
-								sx={{ textAlign: "left", fontSize: "14px", lineHeight: 1.5 }}
+								sx={{ textAlign: "center", fontSize: "14px", lineHeight: 1.5 }}
 							>
 								📌 If the Edit & Collaboration Spaces is selected, option to add
 								gear(s) to your booking will be available at the end of the
@@ -297,24 +297,24 @@ export default function Home() {
 	);
 
 	const SMChours = (
+		
 		<Container style={Center}>
-			<Card variant="bordered" css={{ mw: "700px" }}>
-				<Card.Body>
+							<Card.Body>
 					<Text size={25} style={Center}>
 						SMC Hours & Availability
 					</Text>
 					<Row style={Center}>
-						<Col>
+						<div class="columns-1">
 							<Text size={20}>Monday — Friday: </Text>
 							<Text>8:00 AM — Midnight</Text>
-						</Col>
-						<Col>
+						</div>
+						<div class="columns-2"></div>
+						<div class="Columns-3">
 							<Text size={20}>Saturday & Sunday: </Text>
 							<Text>12:00 PM — Midnight</Text>
-						</Col>
+						</div>
 					</Row>
 				</Card.Body>
-			</Card>
 			<Spacer y={1} />
 		</Container>
 	);
@@ -366,7 +366,7 @@ export default function Home() {
 	);
 
 	return (
-		<div style={CenterCol}>
+		<div class="text-center">
 			<HeaderWithSubtitle
 				title="Schedule SMC Events"
 				subtitle="Everyone can take advantage of scheduling time in the edit &
