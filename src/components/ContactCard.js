@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Card, Text } from "@nextui-org/react";
+import { Text } from "@nextui-org/react";
 
 const ContactCard = ({
 	type,
@@ -37,27 +37,15 @@ const ContactCard = ({
 
 	return (
 		<div className="bg-neutral-900 text-white flex items-center justify-center p-6">
-			<Card
-				isPressable
-				isHoverable
-				variant="bordered"
-				css={{
-					backgroundColor: "$accents7",
-					width: "350px",
-					height: "350px",
-					padding: "15px",
-				}}
+			<div
 				onClick={handleClick}
+				className="border border-gray-300 p-6 w-80 h-80 flex flex-col items-center justify-center cursor-pointer hover:border-gray-500 transition-all duration-200"
 				{...rest}
 			>
-				<Card.Body>
-					<div className="flex flex-col items-center justify-center">
-						<Image src={iconSrc} alt={title} height={55} width={55} />
-						<Text size={30}>{title}</Text>
-						<Text size={20}>{description}</Text>
-					</div>
-				</Card.Body>
-			</Card>
+				<Image src={iconSrc} alt={title} height={55} width={55} />
+				<Text className="text-4xl mt-4">{title}</Text>
+				<Text className="text-2xl mt-2">{description}</Text>
+			</div>
 		</div>
 	);
 };
