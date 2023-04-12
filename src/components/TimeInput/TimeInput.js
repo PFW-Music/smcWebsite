@@ -119,9 +119,7 @@ const NotificationSection = ({
 				onClose={handleClose}
 				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 			>
-				<Alert severity="error">
-					{unavailableRoom} is not available at inputted time!
-				</Alert>
+				<Alert severity="error">Room is not available at inputted time!</Alert>
 			</Snackbar>
 
 			<Snackbar
@@ -186,26 +184,33 @@ const DateTimeValidation = ({
 	};
 
 	const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
-		if (!roomBookingRecord) return false;
+		let unavailableRoom = "";
 
-		return roomBookingRecord.some((record) => {
-			if (!record.eventStart || record.eventStatus !== "Booked ✅")
-				return false;
+		const isRoomAvailable = roomBookingRecord.every((record) => {
+			if (record.eventStatus !== "Booked ✅") return true;
 
-			return record.eventStart.some((eventStart, idx) => {
+			return record.eventStart.every((eventStart, idx) => {
 				const eventEnd = record.eventEnd[idx];
 
+				const startTimeSelected = new Date(startTime);
+				const endTimeSelected = new Date(endTime);
+				const eventStartDate = new Date(eventStart);
+				const eventEndDate = new Date(eventEnd);
+
 				if (
-					(startTime <= eventStart && endTime >= eventEnd) ||
-					(startTime >= eventStart && startTime <= eventEnd) ||
-					(endTime > eventStart && endTime < eventEnd)
+					(startTimeSelected >= eventStartDate &&
+						startTimeSelected < eventEndDate) ||
+					(endTimeSelected > eventStartDate &&
+						endTimeSelected <= eventEndDate) ||
+					(startTimeSelected < eventStartDate && endTimeSelected > eventEndDate)
 				) {
-					setUnavailableRoom(record.name);
-					return true;
+					unavailableRoom = record.name;
+					return false;
 				}
-				return false;
+				return true;
 			});
 		});
+		return isRoomAvailable;
 	};
 
 	return (
