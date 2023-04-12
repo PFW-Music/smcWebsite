@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Stack from "@mui/material/Stack";
-import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import Box from "@mui/material/Box";
+import MuiAlert from "@mui/material/Alert";
 import { Button } from "@nextui-org/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "tailwindcss/tailwind.css";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -71,24 +70,11 @@ const filterTemporallyUnavailableGear = (
 };
 
 const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
-	const filterEndTime = (time) => {
-		if (startDate.toDateString() === time.toDateString()) {
-			return time > startDate;
-		}
-		return true;
-	};
-
 	return (
-		<div
-			style={{
-				display: "flex",
-				width: "100%",
-				flexDirection: "column",
-				alignItems: "center",
-			}}
-		>
-			<h4>Select Start Date</h4>
+		<div className="flex flex-col items-center w-full">
+			<h4 className="my-2">Select Start Date</h4>
 			<DatePicker
+				className="border rounded-md p-1"
 				showIcon
 				placeholderText="Select Start Date"
 				showTimeSelect
@@ -100,8 +86,9 @@ const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
 				onChange={(date) => handleDateChange("start", date)}
 			/>
 
-			<h4>Select End Date</h4>
+			<h4 className="my-2">Select End Date</h4>
 			<DatePicker
+				className="border rounded-md p-1"
 				showIcon
 				placeholderText="Select End Date"
 				showTimeSelect
@@ -111,7 +98,7 @@ const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
 				startDate={startDate}
 				endDate={endDate}
 				minDate={startDate}
-				filterTime={filterEndTime}
+				filterTime={(time) => time > startDate}
 				onChange={(date) => handleDateChange("end", date)}
 			/>
 		</div>
@@ -125,30 +112,27 @@ const NotificationSection = ({
 	unavailableRoom,
 }) => {
 	return (
-		<div>
-			{roomUnavailable && (
-				<Snackbar
-					open={roomUnavailable}
-					autoHideDuration={10}
-					onClose={handleClose}
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-				>
-					<Alert severity="error">
-						{unavailableRoom} is not available at inputted time!
-					</Alert>
-				</Snackbar>
-			)}
-			{successMsg && (
-				<Snackbar
-					open={successMsg}
-					autoHideDuration={500}
-					onClose={handleClose}
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-				>
-					<Alert severity="success">Room is available at inputted time</Alert>
-				</Snackbar>
-			)}
-		</div>
+		<>
+			<Snackbar
+				open={roomUnavailable}
+				autoHideDuration={10}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+			>
+				<Alert severity="error">
+					{unavailableRoom} is not available at inputted time!
+				</Alert>
+			</Snackbar>
+
+			<Snackbar
+				open={successMsg}
+				autoHideDuration={500}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+			>
+				<Alert severity="success">Room is available at inputted time</Alert>
+			</Snackbar>
+		</>
 	);
 };
 
@@ -177,14 +161,6 @@ const DateTimeValidation = ({
 		const startTime = startDate.toISOString();
 		const endTime = endDate.toISOString();
 
-		if (startTime > endTime) {
-			setTimeCorrect(false);
-			return;
-		}
-		setTimeCorrect(true);
-		setStartTimeSelected(startTime);
-		setEndTimeSelected(endTime);
-
 		const conflictFound = checkRoomAvailability(
 			startTime,
 			endTime,
@@ -204,25 +180,25 @@ const DateTimeValidation = ({
 				filterTemporallyUnavailableGear(gearList, startTime, endTime)
 			);
 		}
+
+		setStartTimeSelected(startTime);
+		setEndTimeSelected(endTime);
 	};
 
 	const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
-		const realEndTime = new Date(endTime).toISOString();
-
 		if (!roomBookingRecord) return false;
 
 		return roomBookingRecord.some((record) => {
-			if (!record.eventStart) return false;
+			if (!record.eventStart || record.eventStatus !== "Booked ✅")
+				return false;
 
 			return record.eventStart.some((eventStart, idx) => {
-				if (record.eventStatus[idx] !== "Booked ✅") return false;
-
 				const eventEnd = record.eventEnd[idx];
 
 				if (
-					(startTime <= eventStart && realEndTime >= eventEnd) ||
+					(startTime <= eventStart && endTime >= eventEnd) ||
 					(startTime >= eventStart && startTime <= eventEnd) ||
-					(realEndTime > eventStart && realEndTime < eventEnd)
+					(endTime > eventStart && endTime < eventEnd)
 				) {
 					setUnavailableRoom(record.name);
 					return true;
@@ -234,20 +210,17 @@ const DateTimeValidation = ({
 
 	return (
 		<div>
-			<Stack spacing={1}>
-				<DatePickerSection
-					startDate={startDate}
-					endDate={endDate}
-					handleDateChange={handleDateChange}
-				/>
-			</Stack>
+			<DatePickerSection
+				startDate={startDate}
+				endDate={endDate}
+				handleDateChange={handleDateChange}
+			/>
 
-			<Box justifyContent="center" alignItems="center">
-				<br />
+			<div className="flex justify-center items-center my-4">
 				<Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
 					check availability
 				</Button>
-			</Box>
+			</div>
 			<NotificationSection
 				roomUnavailable={roomUnavailable}
 				successMsg={successMsg}
