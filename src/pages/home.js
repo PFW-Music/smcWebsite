@@ -8,7 +8,7 @@ import GearCheckOut from "../components/GearCheckOut";
 import CourseInput from "../components/CourseInput";
 import FormActions from "../components/FormActions";
 import EventID from "../components/EventID";
-import Submit from "../components/SubmitButton/Submit";
+import Submit from "../components/Submit";
 import IframeSlide from "../components/IframeSlide";
 import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 import Collapse from "@mui/material/Collapse";

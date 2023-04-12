@@ -1,39 +1,14 @@
 import React from "react";
-import base from "../airtable";
+import base from "./airtable";
 import { Button as NextButton } from "@nextui-org/react";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material//Fade";
 import Typography from "@mui/material/Typography";
 
-async function createRecord(
-	users,
-	sessionTitle,
-	eventTypeSelected,
-	faculties,
-	usageSelected,
-	startTimeSelected,
-	endTimeSelected,
-	courses,
-	gears
-) {
+async function createRecord(fields) {
 	try {
-		const records = await base("Events").create([
-			{
-				fields: {
-					"Event Name": sessionTitle,
-					"Start Time": startTimeSelected,
-					"Proposed End Time": endTimeSelected,
-					Class: courses,
-					"Event Type": eventTypeSelected,
-					Faculty: faculties,
-					Students: users,
-					Status: "Booked ✅",
-					"Intent of Use": usageSelected,
-					"Gear Selection": gears,
-				},
-			},
-		]);
+		const records = await base("Events").create([{ fields }]);
 
 		records.forEach(function (record) {
 			console.log(record.getId());
@@ -43,36 +18,9 @@ async function createRecord(
 	}
 }
 
-async function updateRecord(
-	eventID,
-	users,
-	sessionTitle,
-	eventTypeSelected,
-	faculties,
-	usageSelected,
-	startTimeSelected,
-	endTimeSelected,
-	courses,
-	gears
-) {
+async function updateRecord(eventID, fields) {
 	try {
-		const records = await base("Events").update([
-			{
-				id: eventID,
-				fields: {
-					"Event Name": sessionTitle,
-					"Start Time": startTimeSelected,
-					"Proposed End Time": endTimeSelected,
-					Class: courses,
-					"Event Type": eventTypeSelected,
-					Students: users,
-					Faculty: faculties,
-					Status: "Booked ✅",
-					"Intent of Use": usageSelected,
-					"Gear Selection": gears,
-				},
-			},
-		]);
+		const records = await base("Events").update([{ id: eventID, fields }]);
 
 		records.forEach(function () {
 			console.log("record updated");
@@ -88,6 +36,8 @@ export default function Submit({
 	eventTypeSelected,
 	facultySelected,
 	usageSelected,
+	roomTypeSelected,
+	roomSelected,
 	startTimeSelected,
 	endTimeSelected,
 	courseSelected,
@@ -101,6 +51,7 @@ export default function Submit({
 	setUserCount,
 	setAddCourse,
 	setAddGear,
+	roomBookingRecord,
 }) {
 	const [open, setOpen] = React.useState(false);
 
@@ -111,32 +62,27 @@ export default function Submit({
 		const faculties = facultySelected.map((obj) => obj.id);
 		const courses = courseSelected.map((obj) => obj.key);
 		const gears = gearSelected.map((obj) => obj.id);
+		const locations = roomBookingRecord?.map((obj) => obj.id);
+
+		const fields = {
+			"Event Name": sessionTitle,
+			"Start Time": startTimeSelected,
+			"Proposed End Time": endTimeSelected,
+			"🚪 Room(s)": roomSelected,
+			Class: courses,
+			"Event Type": eventTypeSelected,
+			Faculty: faculties,
+			Students: users,
+			Status: "Booked ✅",
+			"Intent of Use": usageSelected,
+			"Gear Selection": gears,
+			Location: locations,
+		};
 
 		if (newEvent) {
-			await createRecord(
-				users,
-				sessionTitle,
-				eventTypeSelected,
-				faculties,
-				usageSelected,
-				startTimeSelected,
-				endTimeSelected,
-				courses,
-				gears
-			);
+			await createRecord(fields);
 		} else if (updateEvent) {
-			await updateRecord(
-				eventID,
-				users,
-				sessionTitle,
-				eventTypeSelected,
-				faculties,
-				usageSelected,
-				startTimeSelected,
-				endTimeSelected,
-				courses,
-				gears
-			);
+			await updateRecord(eventID, fields);
 		}
 	};
 

@@ -6,7 +6,7 @@ import TimeInput from "../components/TimeInput";
 import GearCheckOut from "../components/GearCheckOut";
 import FormActions from "../components/FormActions";
 import EventID from "../components/EventID";
-import Submit from "../components/SubmitButton/IndividualSubmit";
+import Submit from "../components/Submit";
 import IframeSlide from "../components/IframeSlide";
 import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 import Collapse from "@mui/material/Collapse";
