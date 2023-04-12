@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,11 +7,8 @@ import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Stack from "@mui/material/Stack";
-import Fade from "@mui/material/Fade";
 import base from "./airtable";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+import { Text } from "@nextui-org/react";
 
 const fetchCourses = async () => {
 	let courseList = [];
@@ -24,18 +19,19 @@ const fetchCourses = async () => {
 		})
 		.eachPage((records, fetchNextPage) => {
 			records.forEach((record) => {
-				let className = record.get("Name");
-				let classDay = record.get("Week Day(s)");
-				let classTime = record.get("Meeting Time");
+				const className = record.get("Name");
+				const classDay = record.get("Week Day(s)");
+				const classTime = record.get("Meeting Time");
 
 				if (className) {
+					let displayText = className;
 					if (classDay) {
-						className += ", " + String(classDay).substring(0, 3);
+						displayText += ", " + String(classDay).substring(0, 3);
 					}
 					if (classTime) {
-						className += ", " + String(classTime);
+						displayText += ", " + String(classTime);
 					}
-					courseList.push({ key: record.id, name: className });
+					courseList.push({ key: record.id, name: displayText });
 				}
 			});
 
@@ -46,11 +42,11 @@ const fetchCourses = async () => {
 };
 
 const CourseSelectionInput = ({
-																courseSelected,
-																setCourseSelected,
-																addCourse,
-																setAddCourse,
-															}) => {
+	courseSelected,
+	setCourseSelected,
+	addCourse,
+	setAddCourse,
+}) => {
 	const [courses, setCourses] = useState([]);
 
 	useEffect(() => {
@@ -62,69 +58,65 @@ const CourseSelectionInput = ({
 		fetchData();
 	}, []);
 
-	const handleChangeCourse = (event) => {
+	const handleCourseAssignmentChange = (event) => {
 		setAddCourse(event.target.checked);
 	};
 
-	const handleCourseChange = (event, newCourses) => {
+	const handleCourseSelectionChange = (event, newCourses) => {
 		setCourseSelected(newCourses);
 	};
 
-	return (
-		<Stack spacing={0} sx={{ p: 2 }}>
-			<Box
-				className="flex flex-col items-start flex-wrap text-left text-xl font-mono leading-8"
-			>
-				<FormLabel sx={{ color: "white"}}>
-					Is this time slot for a course assignment?
-				</FormLabel>
-				<FormControlLabel
-					control={
-						<Checkbox checked={addCourse} onChange={handleChangeCourse} />
-					}
-					label="Course assignment"
-					className="text-white"
+	const renderOption = (props, option, { selected }) => {
+		const uncheckedIcon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+		const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+		return (
+			<li {...props}>
+				<Checkbox
+					icon={uncheckedIcon}
+					checkedIcon={checkedIcon}
+					checked={selected}
 				/>
-			</Box>
-			<Box className="justify-center">
-				{addCourse && (
-					<Fade in={addCourse}>
-						<FormControl sx={{ m: 1 }} variant="standard">
-							<Autocomplete
-								multiple
-								freeSolo
-								disableCloseOnSelect
-								className="w-96"
-								value={courseSelected}
-								onChange={handleCourseChange}
-								id="Search-for-course"
-								options={courses}
-								getOptionLabel={(option) => option.name}
-								renderOption={(props, option, { selected }) => (
-									<li {...props}>
-										<Checkbox
-											icon={icon}
-											checkedIcon={checkedIcon}
-											style={{ marginRight: 8 }}
-											checked={selected}
-										/>
-										{option.name}
-									</li>
-								)}
-								renderInput={(params) => (
-									<TextField
-										{...params}
-										variant="standard"
-										label="Select course(s)"
-										fullWidth
-										className="text-white"
-									/>
-								)}
-							></Autocomplete>
-						</FormControl>
-					</Fade>
-				)}
-			</Box>
+				<Text>{option.name}</Text>
+			</li>
+		);
+	};
+
+	const renderInput = (params) => (
+		<TextField
+			className="w-full"
+			{...params}
+			variant="standard"
+			label="Select course(s)"
+			fullWidth
+		/>
+	);
+
+	return (
+		<Stack>
+			<FormControlLabel
+				control={
+					<Checkbox
+						checked={addCourse}
+						onChange={handleCourseAssignmentChange}
+					/>
+				}
+				label={<Text>Is this time slot for a course assignment?</Text>}
+			/>
+
+			<FormControl variant="standard" className="w-full" hidden={!addCourse}>
+				<Autocomplete
+					multiple
+					disableCloseOnSelect
+					value={courseSelected}
+					onChange={handleCourseSelectionChange}
+					id="Search-for-course"
+					options={courses}
+					getOptionLabel={({ name }) => name}
+					renderOption={renderOption}
+					renderInput={renderInput}
+				/>
+			</FormControl>
 		</Stack>
 	);
 };

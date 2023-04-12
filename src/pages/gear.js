@@ -19,7 +19,6 @@ const peopleAllInfo = [];
 const SMCpeople = [];
 const facultyList = [];
 
-let x = 0;
 base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
@@ -28,15 +27,13 @@ base("SMC People")
 		function page(records, fetchNextPage) {
 			records.forEach(function (record) {
 				SMCpeople.push({ name: record.get("Person"), id: record.id });
-				peopleAllInfo[x] = {
+				peopleAllInfo.push({
 					id: record.id,
 					name: record.get("Person"),
 					roomAccess: record.get("Room Access"),
 					gearAccess: record.get("Gear Access"),
 					phoneNum: record.get("Phone"),
-				};
-
-				x = x + 1;
+				});
 
 				if (record.get("Role").includes("Faculty/Staff 🎓")) {
 					facultyList.push({ name: record.get("Person"), id: record.id });
