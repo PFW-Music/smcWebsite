@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import { Button } from "@nextui-org/react";
 
 function FormActions({
 	setNewEvent,
@@ -60,24 +62,23 @@ function FormActions({
 		};
 	}, []);
 
-	const buttonClasses =
-		"border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white px-4 py-2 mr-6 mb-6";
-
 	return (
 		<div
-			className={`flex ${
-				isSmallScreen ? "flex-col" : "flex-row"
-			} p-4 justify-center items-center`}
+			className={`bg-neutral-900 flex ${
+				isSmallScreen ? "flex-col space-y-4" : "flex-row space-x-4"
+			} justify-center items-center`}
 		>
-			<button className={`${buttonClasses}`} onClick={handleNewEvent}>
-				Create Event
-			</button>
-			<button className={`${buttonClasses}`} onClick={handleUpdateEvent}>
+			<div>
+				<Button bordered color="warning" auto onClick={handleNewEvent}>
+					Create Event
+				</Button>
+			</div>
+			<Button bordered color="warning" auto onClick={handleUpdateEvent}>
 				Update Event
-			</button>
-			<button className={`${buttonClasses}`} onClick={handleCancelEvent}>
+			</Button>
+			<Button bordered color="warning" auto onClick={handleCancelEvent}>
 				Cancel Event
-			</button>
+			</Button>
 		</div>
 	);
 }
