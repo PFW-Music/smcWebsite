@@ -285,6 +285,7 @@ export default function Home() {
 	const gearInput = (
 		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
 			<GearCheckOut
+				gearSelected={gearSelected}
 				setGearSelected={setGearSelected}
 				gearList={filteredGearList}
 				addGear={addGear}

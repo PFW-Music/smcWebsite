@@ -1,175 +1,235 @@
 import React, { useState, useEffect } from "react";
 import {
-	Box,
-	FormLabel,
-	FormControl,
-	FormControlLabel,
-	Checkbox,
-	Autocomplete,
-	TextField,
-	CircularProgress,
+  Box,
+  FormLabel,
+  FormControlLabel,
+  Checkbox,
+  TextField,
 } from "@mui/material";
 import {
-	CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
-	CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
+  CheckBox as CheckBoxIcon
 } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ListItemText from "@mui/material/ListItemText";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const embedStyle = {
-	background: "transparent",
-	border: "",
-};
-
-const iFrameGear = (
-	<iframe
-		className="airtable-embed"
-		title="AirtableGearView"
-		src="https://airtable.com/embed/shrmH9r8B0Zd8LwcU?backgroundColor=red"
-		sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin"
-		loading="lazy"
-		width="100%"
-		height="533"
-		style={embedStyle}
-	/>
-);
-
 const sleep = async (delay = 0) => {
-	return new Promise((resolve) => {
-		setTimeout(resolve, delay);
-	});
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 };
 
-const GearInput = ({
-	gear,
-	handleGearSelectionChange,
-	open,
-	setOpen,
-	options,
-	loading,
-}) => {
-	return (
-		<FormControl variant="standard">
-			<Autocomplete
-				open={open}
-				onOpen={() => setOpen(true)}
-				onClose={() => setOpen(false)}
-				multiple
-				freeSolo
-				disableCloseOnSelect
-				value={gear}
-				onChange={handleGearSelectionChange}
-				id="Search-for-course"
-				options={options}
-				getOptionLabel={(option) =>
-					typeof option === "string" ? option : option.name
-				}
-				renderOption={(props, option, { selected }) => (
-					<li {...props}>
-						<Checkbox
-							icon={icon}
-							checkedIcon={checkedIcon}
-							style={{ marginRight: 8 }}
-							checked={selected}
-							sx={{ "&.Mui-checked": {} }}
-						/>
-						{option.name}
-					</li>
-				)}
-				renderInput={(params) => (
-					<TextField
-						{...params}
-						variant="outlined"
-						label="Add Gear(s)"
-						helperText="Available gear can be viewed below."
-						InputProps={{
-							...params.InputProps,
-							endAdornment: (
-								<React.Fragment>
-									{loading ? (
-										<CircularProgress color="inherit" size={20} />
-									) : null}
-									{params.InputProps.endAdornment}
-								</React.Fragment>
-							),
-						}}
-					/>
-				)}
-			/>
-		</FormControl>
-	);
+const GearFilter = ({ filterTerm, setFilterTerm }) => {
+  return (
+    <TextField
+      variant="standard"
+      id="outlined-name"
+      label="Filter Gear List"
+      value={filterTerm}
+      onChange={(event) => {
+        setFilterTerm(event.target.value.toLowerCase());
+      }}
+    />
+  );
 };
 
-const GearCheckOut = ({ setGearSelected, gearList, addGear, setAddGear }) => {
-	const [gear, setGear] = useState([]);
-	const [open, setOpen] = useState(false);
-	const [options, setOptions] = useState([]);
-	const loading = open && options.length === 0;
+function renderAvailableGearItem({ gearItem, handleAddGear }) {
+  let image;
 
-	useEffect(() => {
-		if (!loading) return;
+  if (typeof gearItem.image !== "undefined") {
+    image = gearItem.image[0].url;
+  }
+  else{
+    image = "/imageIcon.png";
+  }
 
-		let active = true;
-		(async () => {
-			await sleep(1000);
-			if (active) setOptions([...gearList]);
-		})();
+  return (
+    <Paper variant="outlined" sx={{ padding: 1, boxShadow: 1, width: "100%", textAlign: "center", cursor: "pointer" }} onClick={handleAddGear}>
+      <Paper />
+      <img src={image} className={gearItem.name} alt={gearItem.id} />
+      <p>{gearItem.name}</p>
+    </Paper>
+  );
+}
+const AvailableGear = ({ gearList, filterTerm, gearSelected, setGearSelected }) => {
 
-		return () => {
-			active = false;
-		};
-	}, [loading, gearList]);
+ const handleAddGear = (event) =>{
+    let tempGear = Array.from(gearSelected);
+    // tempGear.push({'title': event.target.className}); //or event.target.alt for the ID of gear.
+    tempGear.push(gearList.find(element => element.id === event.target.alt));
+    setGearSelected(tempGear);
+ };
 
-	useEffect(() => {
-		if (!open) setOptions([]);
-	}, [open]);
+ const availableDisplayFilter = (gearItem) => {
+    if (gearSelected.includes(gearItem)){
+      return false;
+    }
+    let terms = String(filterTerm).split(/\s+/);
+    let foundTermCount = 0;
+    for (let i = 0; i < terms.length; i++){
+      if (gearItem.name.toLowerCase().includes(terms[i].toLowerCase())){
+        foundTermCount++;
+      }
+    }
+    return foundTermCount === terms.length;
+  };
 
-	const handleGearCheckboxChange = (event) => {
-		setAddGear(event.target.checked);
-	};
+  return (
+    <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1, width: "100%", padding: 1 }}>
+      <Paper />
+      <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 2, sm: 4, md: 12 }} height={500}
+            sx={{ overflow: "auto" }}>
+        {Array.from(gearList).filter(availableDisplayFilter).map(gearItem => (
+          <Grid item xs={2} sm={4} md={4} key={gearItem.id}>
+            {renderAvailableGearItem({gearItem, handleAddGear})}
+          </Grid>
+        ))}
+      </Grid>
+    </Paper>
+  );
+};
 
-	const handleGearSelectionChange = (event, newValue) => {
-		if (typeof newValue === "string") {
-			setGear({ title: newValue });
-		} else {
-			setGear(newValue);
-			setGearSelected(newValue);
-		}
-	};
+function renderChosenGearItem({ gearItem, handleRemoveGear }) {
+  let image;
+  if (typeof gearItem.image !== "undefined") {
+    image = gearItem.image[0].url;
+  }
+  else{
+    image = "/imageIcon.png";
+  }
 
-	return (
-		<Stack spacing={0}>
-			<Box className="flex items-start flex-wrap text-left m-2 text-xl font-mono leading-8 w-96">
-				<FormLabel component="legend">
-					Need to checkout gear for the event?
-				</FormLabel>
-				<FormControlLabel
-					control={
-						<Checkbox checked={addGear} onChange={handleGearCheckboxChange} />
-					}
-					label="Gear check-out"
-				/>
-			</Box>
+  return (
+    <ListItem
+      secondaryAction={
+        <IconButton
+          edge="end"
+          aria-label="delete"
+          title="Delete"
+          onClick={() => handleRemoveGear(gearItem)}
+          size="large"
+        >
+          <DeleteIcon />
+        </IconButton>
+      }
+    >
+      <img src={image} className={gearItem.name} alt={gearItem.id}
+           style={{ maxHeight: 50, maxWidth: 30 }} />
+      <ListItemText primary={gearItem.name} sx={{ marginLeft: 2 }} />
+    </ListItem>
+  );
+}
+const ChosenGear = ({ gearList, gearSelected, setGearSelected }) => {
 
-			{addGear && (
-				<Box className="flex items-start flex-wrap justify-center">
-					{addGear && (
-						<GearInput
-							gear={gear}
-							handleGearSelectionChange={handleGearSelectionChange}
-							open={open}
-							setOpen={setOpen}
-							options={options}
-							loading={loading}
-						/>
-					)}
-					{iFrameGear}
-				</Box>
-			)}
-		</Stack>
-	);
+  const handleRemoveGear = (event) => {
+    let tempGear = Array.from(gearSelected);
+    // tempGear.push({'title': event.target.className}); //or event.target.alt for the ID of gear.
+    let index = tempGear.indexOf(gearList.find(element => element.id === event.id));
+    tempGear.splice(index, 1);
+    setGearSelected(tempGear);
+    // tempGear.remove(gearList.find(element => element.id == event.id));
+    // setGear(tempGear);
+  };
+
+  return (
+    <Stack spacing={0} sx={{width: "100%", mt: 2}}>
+      <FormLabel component="legend">
+        Chosen Gear:
+      </FormLabel>
+      {gearSelected.length !== 0 && (
+        <Paper variant="outlined" sx={{ boxShadow: 1 }}>
+        <Paper />
+        <List>
+          <List>
+            {gearSelected.map((gearItem) => (
+              <React.Fragment key={gearItem.id}>
+                {/*{index !== 0 && <Divider />}*/}
+                <Collapse in={true} key={gearItem.id}>
+                  {renderChosenGearItem({ gearItem, handleRemoveGear})}
+                </Collapse>
+              </React.Fragment>
+            ))}
+          </List>
+        </List>
+      </Paper>
+      )}
+    </Stack>
+  );
+};
+
+const GearCheckOut = ({ gearSelected, setGearSelected, gearList, addGear, setAddGear }) => {
+  // const [gear, setGear] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [filterTerm, setFilterTerm] = useState([]);
+  const loading = open && options.length === 0;
+
+  useEffect(() => {
+    if (!loading) return;
+
+    let active = true;
+    (async () => {
+      await sleep(1000);
+      if (active) setOptions([...gearList]);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [loading, gearList]);
+
+  useEffect(() => {
+    if (!open) setOptions([]);
+  }, [open]);
+
+  const handleGearCheckboxChange = (event) => {
+    setAddGear(event.target.checked);
+  };
+
+  return (
+    <Stack spacing={0}>
+      <Box className="flex items-start flex-wrap text-left m-2 text-xl font-mono leading-8 w-96">
+        <FormLabel component="legend">
+          Need to checkout gear for the event?
+        </FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox checked={addGear} onChange={handleGearCheckboxChange} />
+          }
+          label="Gear check-out"
+        />
+      </Box>
+
+      {addGear && (
+        <Box className="flex items-start flex-wrap justify-center">
+          <GearFilter
+            filterTerm={filterTerm}
+            setFilterTerm={setFilterTerm}
+          />
+          <AvailableGear
+            gearList={gearList}
+            filterTerm={filterTerm}
+            gearSelected={gearSelected}
+            setGearSelected={setGearSelected}
+          />
+          <ChosenGear
+            gearList={gearList}
+            gearSelected={gearSelected}
+            setGearSelected={setGearSelected}
+          />
+        </Box>
+      )}
+    </Stack>
+  );
 };
 
 export default GearCheckOut;

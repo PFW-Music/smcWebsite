@@ -113,6 +113,7 @@ function filterGear() {
             eventStart: record.get("Events Start"),
             eventEnd: record.get("Events End"),
             eventStatus: record.get("Events Status"),
+            image: record.get("Image")
           });
         });
 
