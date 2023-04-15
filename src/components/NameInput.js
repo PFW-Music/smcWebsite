@@ -201,12 +201,20 @@ function NameInput({
     setNameInDisplay((prev) => [...prev.filter((i) => i !== item)]);
     userNameList.splice(userNameList.indexOf(item), 1);
     userValues = userValues.filter((user) => user.name !== item);
-
+  
+    gearList = [];
+    roomTypes = [
+      "Recording Studio 🎙️",
+      "Rehearsal Spaces 🎧",
+      "Edit & Collaboration Spaces 🎒",
+    ];
+    setGearList(filterGear());
+    setDisabledRoomTypes(filterRoomType(roomTypes));
+  
     setUserCount(userNameList.length); // send data to home
     setUserSelected(userValues);
-    setDisabledRoomTypes(filterRoomType(roomTypes));
-    setGearList(filterGear());
   };
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -236,7 +244,6 @@ function NameInput({
 
   const handleChange = (newValue) => {
     if (!value) {
-      // Handle the case when value is null or undefined
       return;
     }
     if (nameCheck(newValue, value.name, phoneVal)) {
