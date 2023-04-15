@@ -1,3 +1,4 @@
+
 import React, { useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
@@ -8,7 +9,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
@@ -23,27 +23,9 @@ const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
-//NameInput.js is being used for general input, IndividualNameInput.js is for gear name input
-
-// This will be used to store input data
 let userValues = [];
-
 const emojis = [
-  "🎹",
-  "😃",
-  "😀",
-  "😊",
-  "📯",
-  "🪕",
-  "🎵",
-  "🎺",
-  "🥁",
-  "🎻",
-  "🎷",
-  "😂",
-  "🎸",
-  "😋",
-  "😎",
+  "🎹", "😃", "😀", "😊", "📯", "🪕", "🎵", "🎺", "🥁", "🎻", "🎷", "😂", "🎸", "😋", "😎",
 ];
 
 const userEmoji = [];
@@ -71,10 +53,10 @@ function renderItem({ item, handleRemoveName }) {
   );
 }
 
-let gearList = []; //store list of gear available to user
-let lendLevel = ""; //store determined lending level
+let gearList = [];
+let lendLevel = "";
+let roomTypes;
 
-////////////////////// Filtering gears accessible using API data
 function filterGear() {
   if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
     lendLevel = "Lending Level 4";
@@ -132,9 +114,6 @@ function filterGear() {
   return gearList;
 }
 
-let roomTypes;
-
-////////////////////// Filtering gears using API data
 function filterRoomType(disabled) {
   if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
     disabled = [];
@@ -171,12 +150,9 @@ function NameInput({
   const [passFail, setPassFail] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [phoneVal, setPhoneVal] = React.useState(null);
-
   const [nameInDisplay, setNameInDisplay] = React.useState(
     userNameList.slice(0, 3)
   );
-
-
 
   const Initilize = useCallback(() => {
     userValues = [];
@@ -193,6 +169,7 @@ function NameInput({
   useEffect(() => {
     Initilize();
   }, [Initilize]);
+
   const handleAddName = () => {
     setNameInDisplay(userNameList);
   };
@@ -201,7 +178,7 @@ function NameInput({
     setNameInDisplay((prev) => [...prev.filter((i) => i !== item)]);
     userNameList.splice(userNameList.indexOf(item), 1);
     userValues = userValues.filter((user) => user.name !== item);
-  
+
     gearList = [];
     roomTypes = [
       "Recording Studio 🎙️",
@@ -210,11 +187,10 @@ function NameInput({
     ];
     setGearList(filterGear());
     setDisabledRoomTypes(filterRoomType(roomTypes));
-  
-    setUserCount(userNameList.length); // send data to home
+
+    setUserCount(userNameList.length);
     setUserSelected(userValues);
   };
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -240,7 +216,6 @@ function NameInput({
       setValue(newValue);
     }
   };
-  
 
   const handleChange = (newValue) => {
     if (!value) {
@@ -276,16 +251,29 @@ function NameInput({
     const phonePass = recordVal.phoneNum.slice(-4);
     return recordVal.name === name && phonePass === number;
   };
-
   const handleOk = () => {
     handleChange(value);
   };
+
+  const handleTextField = (id, label, helperText, error, value, handleChange) => (
+    <TextField
+      {...(error ? { error: true } : {})}
+      id={id}
+      label={label}
+      helperText={helperText}
+      size="small"
+      variant="standard"
+      value={value || ""}
+      onChange={handleChange}
+    />
+  );
+
   const nameInputDialog = (
-    <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+    <Dialog disableEscapeKeyDown open={open} onClose={handleClose} className="mx-auto max-w-2xl">
       <DialogTitle>Find your name</DialogTitle>
-      <DialogContent>
-        <Stack spacing={0} sx={{ width: 480 }}>
-          <Autocomplete
+      <DialogContent className="max-w-2xl">
+        <Stack spacing={0}>
+           <Autocomplete
             value={value}
             onChange={handleName}
             filterOptions={(options, params) => {
@@ -303,14 +291,12 @@ function NameInput({
               } else return option.name; // Regular option
             }}
             renderOption={(props, option) => <li {...props}>{option.name}</li>}
-            sx={{ width: 450 }}
+            
             freeSolo
             renderInput={(params) => (
               <div>
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  <SearchRoundedIcon
-                    sx={{ color: "action.active", mr: 1, my: 3.5 }}
-                  />
+                  
                   {error && (
                     <TextField
                       {...params}
@@ -338,43 +324,14 @@ function NameInput({
             )}
           />
           <div>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              {passFail && (
-                <TextField
-                  passFail
-                  id="passwordFailure"
-                  label="Please enter correct password"
-                  helperText="User+Password combo failed."
-                  onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal || ""}
-                  size="small"
-                  variant="standard"
-                  inputProps={{ maxLength: 4, minLength: 4 }}
-                  InputLabelProps={{ required: false }}
-                  style={{
-                    width: "50%",
-                    marginLeft: "auto",
-                    marginRight: 30,
-                  }}
-                />
-              )}
-              {!passFail && (
-                <TextField
-                  required
-                  id="phone-val"
-                  label="Last 4 of Ph#"
-                  onChange={(e) => setPhoneVal(e.target.value)}
-                  value={phoneVal || ""}
-                  variant="standard"
-                  size="small"
-                  inputProps={{ maxLength: 4, minLength: 4 }}
-                  InputLabelProps={{ required: false }}
-                  style={{
-                    width: "50%",
-                    marginLeft: "auto",
-                    marginRight: 30,
-                  }}
-                />
+            <Box>
+              {handleTextField(
+                passFail ? "passwordFailure" : "phone-val",
+                passFail ? "Please enter correct password" : "Last 4 of Ph#",
+                passFail ? "User+Password combo failed." : "",
+                passFail,
+                phoneVal,
+                (e) => setPhoneVal(e.target.value)
               )}
             </Box>
           </div>
@@ -395,15 +352,15 @@ function NameInput({
   return (
     <div>
       <div>
-      <Box sx={{display: 'flex', justifyContent: 'center', width: '100%', m: 2 }}>
-        <Button bordered color="warning" auto onClick={handleClickOpen}>
-          +ADD
-        </Button>
-      </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', m: 2 }}>
+          <Button bordered color="warning" auto onClick={handleClickOpen}>
+            +ADD
+          </Button>
+        </Box>
       </div>
       {nameInputDialog}
       {userNameList.length !== 0 && (
-        <Paper variant="outlined" sx={{ mt: 2, boxShadow: 1 }}>
+        <Paper variant="outlined">
           <Paper />
           <List>
             <List>
