@@ -226,14 +226,13 @@ function NameInput({
       setValue(null);
       return;
     }
-    if (typeof newValue === "string") {
-      setValue({
-        title: newValue,
-      });
+    if (typeof newValue === "string" && !peopleAllInfo.some((person) => person.name === newValue)) {
+      return;
     } else {
       setValue(newValue);
     }
   };
+  
 
   const handleChange = (newValue) => {
     if (!value) {
