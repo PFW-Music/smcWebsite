@@ -16,29 +16,43 @@ import Paper from "@mui/material/Paper";
 
 let userValues = [];
 const emojis = [
-  "🎹", "😃", "😀", "😊", "📯", "🪕", "🎵", "🎺", "🥁", "🎻", "🎷", "😂", "🎸", "😋", "😎",
+	"🎹",
+	"😃",
+	"😀",
+	"😊",
+	"📯",
+	"🪕",
+	"🎵",
+	"🎺",
+	"🥁",
+	"🎻",
+	"🎷",
+	"😂",
+	"🎸",
+	"😋",
+	"😎",
 ];
 
 const userEmoji = [];
 const userNameList = [];
 
 function renderItem({ item, handleRemoveName }) {
-  const emoji = userEmoji[userNameList.indexOf(item)];
+	const emoji = userEmoji[userNameList.indexOf(item)];
 
-  return (
-    <ListItem>
-      <ListItemText primary={emoji + " " + item} />
-      <IconButton
-        edge="end"
-        aria-label="delete"
-        title="Delete"
-        onClick={() => handleRemoveName(item)}
-        size="large"
-      >
-        <DeleteIcon />
-      </IconButton>
-    </ListItem>
-  );
+	return (
+		<ListItem>
+			<ListItemText primary={emoji + " " + item} />
+			<IconButton
+				edge="end"
+				aria-label="delete"
+				title="Delete"
+				onClick={() => handleRemoveName(item)}
+				size="large"
+			>
+				<DeleteIcon />
+			</IconButton>
+		</ListItem>
+	);
 }
 
 let gearList = [];
@@ -46,265 +60,272 @@ let lendLevel = "";
 let roomTypes;
 
 function filterGear() {
-  if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
-    lendLevel = "Lending Level 4";
-  } else if (
-    userValues.some((element) => element.gearAccess === "Gear Level 3")
-  ) {
-    lendLevel = "Lending Level 3";
-  } else if (
-    userValues.some((element) => element.gearAccess === "Gear Level 2")
-  ) {
-    lendLevel = "Lending Level 2";
-  } else if (
-    userValues.some((element) => element.gearAccess === "Gear Level 1")
-  ) {
-    lendLevel = "Lending Level 1";
-  }
-  else {
-    return gearList;
-  }
-  base("Gear")
-    .select({
-      view: lendLevel,
-    })
-    .eachPage(
-      function page(records, fetchNextPage) {
-        // This function (`page`) will get called for each page of records.
+	if (userValues.some((element) => element.gearAccess === "Gear Level 4")) {
+		lendLevel = "Lending Level 4";
+	} else if (
+		userValues.some((element) => element.gearAccess === "Gear Level 3")
+	) {
+		lendLevel = "Lending Level 3";
+	} else if (
+		userValues.some((element) => element.gearAccess === "Gear Level 2")
+	) {
+		lendLevel = "Lending Level 2";
+	} else if (
+		userValues.some((element) => element.gearAccess === "Gear Level 1")
+	) {
+		lendLevel = "Lending Level 1";
+	} else {
+		return gearList;
+	}
+	base("Gear")
+		.select({
+			view: lendLevel,
+		})
+		.eachPage(
+			function page(records, fetchNextPage) {
+				// This function (`page`) will get called for each page of records.
 
-        records.forEach(function (record) {
-          gearList.push({
-            name: record.get("Item"),
-            id: record.id,
-            eventStart: record.get("Events Start"),
-            eventEnd: record.get("Events End"),
-            eventStatus: record.get("Events Status"),
-            image: record.get("Image"),
-          });
-        });
+				records.forEach(function (record) {
+					gearList.push({
+						name: record.get("Item"),
+						id: record.id,
+						eventStart: record.get("Events Start"),
+						eventEnd: record.get("Events End"),
+						eventStatus: record.get("Events Status"),
+						image: record.get("Image"),
+					});
+				});
 
-        fetchNextPage();
-      },
-      function done(err) {
-        if (err) {
-          console.error(err);
-        }
-      }
-    );
+				fetchNextPage();
+			},
+			function done(err) {
+				if (err) {
+					console.error(err);
+				}
+			}
+		);
 
-  return gearList;
+	return gearList;
 }
 
 function filterRoomType(disabled) {
-  if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
-    disabled = [];
-  } else if (
-    userValues.some((element) => element.roomAccess === "Room Access 2")
-  ) {
-    disabled = ["Recording Studio 🎙️"];
-  } else if (
-    userValues.some((element) => element.roomAccess === "Room Access 1")
-  ) {
-    disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
-  } else {
-    disabled = [
-      "Recording Studio 🎙️",
-      "Rehearsal Spaces 🎧",
-      "Edit & Collaboration Spaces 🎒",
-    ];
-  }
-  return disabled;
+	if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
+		disabled = [];
+	} else if (
+		userValues.some((element) => element.roomAccess === "Room Access 2")
+	) {
+		disabled = ["Recording Studio 🎙️"];
+	} else if (
+		userValues.some((element) => element.roomAccess === "Room Access 1")
+	) {
+		disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
+	} else {
+		disabled = [
+			"Recording Studio 🎙️",
+			"Rehearsal Spaces 🎧",
+			"Edit & Collaboration Spaces 🎒",
+		];
+	}
+	return disabled;
 }
 
 function NameInput({
-  peopleAllInfo,
-  setUserSelected,
-  setUserCount,
-  setDisabledRoomTypes,
-  setGearList,
+	peopleAllInfo,
+	setUserSelected,
+	setUserCount,
+	setDisabledRoomTypes,
+	setGearList,
 }) {
-  const [open, setOpen] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [passFail, setPassFail] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const [phoneVal, setPhoneVal] = React.useState(null);
-  const [nameInDisplay, setNameInDisplay] = React.useState(
-    userNameList.slice(0, 3)
-  );
+	const [open, setOpen] = React.useState(false);
+	const [error, setError] = React.useState(false);
+	const [passFail, setPassFail] = React.useState(false);
+	const [value, setValue] = React.useState("");
+	const [phoneVal, setPhoneVal] = React.useState(null);
+	const [nameInDisplay, setNameInDisplay] = React.useState(
+		userNameList.slice(0, 3)
+	);
 
-  const Initilize = useCallback(() => {
-    userValues = [];
-    gearList = [];
-    roomTypes = [
-      "Recording Studio 🎙️",
-      "Rehearsal Spaces 🎧",
-      "Edit & Collaboration Spaces 🎒",
-    ];
-    setGearList(filterGear());
-    setDisabledRoomTypes(filterRoomType(roomTypes));
-  }, [setDisabledRoomTypes, setGearList]);
+	const Initilize = useCallback(() => {
+		userValues = [];
+		gearList = [];
+		roomTypes = [
+			"Recording Studio 🎙️",
+			"Rehearsal Spaces 🎧",
+			"Edit & Collaboration Spaces 🎒",
+		];
+		setGearList(filterGear());
+		setDisabledRoomTypes(filterRoomType(roomTypes));
+	}, [setDisabledRoomTypes, setGearList]);
 
-  useEffect(() => {
-    Initilize();
-  }, [Initilize]);
+	useEffect(() => {
+		Initilize();
+	}, [Initilize]);
 
-  const handleAddName = () => {
-    setNameInDisplay(userNameList);
-  };
+	const handleAddName = () => {
+		setNameInDisplay(userNameList);
+	};
 
-  const handleRemoveName = (item) => {
-    setNameInDisplay((prev) => [...prev.filter((i) => i !== item)]);
-    userNameList.splice(userNameList.indexOf(item), 1);
-    userValues = userValues.filter((user) => user.name !== item);
+	const handleRemoveName = (item) => {
+		setNameInDisplay((prev) => [...prev.filter((i) => i !== item)]);
+		userNameList.splice(userNameList.indexOf(item), 1);
+		userValues = userValues.filter((user) => user.name !== item);
 
-    gearList = [];
-    roomTypes = [
-      "Recording Studio 🎙️",
-      "Rehearsal Spaces 🎧",
-      "Edit & Collaboration Spaces 🎒",
-    ];
-    setGearList(filterGear());
-    setDisabledRoomTypes(filterRoomType(roomTypes));
+		gearList = [];
+		roomTypes = [
+			"Recording Studio 🎙️",
+			"Rehearsal Spaces 🎧",
+			"Edit & Collaboration Spaces 🎒",
+		];
+		setGearList(filterGear());
+		setDisabledRoomTypes(filterRoomType(roomTypes));
 
-    setUserCount(userNameList.length);
-    setUserSelected(userValues);
-  };
+		setUserCount(userNameList.length);
+		setUserSelected(userValues);
+	};
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
 
-  const handleClose = (event, reason) => {
-    if (reason !== "backdropClick") {
-      setOpen(false);
-      setValue(null);
-      setPhoneVal(null);
-      setError(false);
-    }
-  };
+	const handleClose = (event, reason) => {
+		if (reason !== "backdropClick") {
+			setOpen(false);
+			setValue(null);
+			setPhoneVal(null);
+			setError(false);
+		}
+	};
 
-  const handleName = (event, newValue) => {
-    if (newValue == null) {
-      setValue(null);
-      return;
-    }
-    if (typeof newValue === "string" && !peopleAllInfo.some((person) => person.name === newValue)) {
-      return;
-    } else {
-      setValue(newValue);
-    }
-  };
+	const handleName = (event, newValue) => {
+		if (newValue == null) {
+			setValue(null);
+			return;
+		}
+		if (
+			typeof newValue === "string" &&
+			!peopleAllInfo.some((person) => person.name === newValue)
+		) {
+			return;
+		} else {
+			setValue(newValue);
+		}
+	};
 
-  const handleChange = (newValue) => {
-    if (!value) {
-      return;
-    }
-    if (nameCheck(newValue, value.name, phoneVal)) {
-      if (newValue != null) {
-        if (userNameList.indexOf(newValue.name) > -1) {
-          setError(true);
-        } else {
-          setError(false);
-          setPassFail(false);
-          const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-          userEmoji.push(randomEmoji);
-          handleClose();
-          userValues.push(newValue);
-          userNameList.push(newValue.name);
+	const handleChange = (newValue) => {
+		if (!value) {
+			return;
+		}
+		if (nameCheck(newValue, value.name, phoneVal)) {
+			if (newValue != null) {
+				if (userNameList.indexOf(newValue.name) > -1) {
+					setError(true);
+				} else {
+					setError(false);
+					setPassFail(false);
+					const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+					userEmoji.push(randomEmoji);
+					handleClose();
+					userValues.push(newValue);
+					userNameList.push(newValue.name);
 
-          setUserCount(userNameList.length);
-          setUserSelected(userValues);
-          setDisabledRoomTypes(filterRoomType(roomTypes));
-          setGearList(filterGear());
+					setUserCount(userNameList.length);
+					setUserSelected(userValues);
+					setDisabledRoomTypes(filterRoomType(roomTypes));
+					setGearList(filterGear());
 
-          handleAddName();
-        }
-      }
-    } else {
-      setPassFail(true);
-    }
-  };
+					handleAddName();
+				}
+			}
+		} else {
+			setPassFail(true);
+		}
+	};
 
-  const nameCheck = (recordVal, name, number) => {
-    const phonePass = recordVal.phoneNum.slice(-4);
-    return recordVal.name === name && phonePass === number;
-  };
-  const handleOk = () => {
-    handleChange(value);
-  };
+	const nameCheck = (recordVal, name, number) => {
+		const phonePass = recordVal.phoneNum.slice(-4);
+		return recordVal.name === name && phonePass === number;
+	};
+	const handleOk = () => {
+		handleChange(value);
+	};
 
-  return (
-    <div>
-      <div className="flex justify-center my-2">
-        <Button bordered color="warning" auto onClick={handleClickOpen}>
-          +ADD
-        </Button>
-      </div>
-      <Dialog disableEscapeKeyDown open={open} onClose={handleClose} className="mx-auto max-w-2xl">
-        <DialogTitle>Find your name</DialogTitle>
-        <DialogContent>
-        <Autocomplete
-  value={value}
-  onChange={handleName}
-  selectOnFocus
-  clearOnBlur={true}
-  handleHomeEndKeys
-  id="Search-for-name"
-  options={peopleAllInfo}
-  getOptionLabel={(option) => {
-    if (typeof option === "string") {
-      return option;
-    } else return option.name;
-  }}
-  renderOption={(props, option) => <li {...props}>{option.name}</li>}
-  freeSolo
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label="Search for name"
-      helperText="Please enter your name here :)"
-      size="small"
-      variant="standard"
-      value={params.inputProps.value || ""}
-    />
-  )}
-/>
-          <TextField
-            {...(passFail ? { error: true } : {})}
-            id={passFail ? "passwordFailure" : "phone-val"}
-            label={passFail ? "Please enter correct password" : "Last 4 of Ph#"}
-            helperText={passFail ? "User+Password combo failed." : ""}
-            size="small"
-            variant="standard"
-            value={phoneVal || ""}
-            onChange={(e) => setPhoneVal(e.target.value)}
-          />
-        </DialogContent>
+	return (
+		<div>
+			<div className="flex justify-center my-2">
+				<Button bordered color="warning" auto onClick={handleClickOpen}>
+					+ADD
+				</Button>
+			</div>
+			<Dialog
+				disableEscapeKeyDown
+				open={open}
+				onClose={handleClose}
+				className="mx-auto max-w-2xl"
+			>
+				<DialogTitle>Find your name</DialogTitle>
+				<DialogContent>
+					<Autocomplete
+						value={value}
+						onChange={handleName}
+						selectOnFocus
+						clearOnBlur={true}
+						handleHomeEndKeys
+						id="Search-for-name"
+						options={peopleAllInfo}
+						getOptionLabel={(option) => {
+							if (typeof option === "string") {
+								return option;
+							} else return option.name;
+						}}
+						renderOption={(props, option) => <li {...props}>{option.name}</li>}
+						freeSolo
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								label="Search for name"
+								helperText="Please enter your name here :)"
+								size="small"
+								variant="standard"
+								value={params.inputProps.value || ""}
+							/>
+						)}
+					/>
+					<TextField
+						{...(passFail ? { error: true } : {})}
+						id={passFail ? "passwordFailure" : "phone-val"}
+						label={passFail ? "Please enter correct password" : "Last 4 of Ph#"}
+						helperText={passFail ? "User+Password combo failed." : ""}
+						size="small"
+						variant="standard"
+						value={phoneVal || ""}
+						onChange={(e) => setPhoneVal(e.target.value)}
+					/>
+				</DialogContent>
 
-        <DialogActions>
-          <Button bordered color="warning" auto onClick={handleOk}>
-            Ok
-          </Button>
-          <Button bordered color="warning" auto onClick={handleClose}>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {userNameList.length !== 0 && (
-        <Paper variant="outlined">
-          <Paper />
-          {userNameList.map((item, index) => (
-            <React.Fragment key={item}>
-              {index !== 0 && <Divider />}
-              <div className="p-2" key={item}>
-                {renderItem({ item, handleRemoveName })}
-              </div>
-            </React.Fragment>
-          ))}
-        </Paper>
-      )}
-    </div>
-  );
+				<DialogActions>
+					<Button bordered color="warning" auto onClick={handleOk}>
+						Ok
+					</Button>
+					<Button bordered color="warning" auto onClick={handleClose}>
+						Cancel
+					</Button>
+				</DialogActions>
+			</Dialog>
+			{userNameList.length !== 0 && (
+				<Paper variant="outlined">
+					<Paper />
+					{userNameList.map((item, index) => (
+						<React.Fragment key={item}>
+							{index !== 0 && <Divider />}
+							<div className="p-2" key={item}>
+								{renderItem({ item, handleRemoveName })}
+							</div>
+						</React.Fragment>
+					))}
+				</Paper>
+			)}
+		</div>
+	);
 }
 
 export default NameInput;

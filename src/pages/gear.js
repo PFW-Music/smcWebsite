@@ -156,6 +156,7 @@ export default function Home() {
 	const gearInput = (
 		<InputSection title="Gear Checkout">
 			<GearCheckOut
+				gearSelected={gearSelected}
 				setGearSelected={setGearSelected}
 				gearList={filteredGearList}
 				addGear={addGear}
