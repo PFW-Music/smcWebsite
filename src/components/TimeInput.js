@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import Box from "@mui/material/Box";
+
 import { Button } from "@nextui-org/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -83,9 +83,9 @@ const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
 			<h4>Select Start Date</h4>
 			<DatePicker
 				showIcon
-				placeholderText="Select Start Date"
 				showTimeSelect
 				dateFormat="MMMM d, yyyy h:mmaa"
+				timeFormat="HH:mm"
 				selected={startDate}
 				selectsStart
 				startDate={startDate}
@@ -96,9 +96,9 @@ const DatePickerSection = ({ startDate, endDate, handleDateChange }) => {
 			<h4>Select End Date</h4>
 			<DatePicker
 				showIcon
-				placeholderText="Select End Date"
 				showTimeSelect
 				dateFormat="MMMM d, yyyy h:mmaa"
+				timeFormat="HH:mm"
 				selected={endDate}
 				selectsEnd
 				startDate={startDate}
@@ -235,7 +235,6 @@ const DateTimeValidation = ({
 			/>
 		  </Stack>
 	
-		  {/* Add this wrapping div with Tailwind CSS classes */}
 		  <div className="flex justify-center items-center my-4">
 			<Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
 			  check availability
