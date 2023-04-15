@@ -227,28 +227,29 @@ const DateTimeValidation = ({
 
 	return (
 		<div>
-			<Stack spacing={1}>
-				<DatePickerSection
-					startDate={startDate}
-					endDate={endDate}
-					handleDateChange={handleDateChange}
-				/>
-			</Stack>
-
-			<Box justifyContent="center" alignItems="center">
-				<br />
-				<Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
-					check availability
-				</Button>
-			</Box>
-			<NotificationSection
-				roomUnavailable={roomUnavailable}
-				successMsg={successMsg}
-				handleClose={handleClose}
-				unavailableRoom={unavailableRoom}
+		  <Stack spacing={1}>
+			<DatePickerSection
+			  startDate={startDate}
+			  endDate={endDate}
+			  handleDateChange={handleDateChange}
 			/>
+		  </Stack>
+	
+		  {/* Add this wrapping div with Tailwind CSS classes */}
+		  <div className="flex justify-center items-center my-4">
+			<Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
+			  check availability
+			</Button>
+		  </div>
+	
+		  <NotificationSection
+			roomUnavailable={roomUnavailable}
+			successMsg={successMsg}
+			handleClose={handleClose}
+			unavailableRoom={unavailableRoom}
+		  />
 		</div>
-	);
-};
+	  );
+	};
 
 export default DateTimeValidation;
