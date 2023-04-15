@@ -1,27 +1,18 @@
-
 import React, { useEffect, useCallback } from "react";
-import Box from "@mui/material/Box";
+import base from "../components/airtable";
 import { Button } from "@nextui-org/react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import Collapse from "@mui/material/Collapse";
+import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-
-const Airtable = require("airtable");
-const base = new Airtable({
-  apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
-}).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
 let userValues = [];
 const emojis = [
@@ -35,20 +26,17 @@ function renderItem({ item, handleRemoveName }) {
   const emoji = userEmoji[userNameList.indexOf(item)];
 
   return (
-    <ListItem
-      secondaryAction={
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          title="Delete"
-          onClick={() => handleRemoveName(item)}
-          size="large"
-        >
-          <DeleteIcon />
-        </IconButton>
-      }
-    >
+    <ListItem>
       <ListItemText primary={emoji + " " + item} />
+      <IconButton
+        edge="end"
+        aria-label="delete"
+        title="Delete"
+        onClick={() => handleRemoveName(item)}
+        size="large"
+      >
+        <DeleteIcon />
+      </IconButton>
     </ListItem>
   );
 }
@@ -73,13 +61,9 @@ function filterGear() {
   ) {
     lendLevel = "Lending Level 1";
   }
-  //CASE: User has no lendLevel (staff) RETURN: Empty gearList for selection options
   else {
     return gearList;
   }
-
-  //API call to appropriate view on Airtable. View called depends on "lendLevel" determined above.
-
   base("Gear")
     .select({
       view: lendLevel,
@@ -99,9 +83,6 @@ function filterGear() {
           });
         });
 
-        // To fetch the next page of records, call `fetchNextPage`.
-        // If there are more records, `page` will get called again.
-        // If there are no more records, `done` will get called.
         fetchNextPage();
       },
       function done(err) {
@@ -126,7 +107,6 @@ function filterRoomType(disabled) {
   ) {
     disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
   } else {
-    // roomTypes[] remains empty as the user has no access levels
     disabled = [
       "Recording Studio 🎙️",
       "Rehearsal Spaces 🎧",
@@ -135,8 +115,6 @@ function filterRoomType(disabled) {
   }
   return disabled;
 }
-
-const filter = createFilterOptions();
 
 function NameInput({
   peopleAllInfo,
@@ -234,7 +212,7 @@ function NameInput({
           userValues.push(newValue);
           userNameList.push(newValue.name);
 
-          setUserCount(userNameList.length); // send data to home
+          setUserCount(userNameList.length);
           setUserSelected(userValues);
           setDisabledRoomTypes(filterRoomType(roomTypes));
           setGearList(filterGear());
@@ -255,125 +233,74 @@ function NameInput({
     handleChange(value);
   };
 
-  const handleTextField = (id, label, helperText, error, value, handleChange) => (
-    <TextField
-      {...(error ? { error: true } : {})}
-      id={id}
-      label={label}
-      helperText={helperText}
-      size="small"
-      variant="standard"
-      value={value || ""}
-      onChange={handleChange}
-    />
-  );
-
-  const nameInputDialog = (
-    <Dialog disableEscapeKeyDown open={open} onClose={handleClose} className="mx-auto max-w-2xl">
-      <DialogTitle>Find your name</DialogTitle>
-      <DialogContent className="max-w-2xl">
-        <Stack spacing={0}>
-           <Autocomplete
-            value={value}
-            onChange={handleName}
-            filterOptions={(options, params) => {
-              return filter(options, params);
-            }}
-            selectOnFocus
-            clearOnBlur={true}
-            handleHomeEndKeys
-            id="Search-for-name"
-            options={peopleAllInfo}
-            getOptionLabel={(option) => {
-              if (typeof option === "string") {
-                // Value selected with enter, right from the input
-                return option;
-              } else return option.name; // Regular option
-            }}
-            renderOption={(props, option) => <li {...props}>{option.name}</li>}
-            
-            freeSolo
-            renderInput={(params) => (
-              <div>
-                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  
-                  {error && (
-                    <TextField
-                      {...params}
-                      error
-                      id="error"
-                      label="Error"
-                      helperText="This user has already been added"
-                      size="small"
-                      variant="standard"
-                      value={params.inputProps.value || ""}
-                    />
-                  )}
-                  {!error && (
-                    <TextField
-                      {...params}
-                      label="Search for name"
-                      helperText="Please enter your name here :)"
-                      size="small"
-                      variant="standard"
-                      value={params.inputProps.value || ""}
-                    />
-                  )}
-                </Box>
-              </div>
-            )}
-          />
-          <div>
-            <Box>
-              {handleTextField(
-                passFail ? "passwordFailure" : "phone-val",
-                passFail ? "Please enter correct password" : "Last 4 of Ph#",
-                passFail ? "User+Password combo failed." : "",
-                passFail,
-                phoneVal,
-                (e) => setPhoneVal(e.target.value)
-              )}
-            </Box>
-          </div>
-        </Stack>
-      </DialogContent>
-
-      <DialogActions>
-        <Button bordered color="warning" auto onClick={handleOk}>
-          Ok
-        </Button>
-        <Button bordered color="warning" auto onClick={handleClose}>
-          Cancel
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-
   return (
     <div>
-      <div>
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', m: 2 }}>
-          <Button bordered color="warning" auto onClick={handleClickOpen}>
-            +ADD
-          </Button>
-        </Box>
+      <div className="flex justify-center my-2">
+        <Button bordered color="warning" auto onClick={handleClickOpen}>
+          +ADD
+        </Button>
       </div>
-      {nameInputDialog}
+      <Dialog disableEscapeKeyDown open={open} onClose={handleClose} className="mx-auto max-w-2xl">
+        <DialogTitle>Find your name</DialogTitle>
+        <DialogContent>
+        <Autocomplete
+  value={value}
+  onChange={handleName}
+  selectOnFocus
+  clearOnBlur={true}
+  handleHomeEndKeys
+  id="Search-for-name"
+  options={peopleAllInfo}
+  getOptionLabel={(option) => {
+    if (typeof option === "string") {
+      return option;
+    } else return option.name;
+  }}
+  renderOption={(props, option) => <li {...props}>{option.name}</li>}
+  freeSolo
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Search for name"
+      helperText="Please enter your name here :)"
+      size="small"
+      variant="standard"
+      value={params.inputProps.value || ""}
+    />
+  )}
+/>
+          <TextField
+            {...(passFail ? { error: true } : {})}
+            id={passFail ? "passwordFailure" : "phone-val"}
+            label={passFail ? "Please enter correct password" : "Last 4 of Ph#"}
+            helperText={passFail ? "User+Password combo failed." : ""}
+            size="small"
+            variant="standard"
+            value={phoneVal || ""}
+            onChange={(e) => setPhoneVal(e.target.value)}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button bordered color="warning" auto onClick={handleOk}>
+            Ok
+          </Button>
+          <Button bordered color="warning" auto onClick={handleClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       {userNameList.length !== 0 && (
         <Paper variant="outlined">
           <Paper />
-          <List>
-            <List>
-              {nameInDisplay.map((item, index) => (
-                <React.Fragment key={item}>
-                  {index !== 0 && <Divider />}
-                  <Collapse in={true} key={item}>
-                    {renderItem({ item, handleRemoveName })}
-                  </Collapse>
-                </React.Fragment>
-              ))}
-            </List>
-          </List>
+          {userNameList.map((item, index) => (
+            <React.Fragment key={item}>
+              {index !== 0 && <Divider />}
+              <div className="p-2" key={item}>
+                {renderItem({ item, handleRemoveName })}
+              </div>
+            </React.Fragment>
+          ))}
         </Paper>
       )}
     </div>
