@@ -46,79 +46,82 @@ const CourseSelectionInput = ({
 	setCourseSelected,
 	addCourse,
 	setAddCourse,
-}) => {
+  }) => {
 	const [courses, setCourses] = useState([]);
-
+  
 	useEffect(() => {
-		const fetchData = async () => {
-			const data = await fetchCourses();
-			setCourses(data);
-		};
-
-		fetchData();
+	  const fetchData = async () => {
+		const data = await fetchCourses();
+		setCourses(data);
+	  };
+  
+	  fetchData();
 	}, []);
-
+  
 	const handleCourseAssignmentChange = (event) => {
-		setAddCourse(event.target.checked);
+	  setAddCourse(event.target.checked);
 	};
-
+  
 	const handleCourseSelectionChange = (event, newCourses) => {
-		setCourseSelected(newCourses);
+	  setCourseSelected(newCourses);
 	};
-
+  
 	const renderOption = (props, option, { selected }) => {
-		const uncheckedIcon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-		const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-		return (
-			<li {...props}>
-				<Checkbox
-					icon={uncheckedIcon}
-					checkedIcon={checkedIcon}
-					checked={selected}
-				/>
-				<Text>{option.name}</Text>
-			</li>
-		);
+	  const uncheckedIcon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+	  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  
+	  return (
+		<li {...props}>
+		  <Checkbox
+			icon={uncheckedIcon}
+			checkedIcon={checkedIcon}
+			checked={selected}
+		  />
+		  <Text>{option.name}</Text>
+		</li>
+	  );
 	};
-
+  
 	const renderInput = (params) => (
-		<TextField
-			className="w-full"
-			{...params}
-			variant="standard"
-			label="Select course(s)"
-			fullWidth
-		/>
+	  <TextField
+		className="w-full"
+		{...params}
+		variant="standard"
+		label="Select course(s)"
+		fullWidth
+	  />
 	);
-
+  
 	return (
-		<Stack>
-			<FormControlLabel
-				control={
-					<Checkbox
-						checked={addCourse}
-						onChange={handleCourseAssignmentChange}
-					/>
-				}
-				label={<Text>Is this time slot for a course assignment?</Text>}
+	  <Stack>
+		<FormControlLabel
+		  control={
+			<Checkbox
+			  checked={addCourse}
+			  onChange={handleCourseAssignmentChange}
 			/>
-
-			<FormControl variant="standard" className="w-full" hidden={!addCourse}>
-				<Autocomplete
-					multiple
-					disableCloseOnSelect
-					value={courseSelected}
-					onChange={handleCourseSelectionChange}
-					id="Search-for-course"
-					options={courses}
-					getOptionLabel={({ name }) => name}
-					renderOption={renderOption}
-					renderInput={renderInput}
-				/>
-			</FormControl>
-		</Stack>
+		  }
+		  label={<Text>Is this time slot for a course assignment?</Text>}
+		/>
+  
+		{addCourse && (
+		  <FormControl variant="standard" className="w-full">
+			<Autocomplete
+			  multiple
+			  disableCloseOnSelect
+			  value={courseSelected}
+			  onChange={handleCourseSelectionChange}
+			  id="Search-for-course"
+			  options={courses}
+			  getOptionLabel={({ name }) => name}
+			  renderOption={renderOption}
+			  renderInput={renderInput}
+			/>
+		  </FormControl>
+		)}
+	  </Stack>
 	);
-};
-
-export default CourseSelectionInput;
+  };
+  
+  export default CourseSelectionInput;
+  
