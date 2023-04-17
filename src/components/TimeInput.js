@@ -236,7 +236,7 @@ const DateTimeValidation = ({
 		  </Stack>
 	
 		  <div className="flex justify-center items-center my-4">
-			<Button color="warning" auto ghost onClick={handleAvailabilityCheck}>
+			<Button color="warning" auto ghost onClick={handleAvailabilityCheck} style={{zIndex:0}}>
 			  check availability
 			</Button>
 		  </div>
