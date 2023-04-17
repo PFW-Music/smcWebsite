@@ -4,7 +4,10 @@ function IframeSlideComponent({ src }) {
 	return (
 		<div className="bg-neutral-900 text-white flex items-center justify-center p-6">
 			<div className="w-full max-w-2xl mx-auto">
-				<div className="relative" style={{ paddingTop: "56.25%" }}>
+				<div className="relative" style={{
+					paddingTop: "56.25%",
+					minHeight: "300px"
+				}}>
 					<iframe
 						className="airtable-embed absolute top-0 left-0 w-full h-full"
 						src={src}
