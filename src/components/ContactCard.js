@@ -12,7 +12,6 @@ const ContactCard = ({
 	iconSrc,
 	title,
 	description,
-	...rest
 }) => {
 	const handleClick = () => {
 		switch (type) {

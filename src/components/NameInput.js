@@ -137,13 +137,9 @@ function NameInput({
 	setGearList,
 }) {
 	const [open, setOpen] = React.useState(false);
-	const [error, setError] = React.useState(false);
 	const [passFail, setPassFail] = React.useState(false);
 	const [value, setValue] = React.useState("");
 	const [phoneVal, setPhoneVal] = React.useState(null);
-	const [nameInDisplay, setNameInDisplay] = React.useState(
-		userNameList.slice(0, 3)
-	);
 
 	const Initilize = useCallback(() => {
 		userValues = [];
@@ -161,12 +157,7 @@ function NameInput({
 		Initilize();
 	}, [Initilize]);
 
-	const handleAddName = () => {
-		setNameInDisplay(userNameList);
-	};
-
 	const handleRemoveName = (item) => {
-		setNameInDisplay((prev) => [...prev.filter((i) => i !== item)]);
 		userNameList.splice(userNameList.indexOf(item), 1);
 		userValues = userValues.filter((user) => user.name !== item);
 
@@ -192,7 +183,6 @@ function NameInput({
 			setOpen(false);
 			setValue(null);
 			setPhoneVal(null);
-			setError(false);
 		}
 	};
 
@@ -205,7 +195,6 @@ function NameInput({
 			typeof newValue === "string" &&
 			!peopleAllInfo.some((person) => person.name === newValue)
 		) {
-			return;
 		} else {
 			setValue(newValue);
 		}
@@ -218,9 +207,7 @@ function NameInput({
 		if (nameCheck(newValue, value.name, phoneVal)) {
 			if (newValue != null) {
 				if (userNameList.indexOf(newValue.name) > -1) {
-					setError(true);
 				} else {
-					setError(false);
 					setPassFail(false);
 					const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 					userEmoji.push(randomEmoji);
@@ -233,7 +220,6 @@ function NameInput({
 					setDisabledRoomTypes(filterRoomType(roomTypes));
 					setGearList(filterGear());
 
-					handleAddName();
 				}
 			}
 		} else {
@@ -252,7 +238,7 @@ function NameInput({
 	return (
 		<div>
 			<div className="flex justify-center my-2">
-				<Button bordered shadow color="warning" auto onClick={handleClickOpen}>
+				<Button bordered shadow color="warning" auto onPress={handleClickOpen}>
 					ADD
 				</Button>
 			</div>
