@@ -38,7 +38,7 @@ export default function EventDetailsInput({
 
 	return (
 		<div>
-			<Stack spacing={1} sx={{ p: 2 }}>
+			<Stack>
 				<TextField
 					variant="standard"
 					id="outlined-name"

@@ -270,7 +270,7 @@ export default function Home() {
 	);
 
 	return (
-		<div className="text-center">
+		<div className="text-center bg-neutral-900">
 			<div className="mx-auto max-w-2xl">
 				<HeaderWithSubtitle
 					title="Schedule SMC Events"
@@ -284,14 +284,14 @@ export default function Home() {
 				<Collapse in={newEvent || (updateEvent && goodID)}>
 					{nameInput}
 					{userCount > 0 && (
-						<>
+						<div>
 							<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />
 							{eventDetailsInput}
 							{roomInput}
 							{roomSelected.length !== 0 && timeInput}
 							{courseInput}
 							{timeCorrect && gearInput}
-						</>
+						</div>
 					)}
 				</Collapse>
 				{(updateEvent || CancelEvent) && (

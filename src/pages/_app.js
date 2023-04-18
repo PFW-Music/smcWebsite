@@ -9,6 +9,7 @@ import {
 const muiDarkTheme = createTheme({
 	palette: {
 		mode: "dark",
+		background: "#171717",
 	},
 });
 
@@ -21,6 +22,7 @@ const nextUITheme = createNextUITheme({
 			error: "#FCC5D8",
 			selection: "#000000",
 			foreground: "#adadad",
+			background: "#171717",
 		},
 	},
 });

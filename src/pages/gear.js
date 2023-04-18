@@ -178,7 +178,6 @@ export default function Home() {
 				setGoodID={setGoodID}
 				setUserSelected={setUserSelected}
 			/>
-			<br />
 		</Box>
 	);
 
@@ -201,7 +200,7 @@ export default function Home() {
 	);
 
 	return (
-		<div className="text-center">
+		<div className="text-center bg-neutral-900">
 			<div className="mx-auto max-w-2xl">
 				<HeaderWithSubtitle
 					title="Select Gear"
@@ -259,7 +258,6 @@ export default function Home() {
 						timeCorrect={timeCorrect}
 					/>
 				)}
-				<br />
 			</div>
 		</div>
 	);
