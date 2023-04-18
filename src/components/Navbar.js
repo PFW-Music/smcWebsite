@@ -10,7 +10,7 @@ const NavbarCustom = () => {
 				width={300}
 				height={50}
 				alt={"Logo"}
-				objectFit="contain"
+				fit="contain"
 			></Image>
 			<ul className="flex list-none m-0">
 				<li className="mr-8">

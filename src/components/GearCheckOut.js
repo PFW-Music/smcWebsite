@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import {
-	Box,
-	FormLabel,
-	FormControlLabel,
-	Checkbox,
-	TextField,
-} from "@mui/material";
+import { Box, Checkbox, FormControlLabel, FormLabel, TextField } from "@mui/material";
 
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
@@ -66,7 +60,7 @@ function renderAvailableGearItem({ gearItem, handleAddGear }) {
 				width={100}
 				height={100}
 				layout="responsive"
-				objectFit="contain"
+				fit="contain"
 			/>
 			<p>{gearItem.name}</p>
 		</Paper>
@@ -151,7 +145,7 @@ function renderChosenGearItem({ gearItem, handleRemoveGear }) {
 				width={50}
 				height={70}
 
-				objectFit="contain"
+				fit="contain"
 			/>
 			<ListItemText primary={gearItem.name} sx={{ marginLeft: 2 }} />
 		</ListItem>
