@@ -9,9 +9,6 @@ import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
 import base from "./airtable";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
 let userRoomType;
 let userRoomSelection;
 

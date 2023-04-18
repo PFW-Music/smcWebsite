@@ -198,8 +198,7 @@ const GearCheckOut = ({
 	addGear,
 	setAddGear,
 }) => {
-	// const [gear, setGear] = useState([]);
-	const [open, setOpen] = useState(false);
+	const open = false
 	const [options, setOptions] = useState([]);
 	const [filterTerm, setFilterTerm] = useState([]);
 	const loading = open && options.length === 0;
