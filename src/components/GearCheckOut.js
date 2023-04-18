@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
 	Box,
 	FormLabel,
@@ -6,10 +7,7 @@ import {
 	Checkbox,
 	TextField,
 } from "@mui/material";
-import {
-	CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
-	CheckBox as CheckBoxIcon,
-} from "@mui/icons-material";
+
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -19,9 +17,6 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const sleep = async (delay = 0) => {
 	return new Promise((resolve) => {
@@ -65,7 +60,14 @@ function renderAvailableGearItem({ gearItem, handleAddGear }) {
 			onClick={() => handleAddGear(gearItem)}
 		>
 			<Paper />
-			<img src={image} className={gearItem.name} alt={gearItem.id} />
+			<Image
+				src={image}
+				alt={gearItem.id}
+				width={100}
+				height={100}
+				layout="responsive"
+				objectFit="contain"
+			/>
 			<p>{gearItem.name}</p>
 		</Paper>
 	);
@@ -143,11 +145,13 @@ function renderChosenGearItem({ gearItem, handleRemoveGear }) {
 				</IconButton>
 			}
 		>
-			<img
+			<Image
 				src={image}
-				className={gearItem.name}
 				alt={gearItem.id}
-				style={{ maxHeight: 50, maxWidth: 30 }}
+				width={50}
+				height={70}
+
+				objectFit="contain"
 			/>
 			<ListItemText primary={gearItem.name} sx={{ marginLeft: 2 }} />
 		</ListItem>
