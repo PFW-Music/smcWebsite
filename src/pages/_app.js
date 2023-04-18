@@ -9,7 +9,6 @@ import {
 const muiDarkTheme = createTheme({
 	palette: {
 		mode: "dark",
-		background: "#171717",
 	},
 });
 
