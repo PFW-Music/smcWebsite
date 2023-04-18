@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import {
 	CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
-	CheckBox as CheckBoxIcon
+	CheckBox as CheckBoxIcon,
 } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
@@ -48,35 +48,48 @@ function renderAvailableGearItem({ gearItem, handleAddGear }) {
 
 	if (typeof gearItem.image !== "undefined") {
 		image = gearItem.image[0].url;
-	}
-	else{
+	} else {
 		image = "/imageIcon.png";
 	}
 
 	return (
-		<Paper variant="outlined" sx={{ padding: 1, boxShadow: 1, width: "100%", textAlign: "center", cursor: "pointer" }} onClick={() => handleAddGear(gearItem)}>
+		<Paper
+			variant="outlined"
+			sx={{
+				padding: 1,
+				boxShadow: 1,
+				width: "100%",
+				textAlign: "center",
+				cursor: "pointer",
+			}}
+			onClick={() => handleAddGear(gearItem)}
+		>
 			<Paper />
 			<img src={image} className={gearItem.name} alt={gearItem.id} />
 			<p>{gearItem.name}</p>
 		</Paper>
 	);
 }
-const AvailableGear = ({ gearList, filterTerm, gearSelected, setGearSelected }) => {
-
-	const handleAddGear = (event) =>{
+const AvailableGear = ({
+	gearList,
+	filterTerm,
+	gearSelected,
+	setGearSelected,
+}) => {
+	const handleAddGear = (event) => {
 		let tempGear = Array.from(gearSelected);
-		tempGear.push(gearList.find(element => element.id === event.id));
+		tempGear.push(gearList.find((element) => element.id === event.id));
 		setGearSelected(tempGear);
 	};
 
 	const availableDisplayFilter = (gearItem) => {
-		if (gearSelected.includes(gearItem)){
+		if (gearSelected.includes(gearItem)) {
 			return false;
 		}
 		let terms = String(filterTerm).split(/\s+/);
 		let foundTermCount = 0;
-		for (let i = 0; i < terms.length; i++){
-			if (gearItem.name.toLowerCase().includes(terms[i].toLowerCase())){
+		for (let i = 0; i < terms.length; i++) {
+			if (gearItem.name.toLowerCase().includes(terms[i].toLowerCase())) {
 				foundTermCount++;
 			}
 		}
@@ -84,15 +97,25 @@ const AvailableGear = ({ gearList, filterTerm, gearSelected, setGearSelected }) 
 	};
 
 	return (
-		<Paper variant="outlined" sx={{ mt: 2, boxShadow: 1, width: "100%", padding: 1 }}>
+		<Paper
+			variant="outlined"
+			sx={{ mt: 2, boxShadow: 1, width: "100%", padding: 1 }}
+		>
 			<Paper />
-			<Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 2, sm: 4, md: 12 }} height={500}
-						sx={{ overflow: "auto" }}>
-				{Array.from(gearList).filter(availableDisplayFilter).map(gearItem => (
-					<Grid item xs={2} sm={4} md={4} key={gearItem.id}>
-							{renderAvailableGearItem({gearItem, handleAddGear})}
-					</Grid>
-				))}
+			<Grid
+				container
+				spacing={{ xs: 1, md: 1 }}
+				columns={{ xs: 2, sm: 4, md: 12 }}
+				height={500}
+				sx={{ overflow: "auto" }}
+			>
+				{Array.from(gearList)
+					.filter(availableDisplayFilter)
+					.map((gearItem) => (
+						<Grid item xs={2} sm={4} md={4} key={gearItem.id}>
+							{renderAvailableGearItem({ gearItem, handleAddGear })}
+						</Grid>
+					))}
 			</Grid>
 		</Paper>
 	);
@@ -102,8 +125,7 @@ function renderChosenGearItem({ gearItem, handleRemoveGear }) {
 	let image;
 	if (typeof gearItem.image !== "undefined") {
 		image = gearItem.image[0].url;
-	}
-	else{
+	} else {
 		image = "/imageIcon.png";
 	}
 
@@ -121,26 +143,29 @@ function renderChosenGearItem({ gearItem, handleRemoveGear }) {
 				</IconButton>
 			}
 		>
-			<img src={image} className={gearItem.name} alt={gearItem.id}
-					 style={{ maxHeight: 50, maxWidth: 30 }} />
+			<img
+				src={image}
+				className={gearItem.name}
+				alt={gearItem.id}
+				style={{ maxHeight: 50, maxWidth: 30 }}
+			/>
 			<ListItemText primary={gearItem.name} sx={{ marginLeft: 2 }} />
 		</ListItem>
 	);
 }
 const ChosenGear = ({ gearList, gearSelected, setGearSelected }) => {
-
 	const handleRemoveGear = (event) => {
 		let tempGear = Array.from(gearSelected);
-		let index = tempGear.indexOf(gearList.find(element => element.id === event.id));
+		let index = tempGear.indexOf(
+			gearList.find((element) => element.id === event.id)
+		);
 		tempGear.splice(index, 1);
 		setGearSelected(tempGear);
 	};
 
 	return (
-		<Stack spacing={0} sx={{width: "100%", mt: 2}}>
-			<FormLabel component="legend">
-				Chosen Gear:
-			</FormLabel>
+		<Stack spacing={0} sx={{ width: "100%", mt: 2 }}>
+			<FormLabel component="legend">Chosen Gear:</FormLabel>
 			{gearSelected.length !== 0 && (
 				<Paper variant="outlined" sx={{ boxShadow: 1 }}>
 					<Paper />
@@ -150,7 +175,7 @@ const ChosenGear = ({ gearList, gearSelected, setGearSelected }) => {
 								<React.Fragment key={gearItem.id}>
 									{/*{index !== 0 && <Divider />}*/}
 									<Collapse in={true} key={gearItem.id}>
-										{renderChosenGearItem({ gearItem, handleRemoveGear})}
+										{renderChosenGearItem({ gearItem, handleRemoveGear })}
 									</Collapse>
 								</React.Fragment>
 							))}
@@ -162,7 +187,13 @@ const ChosenGear = ({ gearList, gearSelected, setGearSelected }) => {
 	);
 };
 
-const GearCheckOut = ({ gearSelected, setGearSelected, gearList, addGear, setAddGear }) => {
+const GearCheckOut = ({
+	gearSelected,
+	setGearSelected,
+	gearList,
+	addGear,
+	setAddGear,
+}) => {
 	// const [gear, setGear] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [options, setOptions] = useState([]);
@@ -207,10 +238,7 @@ const GearCheckOut = ({ gearSelected, setGearSelected, gearList, addGear, setAdd
 
 			{addGear && (
 				<Box className="flex items-start flex-wrap justify-center">
-					<GearFilter
-						filterTerm={filterTerm}
-						setFilterTerm={setFilterTerm}
-					/>
+					<GearFilter filterTerm={filterTerm} setFilterTerm={setFilterTerm} />
 					<AvailableGear
 						gearList={gearList}
 						filterTerm={filterTerm}

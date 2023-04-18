@@ -242,7 +242,7 @@ const DateTimeValidation = ({
 					color="warning"
 					auto
 					onClick={handleAvailabilityCheck}
-					style={{ zIndex: 0 }}
+					className="z-0"
 				>
 					check availability
 				</Button>
