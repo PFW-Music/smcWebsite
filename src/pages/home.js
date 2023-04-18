@@ -270,7 +270,7 @@ export default function Home() {
 	);
 
 	return (
-		<div className="text-center bg-neutral-900">
+		<div className="text-center bg-neutral-900 min-h-screen">
 			<div className="mx-auto max-w-2xl">
 				<HeaderWithSubtitle
 					title="Schedule SMC Events"
