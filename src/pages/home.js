@@ -248,7 +248,6 @@ export default function Home() {
 				setGoodID={setGoodID}
 				setUserSelected={setUserSelected}
 			/>
-			<br />
 		</Box>
 	);
 
@@ -337,7 +336,6 @@ export default function Home() {
 						roomBookingRecord={roomBookingRecord}
 					/>
 				)}
-				<br />
 			</div>
 		</div>
 	);

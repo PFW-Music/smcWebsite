@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
 import { Button } from "@nextui-org/react";
 
 function FormActions({
@@ -11,18 +10,22 @@ function FormActions({
 	setGoodID,
 	setUserSelected,
 }) {
+	// Add a new state variable for the selected button
+	const [selectedButton, setSelectedButton] = useState(null);
+
 	const handleNewEvent = () => {
 		setNewEvent(true);
 		setUpdateEvent(false);
 		setCancelEvent(false);
 
-		// initialize ID status
 		setEventID("");
 		setIDError(false);
 		setGoodID(false);
 
-		// initialize form values
 		setUserSelected([]);
+
+		// Update the selected button state
+		setSelectedButton("new");
 	};
 
 	const handleUpdateEvent = () => {
@@ -30,10 +33,12 @@ function FormActions({
 		setUpdateEvent(true);
 		setCancelEvent(false);
 
-		// initialize ID status
 		setEventID("");
 		setIDError(false);
 		setGoodID(false);
+
+		// Update the selected button state
+		setSelectedButton("update");
 	};
 
 	const handleCancelEvent = () => {
@@ -41,10 +46,12 @@ function FormActions({
 		setUpdateEvent(false);
 		setCancelEvent(true);
 
-		// initialize ID status
 		setEventID("");
 		setIDError(false);
 		setGoodID(false);
+
+		// Update the selected button state
+		setSelectedButton("cancel");
 	};
 
 	const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -69,14 +76,29 @@ function FormActions({
 			} justify-center items-center`}
 		>
 			<div>
-				<Button bordered color="warning" auto onClick={handleNewEvent}>
+				<Button
+					bordered
+					color={selectedButton === "new" ? "primary" : "warning"}
+					auto
+					onClick={handleNewEvent}
+				>
 					Create Event
 				</Button>
 			</div>
-			<Button bordered color="warning" auto onClick={handleUpdateEvent}>
+			<Button
+				bordered
+				color={selectedButton === "update" ? "primary" : "warning"}
+				auto
+				onClick={handleUpdateEvent}
+			>
 				Update Event
 			</Button>
-			<Button bordered color="warning" auto onClick={handleCancelEvent}>
+			<Button
+				bordered
+				color={selectedButton === "cancel" ? "primary" : "warning"}
+				auto
+				onClick={handleCancelEvent}
+			>
 				Cancel Event
 			</Button>
 		</div>
