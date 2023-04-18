@@ -227,28 +227,35 @@ const DateTimeValidation = ({
 
 	return (
 		<div>
-		  <Stack spacing={1}>
-			<DatePickerSection
-			  startDate={startDate}
-			  endDate={endDate}
-			  handleDateChange={handleDateChange}
+			<Stack spacing={1}>
+				<DatePickerSection
+					startDate={startDate}
+					endDate={endDate}
+					handleDateChange={handleDateChange}
+				/>
+			</Stack>
+
+			<div className="flex justify-center items-center my-4">
+				<Button
+					shadow
+					bordered
+					color="warning"
+					auto
+					onClick={handleAvailabilityCheck}
+					style={{ zIndex: 0 }}
+				>
+					check availability
+				</Button>
+			</div>
+
+			<NotificationSection
+				roomUnavailable={roomUnavailable}
+				successMsg={successMsg}
+				handleClose={handleClose}
+				unavailableRoom={unavailableRoom}
 			/>
-		  </Stack>
-	
-		  <div className="flex justify-center items-center my-4">
-			<Button color="warning" auto ghost onClick={handleAvailabilityCheck} style={{zIndex:0}}>
-			  check availability
-			</Button>
-		  </div>
-	
-		  <NotificationSection
-			roomUnavailable={roomUnavailable}
-			successMsg={successMsg}
-			handleClose={handleClose}
-			unavailableRoom={unavailableRoom}
-		  />
 		</div>
-	  );
-	};
+	);
+};
 
 export default DateTimeValidation;

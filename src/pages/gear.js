@@ -183,6 +183,7 @@ export default function Home() {
 
 	const requestEventID = (
 		<InputSection
+			className="m-auto"
 			title="Event Record ID"
 			description="Please enter the Event Record ID you received in the confirmation email before proceeding to the rest of the form."
 		>

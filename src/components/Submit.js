@@ -98,7 +98,7 @@ export default function Submit({
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<NextButton
-				bordered
+				shadow
 				color="warning"
 				onClick={handleSubmit}
 				disabled={

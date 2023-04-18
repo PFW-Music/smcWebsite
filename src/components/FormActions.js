@@ -24,7 +24,6 @@ function FormActions({
 
 		setUserSelected([]);
 
-		// Update the selected button state
 		setSelectedButton("new");
 	};
 
@@ -37,7 +36,6 @@ function FormActions({
 		setIDError(false);
 		setGoodID(false);
 
-		// Update the selected button state
 		setSelectedButton("update");
 	};
 
@@ -50,7 +48,6 @@ function FormActions({
 		setIDError(false);
 		setGoodID(false);
 
-		// Update the selected button state
 		setSelectedButton("cancel");
 	};
 
@@ -77,6 +74,7 @@ function FormActions({
 		>
 			<div>
 				<Button
+					shadow
 					bordered
 					color={selectedButton === "new" ? "primary" : "warning"}
 					auto
@@ -86,6 +84,7 @@ function FormActions({
 				</Button>
 			</div>
 			<Button
+				shadow
 				bordered
 				color={selectedButton === "update" ? "primary" : "warning"}
 				auto
@@ -94,6 +93,7 @@ function FormActions({
 				Update Event
 			</Button>
 			<Button
+				shadow
 				bordered
 				color={selectedButton === "cancel" ? "primary" : "warning"}
 				auto

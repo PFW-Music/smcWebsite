@@ -252,8 +252,8 @@ function NameInput({
 	return (
 		<div>
 			<div className="flex justify-center my-2">
-				<Button bordered color="warning" auto onClick={handleClickOpen}>
-					+ADD
+				<Button bordered shadow color="warning" auto onClick={handleClickOpen}>
+					ADD
 				</Button>
 			</div>
 			<Dialog
@@ -303,10 +303,10 @@ function NameInput({
 				</DialogContent>
 
 				<DialogActions>
-					<Button bordered color="warning" auto onClick={handleOk}>
+					<Button bordered shadow color="warning" auto onClick={handleOk}>
 						Ok
 					</Button>
-					<Button bordered color="warning" auto onClick={handleClose}>
+					<Button bordered shadow color="warning" auto onClick={handleClose}>
 						Cancel
 					</Button>
 				</DialogActions>

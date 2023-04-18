@@ -2,7 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@nextui-org/react";
-import Grid from "@mui/material/Grid";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Dialog from "@mui/material/Dialog";
@@ -33,18 +32,6 @@ function UpdateRecord(eventID) {
 		}
 	);
 }
-
-const style = {
-	position: "absolute",
-	top: "40%",
-	left: "50%",
-	transform: "translate(-50%, -50%)",
-	width: 400,
-	bgcolor: "#16181A",
-	outline: 0,
-	boxShadow: 20,
-	color: "#191b1d",
-};
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return (
@@ -129,13 +116,20 @@ export default function EventID({
 			<DialogActions>
 				<Button
 					bordered
+					shadow
 					color="primary"
 					auto
 					onClick={handleSubmitCancellation}
 				>
 					Yes
 				</Button>
-				<Button bordered color="primary" auto onClick={handleCloseCancelDialog}>
+				<Button
+					bordered
+					shadow
+					color="primary"
+					auto
+					onClick={handleCloseCancelDialog}
+				>
 					No
 				</Button>
 			</DialogActions>
@@ -149,7 +143,7 @@ export default function EventID({
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
-			<Box sx={style}>
+			<Box>
 				<Typography id="modal-modal-title" variant="h6" component="h2">
 					Cancellation Successful!
 				</Typography>
@@ -161,86 +155,46 @@ export default function EventID({
 	);
 
 	return (
-		<Box m="auto" sx={{ display: "flex", alignItems: "center" }}>
-			<Grid container spacing={1}>
-				<Grid item>
-					<Box
-						component="form"
-						sx={{
-							"& > :not(style)": { width: 300 },
-						}}
-						noValidate
-						autoComplete="off"
-					>
-						{IDerror && (
-							<TextField
-								variant="standard"
-								error
-								label="Error"
-								helperText="ID does not exist in the system :("
-								value={eventID}
-								size="small"
-								onChange={(event) => {
-									setEventID(event.target.value);
-								}}
-								fullWidth
-								sx={{
-									"& label": { color: "white" },
-									"& input": { color: "white" },
-								}}
-							/>
-						)}
-						{!IDerror && (
-							<TextField
-								variant="standard"
-								label="Event Record ID"
-								value={eventID}
-								size="small"
-								onChange={(event) => {
-									setEventID(event.target.value);
-								}}
-								fullWidth
-								sx={{
-									"& label": { color: "white" },
-									"& input": { color: "white" },
-								}}
-							/>
-						)}
-					</Box>
-				</Grid>
-				<Grid item alignItems="stretch" style={{ display: "flex" }}>
-					<Box
-						justifyContent="center"
-						alignItems="center"
-						sx={{ textAlign: "left" }}
-					>
-						<Button
-							bordered
-							color="warning"
-							auto
-							disabled={!eventID}
-							onClick={handleCheckID}
-						>
-							confirm
-						</Button>
-						{successMsg && (
-							<Snackbar
-								open={successMsg}
-								autoHideDuration={200}
-								onClose={handleCloseMessage}
-								anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-							>
-								<Alert severity="success">
-									Your booking record was found! Please re-fill up this form to
-									update us about your booking :)
-								</Alert>
-							</Snackbar>
-						)}
-						{confirmCancelDialog}
-						{succesCancellation}
-					</Box>
-				</Grid>
-			</Grid>
+		<Box className="m-auto flex flex-col items-center justify-center">
+			<Box component="form" noValidate autoComplete="off">
+				<TextField
+					variant="standard"
+					error={IDerror}
+					label={IDerror ? "Error" : "Event Record ID"}
+					helperText={IDerror ? "ID does not exist in the system :(" : ""}
+					value={eventID}
+					size="small"
+					onChange={(event) => {
+						setEventID(event.target.value);
+					}}
+					fullWidth
+				/>
+			</Box>
+			<Button
+				shadow
+				bordered
+				color="warning"
+				auto
+				disabled={!eventID}
+				onClick={handleCheckID}
+			>
+				confirm
+			</Button>
+			{successMsg && (
+				<Snackbar
+					open={successMsg}
+					autoHideDuration={200}
+					onClose={handleCloseMessage}
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+				>
+					<Alert severity="success">
+						Your booking record was found! Please re-fill up this form to update
+						us about your booking :)
+					</Alert>
+				</Snackbar>
+			)}
+			{confirmCancelDialog}
+			{succesCancellation}
 		</Box>
 	);
 }
