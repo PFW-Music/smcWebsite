@@ -156,7 +156,7 @@ export default function RoomSelectionInput({
 
 	return (
 		<div>
-			<Stack spacing={1} sx={{ p: 2 }}>
+			<Stack>
 				<div>
 					<FormControl fullWidth variant="standard">
 						<InputLabel id="event-type-label">Room Type</InputLabel>

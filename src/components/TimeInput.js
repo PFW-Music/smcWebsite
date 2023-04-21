@@ -227,7 +227,7 @@ const DateTimeValidation = ({
 
 	return (
 		<div>
-			<Stack spacing={1}>
+			<Stack>
 				<DatePickerSection
 					startDate={startDate}
 					endDate={endDate}

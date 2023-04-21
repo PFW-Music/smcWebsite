@@ -47,19 +47,15 @@ export default function EventDetailsInput({
 						setSessionTitle(event.target.value);
 					}}
 					fullWidth
-					sx={{ "& label": { color: "white" }, "& input": { color: "white" } }}
 				/>
 
 				<FormControl fullWidth variant="standard">
-					<InputLabel id="event-type-label" sx={{ color: "white" }}>
-						Event Type
-					</InputLabel>
+					<InputLabel id="event-type-label">Event Type</InputLabel>
 					<Select
 						labelId="event-type-label"
 						value={selectedEventType}
 						onChange={handleEventTypeSelect}
-						autoWidth
-						sx={{ color: "white" }}
+						fullWidth
 					>
 						{eventTypes.map((type) => (
 							<MenuItem key={type} value={type}>
@@ -70,15 +66,12 @@ export default function EventDetailsInput({
 				</FormControl>
 
 				<FormControl fullWidth variant="standard">
-					<InputLabel id="event-usage-label" sx={{ color: "white" }}>
-						Intended Use
-					</InputLabel>
+					<InputLabel id="event-usage-label">Intended Use</InputLabel>
 					<Select
 						labelId="event-usage-label"
 						value={selectedEventUsage}
 						onChange={handleEventUsageSelect}
-						autoWidth
-						sx={{ color: "white" }}
+						fullWidth
 					>
 						{eventUsages.map((usage) => (
 							<MenuItem key={usage} value={usage}>

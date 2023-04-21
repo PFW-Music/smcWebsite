@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Box, Checkbox, FormControlLabel, FormLabel, TextField } from "@mui/material";
+import {
+	Box,
+	Checkbox,
+	FormControlLabel,
+	FormLabel,
+	TextField,
+} from "@mui/material";
 
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
@@ -144,7 +150,6 @@ function renderChosenGearItem({ gearItem, handleRemoveGear }) {
 				alt={gearItem.id}
 				width={50}
 				height={70}
-
 				fit="contain"
 			/>
 			<ListItemText primary={gearItem.name} sx={{ marginLeft: 2 }} />
@@ -162,7 +167,7 @@ const ChosenGear = ({ gearList, gearSelected, setGearSelected }) => {
 	};
 
 	return (
-		<Stack spacing={0} sx={{ width: "100%", mt: 2 }}>
+		<Stack sx={{ width: "100%", mt: 2 }}>
 			<FormLabel component="legend">Chosen Gear:</FormLabel>
 			{gearSelected.length !== 0 && (
 				<Paper variant="outlined" sx={{ boxShadow: 1 }}>
@@ -192,7 +197,7 @@ const GearCheckOut = ({
 	addGear,
 	setAddGear,
 }) => {
-	const open = false
+	const open = false;
 	const [options, setOptions] = useState([]);
 	const [filterTerm, setFilterTerm] = useState([]);
 	const loading = open && options.length === 0;
@@ -220,7 +225,7 @@ const GearCheckOut = ({
 	};
 
 	return (
-		<Stack spacing={0}>
+		<Stack>
 			<Box className="flex items-start flex-wrap text-left m-2 text-xl font-mono leading-8 w-96">
 				<FormLabel component="legend">
 					Need to checkout gear for the event?
