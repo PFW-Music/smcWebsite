@@ -1,78 +1,51 @@
 import React from "react";
-import SlideCalendar from "../components/slideCalendar";
-import SlideMessage from "../components/slideMessage";
-import NameInput from "../components/form/NameInput";
-import EventDetailsInput from "../components/form/EventDetailsInput";
-import RoomSelection from "../components/form/RoomSelection";
-import TimeInput from "../components/form/TimeInput";
-import GearCheckOut from "../components/form/GearCheckOut";
-import CourseInput from "../components/form/CourseInput";
-import FormActions from "../components/form/FormActions";
-import EventID from "../components/form/EventID";
-import Submit from "../components/form/Submit";
-import Fade from "@mui/material/Fade";
-import Grow from "@mui/material/Grow";
+import base from "../components/airtable";
+import NameInput from "../components/NameInput";
+import EventDetailsInput from "../components/EventDetailsInput";
+import RoomSelection from "../components/RoomSelection";
+import TimeInput from "../components/TimeInput";
+import GearCheckOut from "../components/GearCheckOut";
+import CourseInput from "../components/CourseInput";
+import FormActions from "../components/FormActions";
+import EventID from "../components/EventID";
+import Submit from "../components/Submit";
+import IframeSlide from "../components/IframeSlide";
+import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
+import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
-import Grid from "@mui/material/Grid";
+import { Container, Card, Row, Text } from "@nextui-org/react";
 
 const peopleAllInfo = [];
 const SMCpeople = [];
 const facultyList = [];
 
 const RecordingStudioRoomsList = [];
-
 const RehearsalRoomsList = [];
-
 const ECRoomsList = [];
 
-///////////////////////////////////////////             ///////////////////////////////////////////
-///////////////////////////////////////////  API CALLS  ///////////////////////////////////////////
-///////////////////////////////////////////             ///////////////////////////////////////////
-//const API_KEY = process.env.REACT_APP_API_KEY;
-
-const Airtable = require("airtable");
-const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
-	process.env.REACT_APP_AIRTABLE_BASE_ID
-);
-
-let x = 0;
-///////////////////////Pulling records from SMC People///////////////////////
 base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
 	})
 	.eachPage(
 		function page(records, fetchNextPage) {
-			// This function (`page`) will get called for each page of records.
-
 			records.forEach(function (record) {
 				SMCpeople.push({ name: record.get("Person"), id: record.id });
-				peopleAllInfo[x] = {
+				peopleAllInfo.push({
 					id: record.id,
 					name: record.get("Person"),
 					roomAccess: record.get("Room Access"),
 					gearAccess: record.get("Gear Access"),
 					phoneNum: record.get("Phone"),
-				};
-
-				// console.log(peopleAllInfo[x])
-				// console.log("info phonenum: " + peopleAllInfo[0].phoneNum.slice(-4))
-
-				x = x + 1;
+				});
 
 				if (record.get("Role").includes("Faculty/Staff 🎓")) {
 					facultyList.push({ name: record.get("Person"), id: record.id });
 				}
-
-				//console.log(x,'Retrieved', record.get('Person'), record)
-				//console.log(x,'Retrieved', record.get('Person'), record.get('Room Access'), record.get('Gear Access'));
 			});
 
-			// To fetch the next page of records, call `fetchNextPage`.
-			// If there are more records, `page` will get called again.
-			// If there are no more records, `done` will get called.
 			fetchNextPage();
 		},
 		function done(err) {
@@ -82,8 +55,6 @@ base("SMC People")
 		}
 	);
 
-/////////////////////////////////////////// Pulling Records from Rooms  ///////////////////////////////////////////
-
 function getRooms(viewName, roomList) {
 	base("Rooms")
 		.select({
@@ -91,8 +62,6 @@ function getRooms(viewName, roomList) {
 		})
 		.eachPage(
 			function page(records, fetchNextPage) {
-				// This function (`page`) will get called for each page of records.
-
 				records.forEach(function (record) {
 					roomList.push({
 						key: record.id,
@@ -101,9 +70,6 @@ function getRooms(viewName, roomList) {
 					});
 				});
 
-				// To fetch the next page of records, call `fetchNextPage`.
-				// If there are more records, `page` will get called again.
-				// If there are no more records, `done` will get called.
 				fetchNextPage();
 			},
 			function done(err) {
@@ -121,8 +87,40 @@ getRooms(
 	ECRoomsList
 );
 
-function Home() {
-	// main input data
+const InputSection = ({ title, description, children }) => (
+	<Paper className="my-2 mx-auto p-2">
+		<Box className="text-center m-2 text-xl">{title}</Box>
+		{description && (
+			<Box className="text-sm">
+				<FormLabel component="legend" className="ml-4">
+					{description}
+				</FormLabel>
+			</Box>
+		)}
+		{children}
+	</Paper>
+);
+
+const SMCHours = () => (
+	<Container className="bg-neutral-900 text-white flex items-center justify-center">
+		<Card.Body>
+			<Text className="text-center text-2xl">SMC Hours & Availability</Text>
+			<Row className="text-xl justify-center">
+				<div className="columns-1">
+					<Text>Monday — Friday: </Text>
+					<Text>8:00 AM — Midnight</Text>
+				</div>
+				<div className="columns-2" />
+				<div className="Columns-3">
+					<Text>Saturday & Sunday: </Text>
+					<Text>12:00 PM — Midnight</Text>
+				</div>
+			</Row>
+		</Card.Body>
+	</Container>
+);
+
+export default function Home() {
 	const [userSelected, setUserSelected] = React.useState([]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
 	const [eventTypeSelected, setEventTypeSelected] = React.useState([]);
@@ -135,33 +133,29 @@ function Home() {
 	const [courseSelected, setCourseSelected] = React.useState([]);
 	const [gearSelected, setGearSelected] = React.useState([]);
 
-	// form update or delete
 	const [IDerror, setIDError] = React.useState(false);
 	const [eventID, setEventID] = React.useState("");
 	const [goodID, setGoodID] = React.useState(false);
 
-	// supportive input data
 	const [userCount, setUserCount] = React.useState(0);
 	const [disabledRoomTypes, setDisabledRoomTypes] = React.useState([]);
 	const [timeCorrect, setTimeCorrect] = React.useState(false);
 	const [gearList, setGearList] = React.useState([]);
+	const [filteredGearList, setFilteredGearList] = React.useState([]);
 	const [roomBookingRecord, setRoomBookingRecord] = React.useState([]);
 
 	const [addGear, setAddGear] = React.useState(false);
 	const [addCourse, setAddCourse] = React.useState(false);
 
-	// form action
 	const [newEvent, setNewEvent] = React.useState(false);
 	const [updateEvent, setUpdateEvent] = React.useState(false);
 	const [CancelEvent, setCancelEvent] = React.useState(false);
 
 	const nameInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
-				Who's booking?
-				<br />
-				<FormLabel component="legend">i.e. takes all responsibility!</FormLabel>
-			</Box>
+		<InputSection
+			title="Who is booking?"
+			description="i.e. takes all responsibility!"
+		>
 			<NameInput
 				peopleAllInfo={peopleAllInfo}
 				userSelected={userSelected}
@@ -170,14 +164,11 @@ function Home() {
 				setDisabledRoomTypes={setDisabledRoomTypes}
 				setGearList={setGearList}
 			/>
-		</Paper>
+		</InputSection>
 	);
 
 	const eventDetailsInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
-				Event Details
-			</Box>
+		<InputSection title="Event Details">
 			<EventDetailsInput
 				facultyList={facultyList}
 				setSessionTitle={setSessionTitle}
@@ -185,27 +176,14 @@ function Home() {
 				setFacultySelected={setFacultySelected}
 				setUsageSelected={setUsageSelected}
 			/>
-			<br />
-		</Paper>
+		</InputSection>
 	);
 
 	const roomInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
-				Room Selection
-				<Grid container spacing={1}>
-					<Grid item xs={1}>
-						<Box sx={{ fontSize: 20, lineHeight: 1.5 }}>📌</Box>
-					</Grid>
-					<Grid item xs={11}>
-						<FormLabel component="legend">
-							If the Edit & Collaboration Spaces is selected, option to add
-							gear(s) to your booking will be available at the end of the form
-							:)
-						</FormLabel>
-					</Grid>
-				</Grid>
-			</Box>
+		<InputSection
+			title="Room Selection"
+			description="📌 If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at the end of the form."
+		>
 			<RoomSelection
 				roomOptionStudio={RecordingStudioRoomsList}
 				roomOptionRehearsal={RehearsalRoomsList}
@@ -216,90 +194,51 @@ function Home() {
 				roomBookingRecord={roomBookingRecord}
 				setRoomBookingRecord={setRoomBookingRecord}
 			/>
-			<br />
-		</Paper>
+		</InputSection>
 	);
 
 	const timeInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 2, fontSize: 22, lineHeight: 2 }}>
-				Session Time
-				<Grid container spacing={1}>
-					<Grid item xs={1}>
-						<Box sx={{ fontSize: 20, lineHeight: 1.5 }}>📌</Box>
-					</Grid>
-					<Grid item xs={11}>
-						<FormLabel component="legend">
-							Based on your chosen Session Time, we wil notify you with the
-							availability of the room(s) selected above.
-						</FormLabel>
-					</Grid>
-				</Grid>
-			</Box>
+		<InputSection
+			title="Session Time"
+			description="📌 Based on your chosen Session Time, we wil notify you with the availability of the room(s) selected above."
+		>
 			<TimeInput
 				setStartTimeSelected={setStartTimeSelected}
 				setEndTimeSelected={setEndTimeSelected}
 				setTimeCorrect={setTimeCorrect}
 				roomBookingRecord={roomBookingRecord}
+				gearList={gearList}
+				setFilteredGearList={setFilteredGearList}
 			/>
-			<br />
-		</Paper>
+		</InputSection>
 	);
 
 	const courseInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
+		<InputSection title="Courses">
 			<CourseInput
 				setCourseSelected={setCourseSelected}
 				addCourse={addCourse}
 				setAddCourse={setAddCourse}
 			/>
-			<br />
-		</Paper>
+		</InputSection>
 	);
 
 	const gearInput = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
+		<InputSection title="Gear Checkout">
 			<GearCheckOut
+				gearSelected={gearSelected}
 				setGearSelected={setGearSelected}
-				gearList={gearList}
+				gearList={filteredGearList}
 				addGear={addGear}
 				setAddGear={setAddGear}
 				startTimeSelected={startTimeSelected}
 				endTimeSelected={endTimeSelected}
 			/>
-			<br />
-		</Paper>
-	);
-
-	const SMChours = (
-		<Paper
-			variant="outlined"
-			sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2, opacity: 0 }}
-		>
-			<Box sx={{ textAlign: "center", m: 1, fontSize: 22, lineHeight: 2 }}>
-				SMC Hours & Availability
-			</Box>
-			<Box
-				sx={{ mt: -5, ml: 6, textAlign: "left", fontSize: 17, lineHeight: 2 }}
-			>
-				<br />
-				<Grid container>
-					<Grid item xs={7}>
-						<b>Monday — Friday: </b>
-						<li>8:00 AM — Midnight</li>
-					</Grid>
-					<Grid item xs="auto">
-						<b>Saturday & Sunday: </b>
-						<li>12:00 PM — Midnight</li>
-					</Grid>
-				</Grid>
-			</Box>
-		</Paper>
+		</InputSection>
 	);
 
 	const formActions = (
-		//<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: 'auto', p: 2 }}>
-		<Box m="auto" sx={{ maxWidth: 700, width: "90%" }}>
+		<Box className="m-auto">
 			<FormActions
 				setNewEvent={setNewEvent}
 				setUpdateEvent={setUpdateEvent}
@@ -309,110 +248,95 @@ function Home() {
 				setGoodID={setGoodID}
 				setUserSelected={setUserSelected}
 			/>
-			<br />
 		</Box>
 	);
 
 	const requestEventID = (
-		<Paper sx={{ maxWidth: 700, width: "90%", my: 2, mx: "auto", p: 2 }}>
-			<Box sx={{ textAlign: "left", m: 1, fontSize: 20, lineHeight: 1.5 }}>
-				<Grid container alignItems="flex-start" spacing={1}>
-					<Grid item xs={1}>
-						📌
-					</Grid>
-					<Grid item xs={11}>
-						<FormLabel component="legend">
-							Please enter the Event Record ID you recieved in the confirmation
-							email before proceeding to the rest of the form.
-						</FormLabel>
-					</Grid>
-				</Grid>
-			</Box>
-			<Box m="auto" sx={{ my: 2, display: "flex", alignItems: "center" }}>
-				<EventID
-					IDerror={IDerror}
-					setIDError={setIDError}
-					eventID={eventID}
-					setEventID={setEventID}
-					goodID={goodID}
-					setGoodID={setGoodID}
-					updateEvent={updateEvent}
-					CancelEvent={CancelEvent}
-				/>
-			</Box>
-		</Paper>
+		<InputSection
+			title="Event Record ID"
+			description="Please enter the Event Record ID you received in the confirmation email before proceeding to the rest of the form."
+		>
+			<EventID
+				IDerror={IDerror}
+				setIDError={setIDError}
+				eventID={eventID}
+				setEventID={setEventID}
+				goodID={goodID}
+				setGoodID={setGoodID}
+				updateEvent={updateEvent}
+				CancelEvent={CancelEvent}
+			/>
+		</InputSection>
 	);
 
 	return (
-		<div>
-			<SlideMessage />
-			{/**<SlideCalendar/> */}
-
-			<Fade in={true}>{SMChours}</Fade>
-			<Fade in={true}>{formActions}</Fade>
-			{updateEvent && <Grow in={updateEvent}>{requestEventID}</Grow>}
-			{CancelEvent && <Grow in={CancelEvent}>{requestEventID}</Grow>}
-			<Grow in={newEvent || (updateEvent && goodID)}>{nameInput}</Grow>
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<SlideCalendar />
-			)}
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<Grow in={userCount > 0}>{eventDetailsInput}</Grow>
-			)}
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<Grow in={userCount > 0}>{roomInput}</Grow>
-			)}
-			{userCount > 0 &&
-				(newEvent || (updateEvent && goodID)) &&
-				roomSelected.length !== 0 && (
-					<Grow in={userCount > 0}>{timeInput}</Grow>
-				)}
-			<Grow in={newEvent || (updateEvent && goodID)}>{courseInput}</Grow>
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<Grow in={userCount > 0}>{gearInput}</Grow>
-			)}
-			{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
-				<Submit
-					userSelected={userSelected}
-					setUserSelected={setUserSelected}
-					sessionTitle={sessionTitle}
-					setSessionTitle={setSessionTitle}
-					eventTypeSelected={eventTypeSelected}
-					setEventTypeSelected={setEventTypeSelected}
-					facultySelected={facultySelected}
-					setFacultySelected={setFacultySelected}
-					usageSelected={usageSelected}
-					setUsageSelected={setUsageSelected}
-					roomTypeSelected={roomTypeSelected}
-					setRoomTypeSelected={setRoomTypeSelected}
-					roomSelected={roomSelected}
-					setRoomSelected={setRoomSelected}
-					startTimeSelected={startTimeSelected}
-					setStartTimeSelected={setStartTimeSelected}
-					endTimeSelected={endTimeSelected}
-					setEndTimeSelected={setEndTimeSelected}
-					courseSelected={courseSelected}
-					setCourseSelected={setCourseSelected}
-					gearSelected={gearSelected}
-					setGearSelected={setGearSelected}
-					eventID={eventID}
-					setEventID={setEventID}
-					newEvent={newEvent}
-					setNewEvent={setNewEvent}
-					updateEvent={updateEvent}
-					setUpdateEvent={setUpdateEvent}
-					CancelEvent={CancelEvent}
-					setCancelEvent={setCancelEvent}
-					setAddCourse={setAddCourse}
-					setAddGear={setAddGear}
-					setUserCount={setUserCount}
-					timeCorrect={timeCorrect}
-					roomBookingRecord={roomBookingRecord}
+		<div className="text-center bg-neutral-900 min-h-screen">
+			<div className="mx-auto max-w-2xl">
+				<HeaderWithSubtitle
+					title="Schedule SMC Events"
+					subtitle="Everyone can take advantage of scheduling time in the edit &
+  collaboration spaces in the SMC building. Approved students
+  registered for certain classes have privileges to schedule time in
+  the recording studio, rehearsal room and control room."
 				/>
-			)}
-			<br />
+				<SMCHours />
+				{formActions}
+				<Collapse in={newEvent || (updateEvent && goodID)}>
+					{nameInput}
+					{userCount > 0 && (
+						<div>
+							<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />
+							{eventDetailsInput}
+							{roomInput}
+							{roomSelected.length !== 0 && timeInput}
+							{courseInput}
+							{timeCorrect && gearInput}
+						</div>
+					)}
+				</Collapse>
+				{(updateEvent || CancelEvent) && (
+					<Collapse in>{requestEventID}</Collapse>
+				)}
+				{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+					<Submit
+						userSelected={userSelected}
+						setUserSelected={setUserSelected}
+						sessionTitle={sessionTitle}
+						setSessionTitle={setSessionTitle}
+						eventTypeSelected={eventTypeSelected}
+						setEventTypeSelected={setEventTypeSelected}
+						facultySelected={facultySelected}
+						setFacultySelected={setFacultySelected}
+						usageSelected={usageSelected}
+						setUsageSelected={setUsageSelected}
+						roomTypeSelected={roomTypeSelected}
+						setRoomTypeSelected={setRoomTypeSelected}
+						roomSelected={roomSelected}
+						setRoomSelected={setRoomSelected}
+						startTimeSelected={startTimeSelected}
+						setStartTimeSelected={setStartTimeSelected}
+						endTimeSelected={endTimeSelected}
+						setEndTimeSelected={setEndTimeSelected}
+						courseSelected={courseSelected}
+						setCourseSelected={setCourseSelected}
+						gearSelected={gearSelected}
+						setGearSelected={setGearSelected}
+						eventID={eventID}
+						setEventID={setEventID}
+						newEvent={newEvent}
+						setNewEvent={setNewEvent}
+						updateEvent={updateEvent}
+						setUpdateEvent={setUpdateEvent}
+						CancelEvent={CancelEvent}
+						setCancelEvent={setCancelEvent}
+						setAddCourse={setAddCourse}
+						setAddGear={setAddGear}
+						setUserCount={setUserCount}
+						timeCorrect={timeCorrect}
+						roomBookingRecord={roomBookingRecord}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }
-
-export default Home;
