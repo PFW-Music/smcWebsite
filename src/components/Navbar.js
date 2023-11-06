@@ -1,7 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react"
 
-const NavbarCustom = () => {
+
+const NavbarCustom =  () => {
+	const { data: session, status } = useSession()
+
+	let route = "signin";
+	let textRoute = "Sign In";
+
+	if (status === "authenticated") {
+		route = "signout";
+		textRoute = `Sign Out (${session.user.name})`;
+	}
 	return (
 		<div className="flex flex-col items-center justify-center bg-neutral-900 w-full ">
 			<Image
@@ -31,6 +42,12 @@ const NavbarCustom = () => {
 				<li className="mr-8">
 					<Link href="/contact" className="text-blue-500">
 						Contact Us
+					</Link>
+				</li>
+				
+				<li className="mr-8">
+					<Link href={`/api/auth/${route}`} className="text-blue-500">
+					{textRoute}
 					</Link>
 				</li>
 			</ul>

@@ -5,7 +5,8 @@ import {
 	createTheme as createNextUITheme,
 	NextUIProvider,
 } from "@nextui-org/react";
-
+import { SessionProvider } from "next-auth/react"
+import Layout from "@/components/layout";
 const muiDarkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -26,12 +27,16 @@ const nextUITheme = createNextUITheme({
 	},
 });
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	return (
 		<ThemeProvider theme={muiDarkTheme}>
 			<NextUIProvider theme={nextUITheme}>
 				<CssBaseline />
+				<SessionProvider session={session}>
+				<Layout>
 				<Component {...pageProps} />
+				</Layout>
+				</SessionProvider>
 			</NextUIProvider>
 		</ThemeProvider>
 	);

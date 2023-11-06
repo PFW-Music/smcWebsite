@@ -32,6 +32,7 @@ base("SMC People")
 	.eachPage(
 		function page(records, fetchNextPage) {
 			records.forEach(function (record) {
+				//console.log(record);
 				SMCpeople.push({ name: record.get("Person"), id: record.id });
 				peopleAllInfo.push({
 					id: record.id,
@@ -49,6 +50,7 @@ base("SMC People")
 			fetchNextPage();
 		},
 		function done(err) {
+			
 			if (err) {
 				console.error(err);
 			}
