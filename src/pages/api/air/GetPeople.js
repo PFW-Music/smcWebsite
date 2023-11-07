@@ -1,14 +1,19 @@
 import base from "./_base"
+import { getServerSession } from "next-auth/next"
+import { options } from "../auth/[...nextauth]"
 export const config = {
     api: {
       externalResolver: true,
     },
   }
 export default async function handler(req, res){
+    const session = await getServerSession(req, res, options)
     const peopleAllInfo = [];
     const SMCpeople = [];
     const facultyList = [];
-    base("SMC People")
+
+    if (session) {
+        base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
 	})
@@ -39,4 +44,9 @@ export default async function handler(req, res){
 			}
 		}
 	);
+      } else {
+        console.log("failed!")
+        res.status(401)
+        res.end();
+      }
 }

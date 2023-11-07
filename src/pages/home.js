@@ -22,8 +22,8 @@ let peopleAllInfo = [];
 let SMCpeople = [];
 let facultyList = [];
 
-const RecordingStudioRoomsList = [];
-const RehearsalRoomsList = [];
+let RecordingStudioRoomsList = [];
+let RehearsalRoomsList = [];
 const ECRoomsList = [];
 
 /* base("SMC People")
@@ -83,8 +83,8 @@ function getRooms(viewName, roomList) {
 		);
 }
 
-getRooms("Bookable Rooms 🔒 (Studio Booking Form)", RecordingStudioRoomsList);
-getRooms("Bookable Rooms 🔒 (Rehearsal Booking Form)", RehearsalRoomsList);
+//getRooms("Bookable Rooms 🔒 (Studio Booking Form)", RecordingStudioRoomsList);
+//getRooms("Bookable Rooms 🔒 (Rehearsal Booking Form)", RehearsalRoomsList);
 getRooms(
 	"Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
 	ECRoomsList
@@ -124,17 +124,37 @@ const SMCHours = () => (
 );
 
 async function getPeople(){
-	const response = await fetch("/api/air/GetPeople");
-	const people = await response.json();
-	peopleAllInfo = people.peopleAllInfo.map((item) => item);
-	facultyList = people.facultyList.map((item) => item);
+	try {
+		const response = await fetch("/api/air/GetPeople");
+		const people = await response.json();
+		peopleAllInfo = people.peopleAllInfo.map((item) => item);
+		facultyList = people.facultyList.map((item) => item);
+	} catch (error) {
+		console.log(error);
+	}
 }
+
+async function getStudio(){
+	const response = await fetch("/api/air/get-rooms/studio");
+	const rooms = await response.json();
+	RecordingStudioRoomsList = rooms.map((item) => item);
+}
+
+async function getRehearsal(){
+	const response = await fetch("/api/air/get-rooms/rehearsal");
+	const rooms = await response.json();
+	RehearsalRoomsList = rooms.map((item) => item);
+}
+
 
 export default  function Home() {
  	
 
 	useEffect(() => {
 		getPeople();
+		getStudio();
+		getRehearsal();
+
 
 	  }, []); 
 	
