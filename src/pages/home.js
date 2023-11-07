@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import base from "../components/airtable";
 import NameInput from "../components/NameInput";
 import EventDetailsInput from "../components/EventDetailsInput";
@@ -17,15 +18,15 @@ import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 import { Container, Card, Row, Text } from "@nextui-org/react";
 
-const peopleAllInfo = [];
-const SMCpeople = [];
-const facultyList = [];
+let peopleAllInfo = [];
+let SMCpeople = [];
+let facultyList = [];
 
 const RecordingStudioRoomsList = [];
 const RehearsalRoomsList = [];
 const ECRoomsList = [];
 
-base("SMC People")
+/* base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
 	})
@@ -56,7 +57,7 @@ base("SMC People")
 			}
 		}
 	);
-
+ */
 function getRooms(viewName, roomList) {
 	base("Rooms")
 		.select({
@@ -122,7 +123,21 @@ const SMCHours = () => (
 	</Container>
 );
 
-export default function Home() {
+async function getPeople(){
+	const response = await fetch("/api/air/GetPeople");
+	const people = await response.json();
+	peopleAllInfo = people.peopleAllInfo.map((item) => item);
+	facultyList = people.facultyList.map((item) => item);
+}
+
+export default  function Home() {
+ 	
+
+	useEffect(() => {
+		getPeople();
+
+	  }, []); 
+	
 	const [userSelected, setUserSelected] = React.useState([]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
 	const [eventTypeSelected, setEventTypeSelected] = React.useState([]);
