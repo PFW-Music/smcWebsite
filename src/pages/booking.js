@@ -23,49 +23,10 @@ let SMCpeople = [];
 let facultyList = [];
 
 //let RecordingStudioRoomsList = [];
-let RehearsalRoomsList = [];
-const ECRoomsList = [];
-
-/* base("SMC People")
-	.select({
-		view: "ALL PEOPLE",
-	})
-	.eachPage(
-		function page(records, fetchNextPage) {
-			records.forEach(function (record) {
-				//console.log(record);
-				SMCpeople.push({ name: record.get("Person"), id: record.id });
-				peopleAllInfo.push({
-					id: record.id,
-					name: record.get("Person"),
-					roomAccess: record.get("Room Access"),
-					gearAccess: record.get("Gear Access"),
-					phoneNum: record.get("Phone"),
-				});
-
-				if (record.get("Role").includes("Faculty/Staff 🎓")) {
-					facultyList.push({ name: record.get("Person"), id: record.id });
-				}
-			});
-
-			fetchNextPage();
-		},
-		function done(err) {
-			
-			if (err) {
-				console.error(err);
-			}
-		}
-	);
- */
+//let RehearsalRoomsList = [];
+//const ECRoomsList = [];
 
 
-//getRooms("Bookable Rooms 🔒 (Studio Booking Form)", RecordingStudioRoomsList);
-//getRooms("Bookable Rooms 🔒 (Rehearsal Booking Form)", RehearsalRoomsList);
-/* getRooms(
-	"Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
-	ECRoomsList
-); */
 
 const InputSection = ({ title, description, children }) => (
 	<Paper className="my-2 mx-auto p-2">
@@ -160,7 +121,30 @@ export default  function Home() {
 	const [CancelEvent, setCancelEvent] = React.useState(false);
 
 	const [RecordingStudioRoomsList, setRecordingStudioRoomsList] = useState([]);
-	
+	const [RehearsalRoomsList, setRehearsalRoomsList] = useState([]);
+    const [ECRoomsList, setECRoomsList] = useState([]);
+
+	useEffect(() => {
+		//getPeople();
+		//getStudio();
+		fetch("/api/air/get-rooms/studio")
+		.then((res)=>res.json())
+		.then((data)=>{
+			setRecordingStudioRoomsList(data);
+		})
+        fetch("/api/air/get-rooms/rehearsal")
+		.then((res)=>res.json())
+		.then((data)=>{
+			setRehearsalRoomsList(data);
+		})
+        fetch("/api/air/get-rooms/edit-and-collab")
+		.then((res)=>res.json())
+		.then((data)=>{
+			setECRoomsList(data);
+		})
+
+
+	  }, []); 
 	const nameInput = (
 		<InputSection
 			title="Who is booking?"
@@ -282,14 +266,63 @@ export default  function Home() {
 	return (
 		<div className="text-center bg-neutral-900 min-h-screen">
 			<div className="mx-auto max-w-2xl">
-				<HeaderWithSubtitle
-					title="Schedule SMC Events"
-					subtitle="Everyone can take advantage of scheduling time in the edit &
-  collaboration spaces in the SMC building. Approved students
-  registered for certain classes have privileges to schedule time in
-  the recording studio, rehearsal room and control room."
-				/>
-				<SMCHours />
+
+				{formActions}
+				<Collapse in={newEvent || (updateEvent && goodID)}>
+					{/*{nameInput}*/}
+					{userCount > 0 && (
+						<div>
+							<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />
+							{eventDetailsInput}
+							{roomInput}
+							{roomSelected.length !== 0 && timeInput}
+							{courseInput}
+							{timeCorrect && gearInput}
+						</div>
+					)}
+				</Collapse>
+				{(updateEvent || CancelEvent) && (
+					<Collapse in>{requestEventID}</Collapse>
+				)}
+				{userCount > 0 && (newEvent || (updateEvent && goodID)) && (
+					<Submit
+						userSelected={userSelected}
+						setUserSelected={setUserSelected}
+						sessionTitle={sessionTitle}
+						setSessionTitle={setSessionTitle}
+						eventTypeSelected={eventTypeSelected}
+						setEventTypeSelected={setEventTypeSelected}
+						facultySelected={facultySelected}
+						setFacultySelected={setFacultySelected}
+						usageSelected={usageSelected}
+						setUsageSelected={setUsageSelected}
+						roomTypeSelected={roomTypeSelected}
+						setRoomTypeSelected={setRoomTypeSelected}
+						roomSelected={roomSelected}
+						setRoomSelected={setRoomSelected}
+						startTimeSelected={startTimeSelected}
+						setStartTimeSelected={setStartTimeSelected}
+						endTimeSelected={endTimeSelected}
+						setEndTimeSelected={setEndTimeSelected}
+						courseSelected={courseSelected}
+						setCourseSelected={setCourseSelected}
+						gearSelected={gearSelected}
+						setGearSelected={setGearSelected}
+						eventID={eventID}
+						setEventID={setEventID}
+						newEvent={newEvent}
+						setNewEvent={setNewEvent}
+						updateEvent={updateEvent}
+						setUpdateEvent={setUpdateEvent}
+						CancelEvent={CancelEvent}
+						setCancelEvent={setCancelEvent}
+						setAddCourse={setAddCourse}
+						setAddGear={setAddGear}
+						setUserCount={setUserCount}
+						timeCorrect={timeCorrect}
+						roomBookingRecord={roomBookingRecord}
+					/>
+				)}
 			</div>
 		</div>
 	);

@@ -43,6 +43,11 @@ export const options = {
           session.user = token;
           return session;
         },
+
+        async redirect({ url, baseUrl }) {
+       
+          return baseUrl
+        }
       },
     
 }

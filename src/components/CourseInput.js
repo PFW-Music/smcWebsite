@@ -7,10 +7,10 @@ import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Stack from "@mui/material/Stack";
-import base from "./airtable";
+//import base from "./airtable";
 import { Text } from "@nextui-org/react";
 
-const fetchCourses = async () => {
+/* const fetchCourses = async () => {
 	let courseList = [];
 
 	await base("Classes")
@@ -39,7 +39,33 @@ const fetchCourses = async () => {
 		});
 
 	return courseList;
-};
+}; */
+
+const fetchCourses = () => {
+	let courseList = [];
+	fetch("/api/air/GetClasses")
+	.then((res)=>res.json())
+	.then((data)=>{
+		data.forEach((record) => {
+			const className = record.name;
+			const classDay = record.day;
+			const classTime = record.time;
+
+			if (className) {
+				let displayText = className;
+				if (classDay) {
+					displayText += ", " + String(classDay).substring(0, 3);
+				}
+				if (classTime) {
+					displayText += ", " + String(classTime);
+				}
+				courseList.push({ key: record.id, name: displayText });
+			}
+		});
+	})
+
+	return courseList;
+}
 
 const CourseSelectionInput = ({
 	courseSelected,

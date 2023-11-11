@@ -29,6 +29,13 @@ const NavbarCustom =  () => {
 						Home
 					</Link>
 				</li>
+
+				<li className="mr-8">
+					<Link href="/booking" className="text-blue-500">
+						Book an Event
+					</Link>
+				</li>
+
 				<li className="mr-8">
 					<Link href="/schedule" className="text-blue-500">
 						Schedules
@@ -44,6 +51,8 @@ const NavbarCustom =  () => {
 						Contact Us
 					</Link>
 				</li>
+
+
 				
 				<li className="mr-8">
 					<Link href={`/api/auth/${route}`} className="text-blue-500">

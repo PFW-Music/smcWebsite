@@ -13,6 +13,11 @@ export const config = {
 		viewName = "Bookable Rooms 🔒 (Studio Booking Form)";
 	} else if(roomtype === "rehearsal"){
 		viewName = "Bookable Rooms 🔒 (Rehearsal Booking Form)";
+	} else if(roomtype==="edit-and-collab"){
+		viewName = "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam"
+	} else {
+		res.status(400);
+		res.end();
 	}
 	base("Rooms")
 		.select({
