@@ -199,24 +199,54 @@ const DateTimeValidation = ({
 		}
 	};
 
+	// const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
+	// 	const realEndTime = new Date(endTime).toISOString();
+
+	// 	if (!roomBookingRecord) return false;
+
+	// 	return roomBookingRecord.some((record) => {
+	// 		if (!record.eventStart) return false;
+
+	// 		return record.eventStart.some((eventStart, idx) => {
+	// 			if (record.eventStatus[idx] !== "Booked ✅") return false;
+
+	// 			const eventEnd = record.eventEnd[idx];
+
+	// 			if (
+	// 				(startTime <= eventStart && realEndTime >= eventEnd) ||
+	// 				(startTime >= eventStart && startTime <= eventEnd) ||
+	// 				(realEndTime > eventStart && realEndTime < eventEnd)
+	// 			) {
+	// 				setUnavailableRoom(record.name);
+	// 				return true;
+	// 			}
+	// 			return false;
+	// 		});
+	// 	});
+	// };
 	const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
-		const realEndTime = new Date(endTime).toISOString();
-
+		const realStartTime = new Date(startTime);
+		const realEndTime = new Date(endTime);
+	
 		if (!roomBookingRecord) return false;
-
+	
 		return roomBookingRecord.some((record) => {
-			if (!record.eventStart) return false;
-
+			if (!record.eventStart || !record.eventEnd || !record.eventStatus) return false;
+	
 			return record.eventStart.some((eventStart, idx) => {
-				if (record.eventStatus[idx] !== "Booked ✅") return false;
+				if (record.eventStatus[idx].value.value !== "Booked ✅") return false;
 
-				const eventEnd = record.eventEnd[idx];
-
-				if (
-					(startTime <= eventStart && realEndTime >= eventEnd) ||
-					(startTime >= eventStart && startTime <= eventEnd) ||
-					(realEndTime > eventStart && realEndTime < eventEnd)
-				) {
+				const eventStartDate = new Date(eventStart.value); // Convert to Date object
+				const eventEndDate = new Date(record.eventEnd[idx].value); // Convert to Date object
+	
+				// Check if the new booking start or end time falls within an existing booking
+				const isStartWithinEvent = realStartTime >= eventStartDate && realStartTime < eventEndDate;
+				const isEndWithinEvent = realEndTime > eventStartDate && realEndTime <= eventEndDate;
+	
+				// Check if the new booking completely overlaps an existing booking
+				const isOverlappingEvent = realStartTime <= eventStartDate && realEndTime >= eventEndDate;
+	
+				if (isStartWithinEvent || isEndWithinEvent || isOverlappingEvent) {
 					setUnavailableRoom(record.name);
 					return true;
 				}
@@ -224,7 +254,7 @@ const DateTimeValidation = ({
 			});
 		});
 	};
-
+	
 	return (
 		<div>
 			<Stack>

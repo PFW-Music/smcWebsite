@@ -1,23 +1,9 @@
 import React from "react";
-import base from "./airtable";
-import baserow from "./baserow"
 import { Button as NextButton } from "@nextui-org/react";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material//Fade";
 import Typography from "@mui/material/Typography";
-
-// async function createRecord(fields) {
-// 	try {
-// 		const records = await base("Events").create([{ fields }]);
-
-// 		records.forEach(function (record) {
-// 			console.log(record.getId());
-// 		});
-// 	} catch (err) {
-// 		console.error(err);
-// 	}
-// }
 
 // Async function to create a record
 async function createRecord(fields) {
@@ -27,13 +13,13 @@ async function createRecord(fields) {
 		headers: {
 		  'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ fields }),
+		body: JSON.stringify(fields),
 	  });
   
 	  if (response.status === 201) {
 		console.log('Record created successfully.');
 	  } else {
-		console.error('Failed to create record.');
+		console.error('Failed to create record.'+fields);
 	  }
 	} catch (err) {
 	  console.error(err);
@@ -41,14 +27,14 @@ async function createRecord(fields) {
   }
   
   // Async function to update a record
-  async function updateRecord(eventID, fields) {
+async function updateRecord(eventID, fields) {
 	try {
-	  const response = await fetch(`/api/updateRecord?eventID=${eventID}`, {
-		method: 'PUT',
+	  const response = await fetch(`/api/updateRecord/${eventID}`, {
+		method: 'PATCH',
 		headers: {
 		  'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ eventID, fields }),
+		body: JSON.stringify({ fields }), // Only fields need to be sent
 	  });
   
 	  if (response.status === 200) {
@@ -60,19 +46,6 @@ async function createRecord(fields) {
 	  console.error(err);
 	}
   }
-  
-
-// async function updateRecord(eventID, fields) {
-// 	try {
-// 		const records = await base("Events").update([{ id: eventID, fields }]);
-
-// 		records.forEach(function () {
-// 			console.log("record updated");
-// 		});
-// 	} catch (err) {
-// 		console.error(err);
-// 	}
-// }
 
 export default function Submit({
 	userSelected,
@@ -125,6 +98,8 @@ export default function Submit({
 		} else if (updateEvent) {
 			await updateRecord(eventID, fields);
 		}
+		console.log("Fields object:", fields);
+
 	};
 
 	const handleClose = () => {

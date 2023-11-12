@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import base from "../components/airtable";
-// import baserow from "../components/baserow"
+import baserow from "../components/baserow"
 import NameInput from "../components/NameInput";
 import EventDetailsInput from "../components/EventDetailsInput";
 import RoomSelection from "../components/RoomSelection";
@@ -18,50 +17,9 @@ import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 import { Container, Card, Row, Text } from "@nextui-org/react";
 
-// base("SMC People")
-// 	.select({
-// 		view: "ALL PEOPLE",
-// 	})
-// 	.eachPage(
-// 		function page(records, fetchNextPage) {
-// 			records.forEach(function (record) {
-// 				SMCpeople.push({ name: record.get("Person"), id: record.id });
-// 				peopleAllInfo.push({
-// 					id: record.id,
-// 					name: record.get("Person"),
-// 					roomAccess: record.get("Room Access"),
-// 					gearAccess: record.get("Gear Access"),
-// 					phoneNum: record.get("Phone"),
-// 				});
-
-// 				if (record.get("Role").includes("Faculty/Staff 🎓")) {
-// 					facultyList.push({ name: record.get("Person"), id: record.id });
-// 				}
-// 			});
-
-// 			fetchNextPage();
-// 		},
-// 		function done(err) {
-// 			if (err) {
-// 				console.error(err);
-// 			}
-// 		}
-// 	);
-
 let peopleAllInfo = [];
 let SMCpeople = [];
 let facultyList = [];
-
-const RecordingStudioRoomsList = [];
-const RehearsalRoomsList = [];
-const ECRoomsList = [];
-
-import Baserow from "baserow-client";
-
-const baserow = new Baserow({
-  apiKey: process.env.NEXT_PUBLIC_BASEROW_KEY,
-  showUserFieldNames: true,
-});
 
 const fetchPeopleData = async () => {
   try {
@@ -73,8 +31,8 @@ const fetchPeopleData = async () => {
     }
 
     const params = {
-    //   page: 1,
-    //   size: 100,
+      //   page: 1,
+      //   size: 100,
       // Add other parameters as needed, e.g., search, orderBy, orderDir
     };
 
@@ -119,9 +77,9 @@ const fetchPeopleData = async () => {
       });
 
       // Now you can use SMCpeople, peopleAllInfo, and facultyList as needed
-      //   console.log(SMCpeople);
-        // console.log(peopleAllInfo);
-      //   console.log(facultyList);
+    //   console.log(SMCpeople);
+    //   console.log(peopleAllInfo);
+    //   console.log(facultyList);
     } else {
       throw new Error("Invalid response format: expected an array of records.");
     }
@@ -133,37 +91,7 @@ const fetchPeopleData = async () => {
 // Call the fetchPeopleData function to initiate the data retrieval
 fetchPeopleData();
 
-function getRooms(viewName, roomList) {
-  base("Rooms")
-    .select({
-      view: viewName,
-    })
-    .eachPage(
-      function page(records, fetchNextPage) {
-        records.forEach(function (record) {
-          roomList.push({
-            key: record.id,
-            name: record.get("Name"),
-            events: record.get("Events"),
-          });
-        });
 
-        fetchNextPage();
-      },
-      function done(err) {
-        if (err) {
-          console.error(err);
-        }
-      }
-    );
-}
-
-getRooms("Bookable Rooms 🔒 (Studio Booking Form)", RecordingStudioRoomsList);
-getRooms("Bookable Rooms 🔒 (Rehearsal Booking Form)", RehearsalRoomsList);
-getRooms(
-  "Bookable Rooms 🔒 (Edit and Collab Booking Form)-devTeam",
-  ECRoomsList
-);
 
 const InputSection = ({ title, description, children }) => (
   <Paper className="my-2 mx-auto p-2">
@@ -229,6 +157,11 @@ export default function Home() {
   const [updateEvent, setUpdateEvent] = React.useState(false);
   const [CancelEvent, setCancelEvent] = React.useState(false);
 
+  // Define states for room lists
+  const [recordingStudioRooms, setRecordingStudioRooms] = useState([]);
+  const [rehearsalRooms, setRehearsalRooms] = useState([]);
+  const [ecRooms, setEcRooms] = useState([]);
+
   const nameInput = (
     <InputSection
       title="Who is booking?"
@@ -263,9 +196,9 @@ export default function Home() {
       description="📌 If the Edit & Collaboration Spaces is selected, option to add gear(s) to your booking will be available at the end of the form."
     >
       <RoomSelection
-        roomOptionStudio={RecordingStudioRoomsList}
-        roomOptionRehearsal={RehearsalRoomsList}
-        roomOptionECspace={ECRoomsList}
+        roomOptionStudio={recordingStudioRooms}
+        roomOptionRehearsal={rehearsalRooms}
+        roomOptionECspace={ecRooms}
         disabledRoomTypes={disabledRoomTypes}
         setRoomTypeSelected={setRoomTypeSelected}
         setRoomSelected={setRoomSelected}
@@ -347,9 +280,43 @@ export default function Home() {
     </InputSection>
   );
 
+  const fetchRoomsData = async (apiRoute) => {
+	try {
+	  const response = await fetch(`/api/${apiRoute}`);
+	  const data = await response.json();
+  
+	  if (data && data.results) {
+		const rooms = data.results.map((room) => ({
+		  key: room.id,
+		  name: room.Name,
+		  events: room.Events, // Adjust this if the structure is different
+		}));
+  
+		// Update state based on the API route
+		if (apiRoute === "studio") {
+		  console.log("Fetched studio rooms data:", rooms);
+		  setRecordingStudioRooms(rooms);
+		} else if (apiRoute === "rehearsal") {
+		  setRehearsalRooms(rooms);
+		} else if (apiRoute === "edit_collab") {
+		  setEcRooms(rooms);
+		}
+	  } else {
+		throw new Error(
+		  "Invalid response format: expected 'results' in response."
+		);
+	  }
+	} catch (error) {
+	  console.error(`Error fetching room data from ${apiRoute}:`, error);
+	}
+  };
+
   useEffect(() => {
     // Call the function to fetch data when the component mounts
     fetchPeopleData();
+    fetchRoomsData("studio");
+    fetchRoomsData("rehearsal");
+    fetchRoomsData("edit_collab");
   }, []);
 
   return (
