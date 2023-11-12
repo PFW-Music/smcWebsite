@@ -46,7 +46,7 @@ const SMCHours = () => (
 	<Container className="bg-neutral-900 text-white flex items-center justify-center">
 		<Card.Body>
 			<Text className="text-center text-2xl">SMC Hours & Availability</Text>
-			<Row className="text-xl justify-center">
+			<Row className="text-xl" justify="center" align="center">
 				<div className="columns-1">
 					<Text>Monday — Friday: </Text>
 					<Text>8:00 AM — Midnight</Text>
@@ -86,9 +86,6 @@ async function getRehearsal(){
 
 
 export default  function Home() {
- 	
-
-
 	
 	const [userSelected, setUserSelected] = React.useState([]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
@@ -266,7 +263,7 @@ export default  function Home() {
 	return (
 		<div className="text-center bg-neutral-900 min-h-screen">
 			<div className="mx-auto max-w-2xl">
-
+				<SMCHours />
 				{formActions}
 				<Collapse in={newEvent || (updateEvent && goodID)}>
 					{/*{nameInput}*/}

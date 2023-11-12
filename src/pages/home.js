@@ -81,25 +81,6 @@ const InputSection = ({ title, description, children }) => (
 	</Paper>
 );
 
-const SMCHours = () => (
-	<Container className="bg-neutral-900 text-white flex items-center justify-center">
-		<Card.Body>
-			<Text className="text-center text-2xl">SMC Hours & Availability</Text>
-			<Row className="text-xl justify-center">
-				<div className="columns-1">
-					<Text>Monday — Friday: </Text>
-					<Text>8:00 AM — Midnight</Text>
-				</div>
-				<div className="columns-2" />
-				<div className="Columns-3">
-					<Text>Saturday & Sunday: </Text>
-					<Text>12:00 PM — Midnight</Text>
-				</div>
-			</Row>
-		</Card.Body>
-	</Container>
-);
-
 async function getPeople(){
 	try {
 		const response = await fetch("/api/air/GetPeople");
@@ -289,7 +270,7 @@ export default  function Home() {
   registered for certain classes have privileges to schedule time in
   the recording studio, rehearsal room and control room."
 				/>
-				<SMCHours />
+			{ /*	#TODO <Click here to Book an Event />*/}
 			</div>
 		</div>
 	);
