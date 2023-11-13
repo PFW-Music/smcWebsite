@@ -16,7 +16,7 @@ async function createRecord(fields) {
 		body: JSON.stringify(fields),
 	  });
   
-	  if (response.status === 201) {
+	  if (response.status === 201 || response.status === 200) {
 		console.log('Record created successfully.');
 	  } else {
 		console.error('Failed to create record.'+fields);

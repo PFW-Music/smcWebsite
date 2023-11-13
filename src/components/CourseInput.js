@@ -7,38 +7,30 @@ import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Stack from "@mui/material/Stack";
-import base from "./airtable";
 import { Text } from "@nextui-org/react";
 
 const fetchCourses = async () => {
-	let courseList = [];
+    try {
+        const response = await fetch('/api/fetchCourses');
+        const data = await response.json();
+        return data.results.map(record => {
+            let displayText = record.Name;
 
-	await base("Classes")
-		.select({
-			view: "ALL CLASSES",
-		})
-		.eachPage((records, fetchNextPage) => {
-			records.forEach((record) => {
-				const className = record.get("Name");
-				const classDay = record.get("Week Day(s)");
-				const classTime = record.get("Meeting Time");
+            // Check if "Week Day(s)" array is not empty before accessing its value
+            if (record["Week Day(s)"] && record["Week Day(s)"].length > 0) {
+                displayText += `, ${record["Week Day(s)"][0].value}`;
+            }
 
-				if (className) {
-					let displayText = className;
-					if (classDay) {
-						displayText += ", " + String(classDay).substring(0, 3);
-					}
-					if (classTime) {
-						displayText += ", " + String(classTime);
-					}
-					courseList.push({ key: record.id, name: displayText });
-				}
-			});
+            if (record["Meeting Time"]) {
+                displayText += `, ${record["Meeting Time"]}`;
+            }
 
-			fetchNextPage();
-		});
-
-	return courseList;
+            return { key: record.id, name: displayText };
+        });
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+        return [];
+    }
 };
 
 const CourseSelectionInput = ({

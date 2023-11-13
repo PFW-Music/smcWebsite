@@ -198,32 +198,7 @@ const DateTimeValidation = ({
 			);
 		}
 	};
-
-	// const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
-	// 	const realEndTime = new Date(endTime).toISOString();
-
-	// 	if (!roomBookingRecord) return false;
-
-	// 	return roomBookingRecord.some((record) => {
-	// 		if (!record.eventStart) return false;
-
-	// 		return record.eventStart.some((eventStart, idx) => {
-	// 			if (record.eventStatus[idx] !== "Booked ✅") return false;
-
-	// 			const eventEnd = record.eventEnd[idx];
-
-	// 			if (
-	// 				(startTime <= eventStart && realEndTime >= eventEnd) ||
-	// 				(startTime >= eventStart && startTime <= eventEnd) ||
-	// 				(realEndTime > eventStart && realEndTime < eventEnd)
-	// 			) {
-	// 				setUnavailableRoom(record.name);
-	// 				return true;
-	// 			}
-	// 			return false;
-	// 		});
-	// 	});
-	// };
+	
 	const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
 		const realStartTime = new Date(startTime);
 		const realEndTime = new Date(endTime);
