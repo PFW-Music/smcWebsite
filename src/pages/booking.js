@@ -18,6 +18,7 @@ import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 import { Container, Card, Row, Text } from "@nextui-org/react";
 
+
 let peopleAllInfo = [];
 let SMCpeople = [];
 let facultyList = [];

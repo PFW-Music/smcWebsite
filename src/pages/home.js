@@ -17,6 +17,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
 import { Container, Card, Row, Text } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+import Link from "next/link";
 
 let peopleAllInfo = [];
 let SMCpeople = [];
@@ -259,18 +261,33 @@ export default  function Home() {
 			/>
 		</InputSection>
 	);
-
+	const [selectedButton, setSelectedButton] = useState(null);
+	const [isSmallScreen, setIsSmallScreen] = useState(false);
 	return (
 		<div className="text-center bg-neutral-900 min-h-screen">
 			<div className="mx-auto max-w-2xl">
 				<HeaderWithSubtitle
+
 					title="Schedule SMC Events"
 					subtitle="Everyone can take advantage of scheduling time in the edit &
   collaboration spaces in the SMC building. Approved students
   registered for certain classes have privileges to schedule time in
   the recording studio, rehearsal room and control room."
 				/>
-			{ /*	#TODO <Click here to Book an Event />*/}
+
+				<br />
+
+				<div justify="center" align="center">
+					<Container className="bg-neutral-900 text-white flex items-center justify-center">
+
+						<Link href="/booking" className="text-blue-500">
+								Click here to Book an Event
+						</Link>
+
+					</Container>
+				</div>
+
+
 			</div>
 		</div>
 	);
