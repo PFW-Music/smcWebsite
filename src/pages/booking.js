@@ -88,7 +88,7 @@ async function getRehearsal(){
 
 export default  function Home() {
 	
-	const [userSelected, setUserSelected] = React.useState([]);
+	const [userSelected, setUserSelected] = React.useState(["Omer Yurdabakan"]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
 	const [eventTypeSelected, setEventTypeSelected] = React.useState([]);
 	const [facultySelected, setFacultySelected] = React.useState([]);
@@ -267,7 +267,7 @@ export default  function Home() {
 				<SMCHours />
 				{formActions}
 				<Collapse in={newEvent || (updateEvent && goodID)}>
-					{/*{nameInput}*/}
+					{nameInput}
 					{userCount > 0 && (
 						<div>
 							<IframeSlide src="https://airtable.com/embed/shr7XfOauvLgRzajc" />

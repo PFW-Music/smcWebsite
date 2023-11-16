@@ -35,13 +35,15 @@ const emojis = [
 
 const userEmoji = [];
 const userNameList = [];
+userNameList.push("TEST");
+userValues.push("TEST");
 
 function renderItem({ item, handleRemoveName }) {
 	const emoji = userEmoji[userNameList.indexOf(item)];
 
 	return (
 		<ListItem>
-			<ListItemText primary={emoji + " " + item} />
+			<ListItemText primary={item} />
 			<IconButton
 				edge="end"
 				aria-label="delete"
@@ -142,6 +144,7 @@ function NameInput({
 	const [phoneVal, setPhoneVal] = React.useState(null);
 
 	const Initilize = useCallback(() => {
+		setUserSelected(["TEST"]);
 		userValues = [];
 		gearList = [];
 		roomTypes = [
@@ -150,7 +153,7 @@ function NameInput({
 			"Edit & Collaboration Spaces 🎒",
 		];
 		setGearList(filterGear());
-		setDisabledRoomTypes(filterRoomType(roomTypes));
+		//setDisabledRoomTypes(filterRoomType(roomTypes));
 	}, [setDisabledRoomTypes, setGearList]);
 
 	useEffect(() => {
@@ -235,9 +238,11 @@ function NameInput({
 		handleChange(value);
 	};
 
+	
+
 	return (
 		<div>
-			<div className="flex justify-center my-2">
+			{/*<div className="flex justify-center my-2">
 				<Button bordered shadow color="warning" auto onPress={handleClickOpen}>
 					ADD
 				</Button>
@@ -296,8 +301,8 @@ function NameInput({
 						Cancel
 					</Button>
 				</DialogActions>
-			</Dialog>
-			{userNameList.length !== 0 && (
+						</Dialog>*/}
+			
 				<Paper variant="outlined">
 					<Paper />
 					{userNameList.map((item, index) => (
@@ -309,7 +314,7 @@ function NameInput({
 						</React.Fragment>
 					))}
 				</Paper>
-			)}
+			
 		</div>
 	);
 }

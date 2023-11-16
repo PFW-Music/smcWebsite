@@ -16,6 +16,7 @@ export default async function handler(req, res){
         base("SMC People")
 	.select({
 		view: "ALL PEOPLE",
+		filterByFormula:`{Email}="${session.user.email}"`
 	})
 	.eachPage(
 		function page(records, fetchNextPage) {
@@ -25,6 +26,7 @@ export default async function handler(req, res){
 				peopleAllInfo.push({
 					id: record.id,
 					name: record.get("Person"),
+					email: record.get("Email"),
 					roomAccess: record.get("Room Access"),
 					gearAccess: record.get("Gear Access"),
 					phoneNum: record.get("Phone"),
@@ -38,9 +40,18 @@ export default async function handler(req, res){
 			fetchNextPage();
 		},
 		function done(err) {
-			res.status(200).json({peopleAllInfo:peopleAllInfo, facultyList: facultyList});
+			peopleAllInfo.forEach((record)=>{
+				if (record.email === session.user.email){				
+					res.status(200).json(record);
+					return;
+				}
+			}
+			)
+			res.status(200).json({});
 			if (err) {
+				res.status(500).end();
 				console.error(err);
+				return;
 			}
 		}
 	);

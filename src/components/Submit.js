@@ -70,7 +70,7 @@ export default function Submit({
 
 	const handleSubmit = async () => {
 		setOpen(true);
-
+		console.log(userSelected);
 		const users = userSelected.map((obj) => obj.id);
 		const faculties = facultySelected.map((obj) => obj.id);
 		const courses = courseSelected.map((obj) => obj.key);
