@@ -13,6 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
+import { useSession } from "next-auth/react"
 
 let userValues = [];
 const emojis = [
@@ -34,25 +35,17 @@ const emojis = [
 ];
 
 const userEmoji = [];
-const userNameList = [];
-userNameList.push("TEST");
+let userNameList = [];
+//userNameList.push("Omer");
 userValues.push("TEST");
 
-function renderItem({ item, handleRemoveName }) {
-	const emoji = userEmoji[userNameList.indexOf(item)];
+function renderItem({ item }) {
+	
 
 	return (
 		<ListItem>
 			<ListItemText primary={item} />
-			<IconButton
-				edge="end"
-				aria-label="delete"
-				title="Delete"
-				onClick={() => handleRemoveName(item)}
-				size="large"
-			>
-				<DeleteIcon />
-			</IconButton>
+
 		</ListItem>
 	);
 }
@@ -138,13 +131,21 @@ function NameInput({
 	setDisabledRoomTypes,
 	setGearList,
 }) {
+	const { data: session, status } = useSession()
+	useEffect(()=>{
+		if (status === "authenticated") {
+			userNameList = [];
+			userNameList.push(session.user.name);
+		}
+	}, [])
+
 	const [open, setOpen] = React.useState(false);
 	const [passFail, setPassFail] = React.useState(false);
 	const [value, setValue] = React.useState("");
 	const [phoneVal, setPhoneVal] = React.useState(null);
 
 	const Initilize = useCallback(() => {
-		setUserSelected(["TEST"]);
+		setUserSelected(["HELLO"]);
 		userValues = [];
 		gearList = [];
 		roomTypes = [
@@ -309,7 +310,7 @@ function NameInput({
 						<React.Fragment key={item}>
 							{index !== 0 && <Divider />}
 							<div className="p-2" key={item}>
-								{renderItem({ item, handleRemoveName })}
+								{renderItem({ item})}
 							</div>
 						</React.Fragment>
 					))}
