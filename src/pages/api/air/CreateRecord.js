@@ -57,7 +57,18 @@ export default async function handler(req, res){
         }
         //console.log(peopleAllInfo)
         const user = getUser(peopleAllInfo);
+        console.log("User: ", user);
         if(!user){
+          const fields = {
+            "Name": session.user.name,
+            "Email": session.user.email,
+            "Status": "Todo"
+          };
+      
+          const records = await base("Requested Users").create([{ fields }]);
+          records.forEach(function (record) {
+            console.log(record.getId());
+          });
           res.status(401).end();
           return;
         }
