@@ -16,12 +16,18 @@ import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import FormLabel from "@mui/material/FormLabel";
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 import { Container, Card, Row, Text } from "@nextui-org/react";
+import { useRouter } from "next/router"
 
 
 let peopleAllInfo = [];
 let SMCpeople = [];
 let facultyList = [];
+let user;
 
 //let RecordingStudioRoomsList = [];
 //let RehearsalRoomsList = [];
@@ -87,7 +93,7 @@ async function getRehearsal(){
 
 
 export default  function Home() {
-	
+	const router = useRouter()
 	const [userSelected, setUserSelected] = React.useState(["Omer Yurdabakan"]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
 	const [eventTypeSelected, setEventTypeSelected] = React.useState([]);
@@ -121,10 +127,27 @@ export default  function Home() {
 	const [RecordingStudioRoomsList, setRecordingStudioRoomsList] = useState([]);
 	const [RehearsalRoomsList, setRehearsalRoomsList] = useState([]);
     const [ECRoomsList, setECRoomsList] = useState([]);
+	const [userExists, setUserExist] = useState(false);
+	const [spinner, setSpinner] = useState(false); 
 
 	useEffect(() => {
 		//getPeople();
 		//getStudio();
+		setSpinner(true);
+		fetch('/api/air/GetUser')
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				if (data.Permission === true) {
+					user = data.user;
+					setUserExist(true);
+					setSpinner(false);
+				}
+				else if (data.Permission === false) {
+					setSpinner(false);
+					setUserExist(false);
+				}
+			})
 		fetch("/api/air/get-rooms/studio")
 		.then((res)=>res.json())
 		.then((data)=>{
@@ -142,6 +165,7 @@ export default  function Home() {
 		})
 
 
+
 	  }, []); 
 	const nameInput = (
 		<InputSection
@@ -149,7 +173,7 @@ export default  function Home() {
 			description="i.e. takes all responsibility!"
 		>
 			<NameInput
-				peopleAllInfo={peopleAllInfo}
+				user={user}
 				userSelected={userSelected}
 				setUserSelected={setUserSelected}
 				setUserCount={setUserCount}
@@ -260,6 +284,27 @@ export default  function Home() {
 			/>
 		</InputSection>
 	);
+	if(spinner){
+		return(
+			<Box sx={{ width: '100%' }}>
+			<LinearProgress />
+		  </Box>
+			
+		);
+	}
+	if(!userExists){
+    	return (
+			<div className="flex flex-col items-center justify-center bg-neutral-900 w-full ">
+			
+			<Alert severity="error">
+			  <AlertTitle>Error</AlertTitle>
+			  Looks like you are not registered in our system. — <strong>Rest assured, we are working on it!</strong>
+			</Alert>
+		
+		  
+		  </div>
+		);
+	}
 
 	return (
 		<div className="text-center bg-neutral-900 min-h-screen">

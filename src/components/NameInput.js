@@ -103,34 +103,35 @@ function filterGear() {
 	return gearList;
 }
 
-function filterRoomType(disabled) {
-	if (userValues.some((element) => element.roomAccess === "Room Access 3")) {
-		disabled = [];
-	} else if (
-		userValues.some((element) => element.roomAccess === "Room Access 2")
-	) {
-		disabled = ["Recording Studio 🎙️"];
-	} else if (
-		userValues.some((element) => element.roomAccess === "Room Access 1")
-	) {
-		disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
-	} else {
-		disabled = [
-			"Recording Studio 🎙️",
-			"Rehearsal Spaces 🎧",
-			"Edit & Collaboration Spaces 🎒",
-		];
-	}
-	return disabled;
-}
+
 
 function NameInput({
-	peopleAllInfo,
+	user,
 	setUserSelected,
 	setUserCount,
 	setDisabledRoomTypes,
 	setGearList,
 }) {
+	function filterRoomType(disabled) {
+		if (user.roomAccess === "Room Access 3") {
+			disabled = [];
+		} else if (
+			user.roomAccess === "Room Access 2"
+		) {
+			disabled = ["Recording Studio 🎙️"];
+		} else if (
+			user.roomAccess === "Room Access 1"
+		) {
+			disabled = ["Recording Studio 🎙️", "Rehearsal Spaces 🎧"];
+		} else {
+			disabled = [
+				"Recording Studio 🎙️",
+				"Rehearsal Spaces 🎧",
+				"Edit & Collaboration Spaces 🎒",
+			];
+		}
+		return disabled;
+	}
 	const { data: session, status } = useSession()
 	useEffect(()=>{
 		if (status === "authenticated") {
@@ -145,7 +146,7 @@ function NameInput({
 	const [phoneVal, setPhoneVal] = React.useState(null);
 
 	const Initilize = useCallback(() => {
-		setUserSelected(["HELLO"]);
+		
 		userValues = [];
 		gearList = [];
 		roomTypes = [
@@ -154,7 +155,7 @@ function NameInput({
 			"Edit & Collaboration Spaces 🎒",
 		];
 		setGearList(filterGear());
-		//setDisabledRoomTypes(filterRoomType(roomTypes));
+		setDisabledRoomTypes(filterRoomType(roomTypes));
 	}, [setDisabledRoomTypes, setGearList]);
 
 	useEffect(() => {
