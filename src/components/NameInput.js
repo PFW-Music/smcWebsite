@@ -36,7 +36,6 @@ const emojis = [
 
 const userEmoji = [];
 let userNameList = [];
-//userNameList.push("Omer");
 userValues.push("TEST");
 
 function renderItem({ item }) {

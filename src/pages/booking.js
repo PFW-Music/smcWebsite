@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-//import base from "../components/airtable";
 import NameInput from "../components/NameInput";
 import EventDetailsInput from "../components/EventDetailsInput";
 import RoomSelection from "../components/RoomSelection";
@@ -11,7 +10,6 @@ import FormActions from "../components/FormActions";
 import EventID from "../components/EventID";
 import Submit from "../components/Submit";
 import IframeSlide from "../components/IframeSlide";
-import HeaderWithSubtitle from "../components/HeaderWithSubtitle";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -25,15 +23,8 @@ import { useRouter } from "next/router"
 
 
 let peopleAllInfo = [];
-let SMCpeople = [];
 let facultyList = [];
 let user;
-
-//let RecordingStudioRoomsList = [];
-//let RehearsalRoomsList = [];
-//const ECRoomsList = [];
-
-
 
 const InputSection = ({ title, description, children }) => (
 	<Paper className="my-2 mx-auto p-2">
@@ -93,8 +84,7 @@ async function getRehearsal(){
 
 
 export default  function Home() {
-	const router = useRouter()
-	const [userSelected, setUserSelected] = React.useState(["Omer Yurdabakan"]);
+	const [userSelected, setUserSelected] = React.useState([""]);
 	const [sessionTitle, setSessionTitle] = React.useState("");
 	const [eventTypeSelected, setEventTypeSelected] = React.useState([]);
 	const [facultySelected, setFacultySelected] = React.useState([]);

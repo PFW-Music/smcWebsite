@@ -17,15 +17,11 @@ export default async function handler(req, res){
       )
     }
 
-    
-    
-
     if (!session) {
       res.status(401).json({ message: "You must be logged in." });
       return;
     }
-
-
+    
     base("SMC People")
     .select({
       view: "ALL PEOPLE",
@@ -34,8 +30,6 @@ export default async function handler(req, res){
     .eachPage(
       function page(records, fetchNextPage) {
         records.forEach(function (record) {
-          //console.log(record);
-         
           peopleAllInfo.push({
             id: record.id,
             name: record.get("Person"),
@@ -55,7 +49,6 @@ export default async function handler(req, res){
           res.status(500).end();
           return;
         }
-        //console.log(peopleAllInfo)
         const user = getUser(peopleAllInfo);
         if(!user){
           console.log("User does not exist");
@@ -72,7 +65,6 @@ export default async function handler(req, res){
           res.status(401).end();
           return;
         }
-        //console.log("USER: ", user);
 
         if (req.method === 'POST') {
           const fields = req.body;
@@ -81,7 +73,6 @@ export default async function handler(req, res){
           
           try {
               const records = await base("Events").create([{ fields }]);
-      
               records.forEach(function (record) {
                   console.log(record.getId());
               });
@@ -89,10 +80,7 @@ export default async function handler(req, res){
               res.status(500).end();
               console.error(err);
           }
-  
           res.status(201).end();
-  
-              
       }
       }
     );
