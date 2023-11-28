@@ -298,7 +298,7 @@ export default  function Home() {
 			
 			<Alert severity="error">
 			  <AlertTitle>Error</AlertTitle>
-			  Looks like you are not registered in our system. — <strong>Rest assured, we are working on it!</strong>
+			  Looks like user is not registered in the system. — <strong>An Email is sent to the Administrator to get this fixed!</strong>
 			</Alert>
 		
 		  
