@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.react-datepicker__view-calendar-icon input{
+  width:100% !important;
+  text-align:center !important;
+}
