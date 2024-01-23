@@ -89,8 +89,8 @@ export default function Submit({
 			Status: "Booked ✅",
 			"Intent of Use": usageSelected,
 			"Gear Selection": gears,
-			Location: roomSelected,
-			//Location: locations,
+			//Location: roomSelected,
+			Location: locations,
 		};
 
 		if (newEvent) {
