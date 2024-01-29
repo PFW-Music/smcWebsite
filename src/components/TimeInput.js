@@ -201,7 +201,7 @@ const DateTimeValidation = ({
 
 	const checkRoomAvailability = (startTime, endTime, roomBookingRecord) => {
 		const realEndTime = new Date(endTime).toISOString();
-
+		console.log(roomBookingRecord)
 		if (!roomBookingRecord) return false;
 
 		return roomBookingRecord.some((record) => {

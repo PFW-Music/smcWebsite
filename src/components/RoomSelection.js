@@ -91,21 +91,17 @@ export default function RoomSelectionInput({
 		eventsList = [];
 		let eventsListLength = 0;
 		for (let j = 0; j < roomSelectedAllInfoLength; j++) {
-			base("Rooms").find(roomSelectedAllInfo[j].key, function (err, record) {
-				if (err) {
-					return;
-				}
-				eventsList.push({
-					name: record.get("Name"),
-					id: record.id,
-					eventStart: record.get("Events Start"),
-					eventEnd: record.get("Events End"),
-					eventStatus: record.get("Events Status"),
-				});
-				eventsListLength++;
-			});
+			//console.log(`roomSelectedAllInfo[j].key :${roomSelectedAllInfo[j].key}`)
+			fetch(`/api/air/events/${roomSelectedAllInfo[j].key}`)
+		.then((res)=>res.json())
+		.then((data)=>{
+			console.log(data);
+			setRoomBookingRecord(data);
+		})
+			
 		}
-		setRoomBookingRecord(eventsList);
+		
+		
 	};
 
 	useEffect(() => {
